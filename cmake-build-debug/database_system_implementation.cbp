@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="database_system_implementation"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="database_system_implementation">
+				<Option output="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/database_system_implementation" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/."/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 database_system_implementation"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="database_system_implementation/fast">
+				<Option output="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/database_system_implementation" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/."/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 database_system_implementation/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Comparison.cc">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Comparison.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/ComparisonEngine.cc">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/ComparisonEngine.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/DBFile.cc">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/DBFile.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Defs.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/File.cc">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/File.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/ParseTree.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Record.cc">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Record.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Schema.cc">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Schema.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/TwoWayList.cc">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/TwoWayList.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/lex.yy.c">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/main.cc">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/test.cc">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/test.h">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/y.tab.o">
+			<Option target="database_system_implementation"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
