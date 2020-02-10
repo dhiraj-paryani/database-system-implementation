@@ -4,24 +4,22 @@ project(Project_2_Part_1)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
-include_directories(gtest)
 
 add_executable(Project_2_Part_1
-        gtest/gtest-all.cc
-        gtest/gtest.h
-        gtest/gtest_main.cc
+        BigQ.cc
+        BigQ.h
         Comparison.cc
         Comparison.h
         ComparisonEngine.cc
         ComparisonEngine.h
         DBFile.cc
         DBFile.h
-        DBFileGTests.cc
         Defs.h
         File.cc
         File.h
-        main.cc
         ParseTree.h
+        Pipe.cc
+        Pipe.h
         Record.cc
         Record.h
         Schema.cc

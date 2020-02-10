@@ -57,35 +57,22 @@ include CMakeFiles/Project_2_Part_1.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/Project_2_Part_1.dir/flags.make
 
-CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
-CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.o: ../gtest/gtest-all.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest/gtest-all.cc"
+CMakeFiles/Project_2_Part_1.dir/BigQ.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
+CMakeFiles/Project_2_Part_1.dir/BigQ.cc.o: ../BigQ.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Project_2_Part_1.dir/BigQ.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/BigQ.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/BigQ.cc"
 
-CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest/gtest-all.cc" > CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.i
+CMakeFiles/Project_2_Part_1.dir/BigQ.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project_2_Part_1.dir/BigQ.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/BigQ.cc" > CMakeFiles/Project_2_Part_1.dir/BigQ.cc.i
 
-CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest/gtest-all.cc" -o CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.s
-
-CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
-CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.o: ../gtest/gtest_main.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest/gtest_main.cc"
-
-CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest/gtest_main.cc" > CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.i
-
-CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest/gtest_main.cc" -o CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.s
+CMakeFiles/Project_2_Part_1.dir/BigQ.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project_2_Part_1.dir/BigQ.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/BigQ.cc" -o CMakeFiles/Project_2_Part_1.dir/BigQ.cc.s
 
 CMakeFiles/Project_2_Part_1.dir/Comparison.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
 CMakeFiles/Project_2_Part_1.dir/Comparison.cc.o: ../Comparison.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Project_2_Part_1.dir/Comparison.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Project_2_Part_1.dir/Comparison.cc.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/Comparison.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Comparison.cc"
 
 CMakeFiles/Project_2_Part_1.dir/Comparison.cc.i: cmake_force
@@ -98,7 +85,7 @@ CMakeFiles/Project_2_Part_1.dir/Comparison.cc.s: cmake_force
 
 CMakeFiles/Project_2_Part_1.dir/ComparisonEngine.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
 CMakeFiles/Project_2_Part_1.dir/ComparisonEngine.cc.o: ../ComparisonEngine.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Project_2_Part_1.dir/ComparisonEngine.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Project_2_Part_1.dir/ComparisonEngine.cc.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/ComparisonEngine.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/ComparisonEngine.cc"
 
 CMakeFiles/Project_2_Part_1.dir/ComparisonEngine.cc.i: cmake_force
@@ -111,7 +98,7 @@ CMakeFiles/Project_2_Part_1.dir/ComparisonEngine.cc.s: cmake_force
 
 CMakeFiles/Project_2_Part_1.dir/DBFile.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
 CMakeFiles/Project_2_Part_1.dir/DBFile.cc.o: ../DBFile.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Project_2_Part_1.dir/DBFile.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Project_2_Part_1.dir/DBFile.cc.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/DBFile.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/DBFile.cc"
 
 CMakeFiles/Project_2_Part_1.dir/DBFile.cc.i: cmake_force
@@ -122,22 +109,9 @@ CMakeFiles/Project_2_Part_1.dir/DBFile.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project_2_Part_1.dir/DBFile.cc.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/DBFile.cc" -o CMakeFiles/Project_2_Part_1.dir/DBFile.cc.s
 
-CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
-CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.o: ../DBFileGTests.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/DBFileGTests.cc"
-
-CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/DBFileGTests.cc" > CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.i
-
-CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/DBFileGTests.cc" -o CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.s
-
 CMakeFiles/Project_2_Part_1.dir/File.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
 CMakeFiles/Project_2_Part_1.dir/File.cc.o: ../File.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Project_2_Part_1.dir/File.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Project_2_Part_1.dir/File.cc.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/File.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/File.cc"
 
 CMakeFiles/Project_2_Part_1.dir/File.cc.i: cmake_force
@@ -148,22 +122,22 @@ CMakeFiles/Project_2_Part_1.dir/File.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project_2_Part_1.dir/File.cc.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/File.cc" -o CMakeFiles/Project_2_Part_1.dir/File.cc.s
 
-CMakeFiles/Project_2_Part_1.dir/main.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
-CMakeFiles/Project_2_Part_1.dir/main.cc.o: ../main.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Project_2_Part_1.dir/main.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/main.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/main.cc"
+CMakeFiles/Project_2_Part_1.dir/Pipe.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
+CMakeFiles/Project_2_Part_1.dir/Pipe.cc.o: ../Pipe.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Project_2_Part_1.dir/Pipe.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/Pipe.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Pipe.cc"
 
-CMakeFiles/Project_2_Part_1.dir/main.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project_2_Part_1.dir/main.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/main.cc" > CMakeFiles/Project_2_Part_1.dir/main.cc.i
+CMakeFiles/Project_2_Part_1.dir/Pipe.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Project_2_Part_1.dir/Pipe.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Pipe.cc" > CMakeFiles/Project_2_Part_1.dir/Pipe.cc.i
 
-CMakeFiles/Project_2_Part_1.dir/main.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project_2_Part_1.dir/main.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/main.cc" -o CMakeFiles/Project_2_Part_1.dir/main.cc.s
+CMakeFiles/Project_2_Part_1.dir/Pipe.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Project_2_Part_1.dir/Pipe.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Pipe.cc" -o CMakeFiles/Project_2_Part_1.dir/Pipe.cc.s
 
 CMakeFiles/Project_2_Part_1.dir/Record.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
 CMakeFiles/Project_2_Part_1.dir/Record.cc.o: ../Record.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Project_2_Part_1.dir/Record.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Project_2_Part_1.dir/Record.cc.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/Record.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Record.cc"
 
 CMakeFiles/Project_2_Part_1.dir/Record.cc.i: cmake_force
@@ -176,7 +150,7 @@ CMakeFiles/Project_2_Part_1.dir/Record.cc.s: cmake_force
 
 CMakeFiles/Project_2_Part_1.dir/Schema.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
 CMakeFiles/Project_2_Part_1.dir/Schema.cc.o: ../Schema.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Project_2_Part_1.dir/Schema.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Project_2_Part_1.dir/Schema.cc.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/Schema.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Schema.cc"
 
 CMakeFiles/Project_2_Part_1.dir/Schema.cc.i: cmake_force
@@ -189,7 +163,7 @@ CMakeFiles/Project_2_Part_1.dir/Schema.cc.s: cmake_force
 
 CMakeFiles/Project_2_Part_1.dir/test.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
 CMakeFiles/Project_2_Part_1.dir/test.cc.o: ../test.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Project_2_Part_1.dir/test.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Project_2_Part_1.dir/test.cc.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/test.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/test.cc"
 
 CMakeFiles/Project_2_Part_1.dir/test.cc.i: cmake_force
@@ -202,7 +176,7 @@ CMakeFiles/Project_2_Part_1.dir/test.cc.s: cmake_force
 
 CMakeFiles/Project_2_Part_1.dir/TwoWayList.cc.o: CMakeFiles/Project_2_Part_1.dir/flags.make
 CMakeFiles/Project_2_Part_1.dir/TwoWayList.cc.o: ../TwoWayList.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Project_2_Part_1.dir/TwoWayList.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Project_2_Part_1.dir/TwoWayList.cc.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Project_2_Part_1.dir/TwoWayList.cc.o -c "/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/TwoWayList.cc"
 
 CMakeFiles/Project_2_Part_1.dir/TwoWayList.cc.i: cmake_force
@@ -215,14 +189,12 @@ CMakeFiles/Project_2_Part_1.dir/TwoWayList.cc.s: cmake_force
 
 # Object files for target Project_2_Part_1
 Project_2_Part_1_OBJECTS = \
-"CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.o" \
-"CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.o" \
+"CMakeFiles/Project_2_Part_1.dir/BigQ.cc.o" \
 "CMakeFiles/Project_2_Part_1.dir/Comparison.cc.o" \
 "CMakeFiles/Project_2_Part_1.dir/ComparisonEngine.cc.o" \
 "CMakeFiles/Project_2_Part_1.dir/DBFile.cc.o" \
-"CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.o" \
 "CMakeFiles/Project_2_Part_1.dir/File.cc.o" \
-"CMakeFiles/Project_2_Part_1.dir/main.cc.o" \
+"CMakeFiles/Project_2_Part_1.dir/Pipe.cc.o" \
 "CMakeFiles/Project_2_Part_1.dir/Record.cc.o" \
 "CMakeFiles/Project_2_Part_1.dir/Schema.cc.o" \
 "CMakeFiles/Project_2_Part_1.dir/test.cc.o" \
@@ -231,21 +203,19 @@ Project_2_Part_1_OBJECTS = \
 # External object files for target Project_2_Part_1
 Project_2_Part_1_EXTERNAL_OBJECTS =
 
-Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.o
-Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.o
+Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/BigQ.cc.o
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/Comparison.cc.o
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/ComparisonEngine.cc.o
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/DBFile.cc.o
-Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.o
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/File.cc.o
-Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/main.cc.o
+Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/Pipe.cc.o
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/Record.cc.o
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/Schema.cc.o
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/test.cc.o
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/TwoWayList.cc.o
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/build.make
 Project_2_Part_1: CMakeFiles/Project_2_Part_1.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable Project_2_Part_1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable Project_2_Part_1"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Project_2_Part_1.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

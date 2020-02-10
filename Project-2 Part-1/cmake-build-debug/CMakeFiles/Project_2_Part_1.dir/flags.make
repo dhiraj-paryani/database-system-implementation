@@ -6,5 +6,5 @@ CXX_FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sd
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I"/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/." -I"/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest" 
+CXX_INCLUDES = -I"/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/." 
 

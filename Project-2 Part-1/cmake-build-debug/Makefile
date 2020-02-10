@@ -123,6 +123,33 @@ Project_2_Part_1/fast:
 	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/build
 .PHONY : Project_2_Part_1/fast
 
+BigQ.o: BigQ.cc.o
+
+.PHONY : BigQ.o
+
+# target to build an object file
+BigQ.cc.o:
+	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/BigQ.cc.o
+.PHONY : BigQ.cc.o
+
+BigQ.i: BigQ.cc.i
+
+.PHONY : BigQ.i
+
+# target to preprocess a source file
+BigQ.cc.i:
+	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/BigQ.cc.i
+.PHONY : BigQ.cc.i
+
+BigQ.s: BigQ.cc.s
+
+.PHONY : BigQ.s
+
+# target to generate assembly for a file
+BigQ.cc.s:
+	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/BigQ.cc.s
+.PHONY : BigQ.cc.s
+
 Comparison.o: Comparison.cc.o
 
 .PHONY : Comparison.o
@@ -204,33 +231,6 @@ DBFile.cc.s:
 	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/DBFile.cc.s
 .PHONY : DBFile.cc.s
 
-DBFileGTests.o: DBFileGTests.cc.o
-
-.PHONY : DBFileGTests.o
-
-# target to build an object file
-DBFileGTests.cc.o:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.o
-.PHONY : DBFileGTests.cc.o
-
-DBFileGTests.i: DBFileGTests.cc.i
-
-.PHONY : DBFileGTests.i
-
-# target to preprocess a source file
-DBFileGTests.cc.i:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.i
-.PHONY : DBFileGTests.cc.i
-
-DBFileGTests.s: DBFileGTests.cc.s
-
-.PHONY : DBFileGTests.s
-
-# target to generate assembly for a file
-DBFileGTests.cc.s:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/DBFileGTests.cc.s
-.PHONY : DBFileGTests.cc.s
-
 File.o: File.cc.o
 
 .PHONY : File.o
@@ -257,6 +257,33 @@ File.s: File.cc.s
 File.cc.s:
 	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/File.cc.s
 .PHONY : File.cc.s
+
+Pipe.o: Pipe.cc.o
+
+.PHONY : Pipe.o
+
+# target to build an object file
+Pipe.cc.o:
+	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/Pipe.cc.o
+.PHONY : Pipe.cc.o
+
+Pipe.i: Pipe.cc.i
+
+.PHONY : Pipe.i
+
+# target to preprocess a source file
+Pipe.cc.i:
+	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/Pipe.cc.i
+.PHONY : Pipe.cc.i
+
+Pipe.s: Pipe.cc.s
+
+.PHONY : Pipe.s
+
+# target to generate assembly for a file
+Pipe.cc.s:
+	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/Pipe.cc.s
+.PHONY : Pipe.cc.s
 
 Record.o: Record.cc.o
 
@@ -339,87 +366,6 @@ TwoWayList.cc.s:
 	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/TwoWayList.cc.s
 .PHONY : TwoWayList.cc.s
 
-gtest/gtest-all.o: gtest/gtest-all.cc.o
-
-.PHONY : gtest/gtest-all.o
-
-# target to build an object file
-gtest/gtest-all.cc.o:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.o
-.PHONY : gtest/gtest-all.cc.o
-
-gtest/gtest-all.i: gtest/gtest-all.cc.i
-
-.PHONY : gtest/gtest-all.i
-
-# target to preprocess a source file
-gtest/gtest-all.cc.i:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.i
-.PHONY : gtest/gtest-all.cc.i
-
-gtest/gtest-all.s: gtest/gtest-all.cc.s
-
-.PHONY : gtest/gtest-all.s
-
-# target to generate assembly for a file
-gtest/gtest-all.cc.s:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/gtest/gtest-all.cc.s
-.PHONY : gtest/gtest-all.cc.s
-
-gtest/gtest_main.o: gtest/gtest_main.cc.o
-
-.PHONY : gtest/gtest_main.o
-
-# target to build an object file
-gtest/gtest_main.cc.o:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.o
-.PHONY : gtest/gtest_main.cc.o
-
-gtest/gtest_main.i: gtest/gtest_main.cc.i
-
-.PHONY : gtest/gtest_main.i
-
-# target to preprocess a source file
-gtest/gtest_main.cc.i:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.i
-.PHONY : gtest/gtest_main.cc.i
-
-gtest/gtest_main.s: gtest/gtest_main.cc.s
-
-.PHONY : gtest/gtest_main.s
-
-# target to generate assembly for a file
-gtest/gtest_main.cc.s:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/gtest/gtest_main.cc.s
-.PHONY : gtest/gtest_main.cc.s
-
-main.o: main.cc.o
-
-.PHONY : main.o
-
-# target to build an object file
-main.cc.o:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/main.cc.o
-.PHONY : main.cc.o
-
-main.i: main.cc.i
-
-.PHONY : main.i
-
-# target to preprocess a source file
-main.cc.i:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/main.cc.i
-.PHONY : main.cc.i
-
-main.s: main.cc.s
-
-.PHONY : main.s
-
-# target to generate assembly for a file
-main.cc.s:
-	$(MAKE) -f CMakeFiles/Project_2_Part_1.dir/build.make CMakeFiles/Project_2_Part_1.dir/main.cc.s
-.PHONY : main.cc.s
-
 test.o: test.cc.o
 
 .PHONY : test.o
@@ -456,6 +402,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... Project_2_Part_1"
+	@echo "... BigQ.o"
+	@echo "... BigQ.i"
+	@echo "... BigQ.s"
 	@echo "... Comparison.o"
 	@echo "... Comparison.i"
 	@echo "... Comparison.s"
@@ -465,12 +414,12 @@ help:
 	@echo "... DBFile.o"
 	@echo "... DBFile.i"
 	@echo "... DBFile.s"
-	@echo "... DBFileGTests.o"
-	@echo "... DBFileGTests.i"
-	@echo "... DBFileGTests.s"
 	@echo "... File.o"
 	@echo "... File.i"
 	@echo "... File.s"
+	@echo "... Pipe.o"
+	@echo "... Pipe.i"
+	@echo "... Pipe.s"
 	@echo "... Record.o"
 	@echo "... Record.i"
 	@echo "... Record.s"
@@ -480,15 +429,6 @@ help:
 	@echo "... TwoWayList.o"
 	@echo "... TwoWayList.i"
 	@echo "... TwoWayList.s"
-	@echo "... gtest/gtest-all.o"
-	@echo "... gtest/gtest-all.i"
-	@echo "... gtest/gtest-all.s"
-	@echo "... gtest/gtest_main.o"
-	@echo "... gtest/gtest_main.i"
-	@echo "... gtest/gtest_main.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
 	@echo "... test.o"
 	@echo "... test.i"
 	@echo "... test.s"

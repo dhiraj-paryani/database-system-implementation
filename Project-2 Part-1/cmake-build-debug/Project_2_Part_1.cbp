@@ -45,7 +45,6 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/."/>
-					<Add directory="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include"/>
@@ -68,7 +67,6 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/."/>
-					<Add directory="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include"/>
@@ -84,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/BigQ.cc">
+			<Option target="Project_2_Part_1"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/BigQ.h">
+			<Option target="Project_2_Part_1"/>
+		</Unit>
 		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Comparison.cc">
 			<Option target="Project_2_Part_1"/>
 		</Unit>
@@ -102,9 +106,6 @@
 		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/DBFile.h">
 			<Option target="Project_2_Part_1"/>
 		</Unit>
-		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/DBFileGTests.cc">
-			<Option target="Project_2_Part_1"/>
-		</Unit>
 		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Defs.h">
 			<Option target="Project_2_Part_1"/>
 		</Unit>
@@ -115,6 +116,12 @@
 			<Option target="Project_2_Part_1"/>
 		</Unit>
 		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/ParseTree.h">
+			<Option target="Project_2_Part_1"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Pipe.cc">
+			<Option target="Project_2_Part_1"/>
+		</Unit>
+		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Pipe.h">
 			<Option target="Project_2_Part_1"/>
 		</Unit>
 		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/Record.cc">
@@ -133,18 +140,6 @@
 			<Option target="Project_2_Part_1"/>
 		</Unit>
 		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/TwoWayList.h">
-			<Option target="Project_2_Part_1"/>
-		</Unit>
-		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest/gtest-all.cc">
-			<Option target="Project_2_Part_1"/>
-		</Unit>
-		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest/gtest.h">
-			<Option target="Project_2_Part_1"/>
-		</Unit>
-		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/gtest/gtest_main.cc">
-			<Option target="Project_2_Part_1"/>
-		</Unit>
-		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/main.cc">
 			<Option target="Project_2_Part_1"/>
 		</Unit>
 		<Unit filename="/Users/dhirajmaheshparyani/dhiraj/padhai/ufl/dbi/database-system-implementation/Project-2 Part-1/test.cc">
