@@ -1,7 +1,6 @@
 #include "BigQ.h"
 
 BigQ :: BigQ (Pipe &in, Pipe &out, OrderMaker &sortOrder, int runlen) {
-
     // Initialize worker thread data.
     WorkerThreadData my_data = {
             .inputPipe = &in,
@@ -34,7 +33,7 @@ void *TPMMS(void *threadData) {
     pthread_exit(NULL);
 }
 
-void InitializeWorkerThreadData(struct WorkerThreadData *threadData) {
+void InitializeWorkerThreadData(WorkerThreadData *threadData) {
     // Create buffer page array to store current runs' records
     Page* currentRunPages = new (std::nothrow) Page[threadData->runLength];
     if (currentRunPages == NULL) {
@@ -50,7 +49,7 @@ void InitializeWorkerThreadData(struct WorkerThreadData *threadData) {
     threadData->bigQFile.Open(0, threadData->bigQFileName);
 }
 
-void RunGeneration(struct WorkerThreadData *threadData) {
+void RunGeneration(WorkerThreadData *threadData) {
     Record* nextRecord = new Record();
 
     while(threadData->inputPipe->Remove(nextRecord)) {
@@ -62,7 +61,7 @@ void RunGeneration(struct WorkerThreadData *threadData) {
     CreateRun(threadData);
 }
 
-int AddRecordToCurrentRun(struct WorkerThreadData *threadData, Record* nextRecord) {
+int AddRecordToCurrentRun(WorkerThreadData *threadData, Record* nextRecord) {
     Page* currentRunPage = &threadData->currentRunPages[threadData->currentRunPageNumber];
     if (!currentRunPage->Append(nextRecord)) {
         if(threadData->currentRunPageNumber + 1 == threadData->runLength) {
@@ -75,24 +74,43 @@ int AddRecordToCurrentRun(struct WorkerThreadData *threadData, Record* nextRecor
     return 1;
 }
 
-void CreateRun(struct WorkerThreadData *workerThreadData) {
+void CreateRun(WorkerThreadData *workerThreadData) {
     SortAndStoreCurrentRun(workerThreadData);
     ClearCurrentRunPages(workerThreadData);
 }
 
-void SortAndStoreCurrentRun(struct WorkerThreadData *workerThreadData) {
-    Page* bufferPage = new Page();
+void SortAndStoreCurrentRun(WorkerThreadData *workerThreadData) {
+    // Using priority queue for in memory sort.
+    priority_queue<Record*, vector<Record*>, RecordComparator> pq(workerThreadData->sortOrder);
+    LoadCurrentRunPriorityQueue(workerThreadData, pq);
 
+    // Get the records from the priority queue and add sorted pages of records in the BigQFile.
+    WritePriorityQueueContentToBigQFile(workerThreadData, pq);
+}
+
+// Put all the current run's record to the priority queue.
+void LoadCurrentRunPriorityQueue(WorkerThreadData *workerThreadData,
+        priority_queue<Record*, vector<Record*>, RecordComparator>& pq) {
+    for(int i=0; i <= workerThreadData->currentRunPageNumber; i++) {
+        Page* currentRunPage = &workerThreadData->currentRunPages[i];
+        Record* temp = new Record();
+        while(currentRunPage->GetFirst(temp)) {
+            pq.push(temp);
+            temp = new Record();
+        }
+        currentRunPage->EmptyItOut();
+    }
+}
+
+void WritePriorityQueueContentToBigQFile(WorkerThreadData *workerThreadData,
+        priority_queue<Record*, vector<Record*>, RecordComparator>& pq) {
+
+    Page* bufferPage = new Page();
     // Get next empty page offset of BigQFile.
     off_t currentPageIndexOfBigQFile = workerThreadData->bigQFile.GetLength() - 2 < 0 ? 0 : workerThreadData->bigQFile.GetLength() - 1;
     off_t maxRunPageNumber = currentPageIndexOfBigQFile + workerThreadData->runLength - 1;
     int  currentRunPageNumberOfOverflowRecords = 0;
 
-    // Using priority queue for in memory sort.
-    priority_queue<Record*, vector<Record*>, RecordComparator> pq(workerThreadData->sortOrder);
-    LoadPriorityQueue(workerThreadData, &pq);
-
-    // Get the records from the priority queue and add sorted pages of records in the BigQFile.
     while(!pq.empty()) {
         // Overflow condition
         if (currentPageIndexOfBigQFile > maxRunPageNumber) {
@@ -102,7 +120,7 @@ void SortAndStoreCurrentRun(struct WorkerThreadData *workerThreadData) {
                 pq.pop();
             }
         }
-        // If the current buffer is full.
+            // If the current buffer is full.
         else if(!bufferPage->Append(pq.top())) {
             workerThreadData->bigQFile.AddPage(bufferPage, currentPageIndexOfBigQFile++);
             bufferPage->EmptyItOut();
@@ -117,20 +135,8 @@ void SortAndStoreCurrentRun(struct WorkerThreadData *workerThreadData) {
     }
 }
 
-// Put all the current run's record to the priority queue.
-void LoadPriorityQueue(struct WorkerThreadData *workerThreadData, priority_queue<Record*, vector<Record*>, RecordComparator>* pq) {
-    for(int i=0; i <= workerThreadData->currentRunPageNumber; i++) {
-        Page* currentRunPage = &workerThreadData->currentRunPages[i];
-        Record* temp = new Record();
-        while(currentRunPage->GetFirst(temp)) {
-            (*pq).push(temp);
-            temp = new Record();
-        }
-        currentRunPage->EmptyItOut();
-    }
-}
 
-void ClearCurrentRunPages(struct WorkerThreadData *workerThreadData) {
+void ClearCurrentRunPages(WorkerThreadData *workerThreadData) {
     workerThreadData->numberOfRuns++;
     workerThreadData->currentRunPageNumber = 0;
 }
@@ -143,9 +149,8 @@ void MergeRuns(struct WorkerThreadData *workerThreadData) {
     LoadOutputPipeWithPriorityQueueData(workerThreadData, pq);
 }
 
-void LoadMergeRunPriorityQueue(struct WorkerThreadData *workerThreadData,
+void LoadMergeRunPriorityQueue(WorkerThreadData *workerThreadData,
         priority_queue<PriorityQueueItem, vector<PriorityQueueItem>, RecordComparator>& pq) {
-
     PriorityQueueItem* priorityQueueItem= new (std::nothrow) PriorityQueueItem[workerThreadData->numberOfRuns];
     for (int i=0; i < workerThreadData->numberOfRuns; i++) {
         priorityQueueItem[i].currentPageNumber = i * workerThreadData->runLength;
@@ -160,7 +165,7 @@ void LoadMergeRunPriorityQueue(struct WorkerThreadData *workerThreadData,
     }
 }
 
-void LoadOutputPipeWithPriorityQueueData(struct WorkerThreadData *workerThreadData,
+void LoadOutputPipeWithPriorityQueueData(WorkerThreadData *workerThreadData,
                                          priority_queue<PriorityQueueItem, vector<PriorityQueueItem>, RecordComparator>& pq) {
     while (!pq.empty()) {
         PriorityQueueItem item = pq.top();
@@ -179,7 +184,7 @@ void LoadOutputPipeWithPriorityQueueData(struct WorkerThreadData *workerThreadDa
     }
 }
 
-void CleanUp(struct WorkerThreadData *workerThreadData) {
+void CleanUp(WorkerThreadData *workerThreadData) {
     // Close and delete the file.
     workerThreadData->bigQFile.Close();
     remove(workerThreadData->bigQFileName);

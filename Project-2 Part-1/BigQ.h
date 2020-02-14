@@ -52,19 +52,22 @@ struct RecordComparator {
 
 
 void *TPMMS(void *threadData);
-    void InitializeWorkerThreadData(struct WorkerThreadData *threadData);
-    void RunGeneration (struct WorkerThreadData *threadData);
-    int AddRecordToCurrentRun(struct WorkerThreadData *threadData, Record* nextRecord);
-        void CreateRun (struct WorkerThreadData *workerThreadData);
-            void SortAndStoreCurrentRun(struct WorkerThreadData *workerThreadData);
-                void LoadPriorityQueue(struct WorkerThreadData *workerThreadData,priority_queue<Record*, vector<Record*>, RecordComparator>* pq);
-        void ClearCurrentRunPages (struct WorkerThreadData *workerThreadData);
-    void MergeRuns(struct WorkerThreadData *workerThreadData);
-        void LoadMergeRunPriorityQueue(struct WorkerThreadData *workerThreadData,
+    void InitializeWorkerThreadData(WorkerThreadData *threadData);
+    void RunGeneration (WorkerThreadData *threadData);
+    int AddRecordToCurrentRun(WorkerThreadData *threadData, Record* nextRecord);
+        void CreateRun (WorkerThreadData *workerThreadData);
+            void SortAndStoreCurrentRun(WorkerThreadData *workerThreadData);
+                void LoadCurrentRunPriorityQueue(WorkerThreadData *workerThreadData,
+                        priority_queue<Record*, vector<Record*>, RecordComparator>& pq);
+                void WritePriorityQueueContentToBigQFile(WorkerThreadData *workerThreadData,
+                        priority_queue<Record*, vector<Record*>, RecordComparator>& pq);
+        void ClearCurrentRunPages (WorkerThreadData *workerThreadData);
+    void MergeRuns(WorkerThreadData *workerThreadData);
+        void LoadMergeRunPriorityQueue(WorkerThreadData *workerThreadData,
                 priority_queue<PriorityQueueItem, vector<PriorityQueueItem>, RecordComparator>& pq);
-        void LoadOutputPipeWithPriorityQueueData(struct WorkerThreadData *workerThreadData,
+        void LoadOutputPipeWithPriorityQueueData(WorkerThreadData *workerThreadData,
                 priority_queue<PriorityQueueItem, vector<PriorityQueueItem>, RecordComparator>& pq);
-    void CleanUp(struct WorkerThreadData *workerThreadData);
+    void CleanUp(WorkerThreadData *workerThreadData);
 
 class BigQ {
 private:
