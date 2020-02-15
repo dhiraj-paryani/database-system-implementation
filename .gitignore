@@ -78,3 +78,4 @@ fabric.properties
 **/y.tab.c
 **/lex.yy.c
 **/y.tab.h
+**/.DS_Store
