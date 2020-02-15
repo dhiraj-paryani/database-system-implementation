@@ -80,5 +80,6 @@ fabric.properties
 **/y.tab.h
 **/*.bigq
 **/.DS_Store
+**/y.tab.c-e
 .DS_Store
 cmake-build-debug/**
