@@ -83,3 +83,5 @@ fabric.properties
 **/y.tab.c-e
 .DS_Store
 cmake-build-debug/**
+Project/db-file/**
+tpch-dbgen/**
