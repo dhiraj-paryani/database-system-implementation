@@ -76,7 +76,7 @@ int AddRecordToCurrentRun(WorkerThreadData *threadData, Record* nextRecord) {
 
 void CreateRun(WorkerThreadData *workerThreadData) {
     SortAndStoreCurrentRun(workerThreadData);
-    ClearCurrentRunPages(workerThreadData);
+    ClearCurrentRun(workerThreadData);
 }
 
 void SortAndStoreCurrentRun(WorkerThreadData *workerThreadData) {
@@ -136,7 +136,7 @@ void WritePriorityQueueContentToBigQFile(WorkerThreadData *workerThreadData,
 }
 
 
-void ClearCurrentRunPages(WorkerThreadData *workerThreadData) {
+void ClearCurrentRun(WorkerThreadData *workerThreadData) {
     workerThreadData->numberOfRuns++;
     workerThreadData->currentRunPageNumber = 0;
 }
@@ -192,5 +192,7 @@ void CleanUp(WorkerThreadData *workerThreadData) {
     delete[] workerThreadData->currentRunPages;
 
     // Shut down output pipe.
-    workerThreadData->outputPipe->ShutDown();
+    if(workerThreadData->outputPipe) {
+        workerThreadData->outputPipe->ShutDown();
+    }
 }

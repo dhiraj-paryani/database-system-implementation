@@ -49,6 +49,8 @@ public:
 	// there is no more data that is going to be added into the pipe
 	void ShutDown ();
 
+	bool isOpen ();
+
 };
 
 #endif

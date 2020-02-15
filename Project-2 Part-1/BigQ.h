@@ -54,14 +54,14 @@ struct RecordComparator {
 void *TPMMS(void *threadData);
     void InitializeWorkerThreadData(WorkerThreadData *threadData);
     void RunGeneration (WorkerThreadData *threadData);
-    int AddRecordToCurrentRun(WorkerThreadData *threadData, Record* nextRecord);
+        int AddRecordToCurrentRun(WorkerThreadData *threadData, Record* nextRecord);
         void CreateRun (WorkerThreadData *workerThreadData);
             void SortAndStoreCurrentRun(WorkerThreadData *workerThreadData);
                 void LoadCurrentRunPriorityQueue(WorkerThreadData *workerThreadData,
                         priority_queue<Record*, vector<Record*>, RecordComparator>& pq);
                 void WritePriorityQueueContentToBigQFile(WorkerThreadData *workerThreadData,
                         priority_queue<Record*, vector<Record*>, RecordComparator>& pq);
-        void ClearCurrentRunPages (WorkerThreadData *workerThreadData);
+        void ClearCurrentRun (WorkerThreadData *workerThreadData);
     void MergeRuns(WorkerThreadData *workerThreadData);
         void LoadMergeRunPriorityQueue(WorkerThreadData *workerThreadData,
                 priority_queue<PriorityQueueItem, vector<PriorityQueueItem>, RecordComparator>& pq);

@@ -132,3 +132,7 @@ void Pipe :: ShutDown () {
 	pthread_mutex_unlock (&pipeMutex);
 	
 }
+
+bool Pipe :: isOpen () {
+    return done == 0;
+}
