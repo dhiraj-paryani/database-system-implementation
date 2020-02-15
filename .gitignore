@@ -72,3 +72,9 @@ fabric.properties
 
 #bin files
 **/*.bin
+
+**/*.o
+**/*.out
+**/y.tab.c
+**/lex.yy.c
+**/y.tab.h
