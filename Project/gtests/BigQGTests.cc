@@ -1,9 +1,14 @@
 #include "gtest/gtest.h"
-#include "BigQ.h"
-#include "DBFile.h"
+#include "../BigQ.h"
+#include "../DBFile.h"
+#include "../Schema.h"
 
 #include <fstream>
 #include <iostream>
+
+char *catalog_path = "catalog";
+char *nation_tbl_file = "gtests/db-tbl-files/nation.tbl";
+char *nation_bin_file_name = "nation.bin";
 
 TEST(BigQTest, TestInitializeWorkerThreadDataMethod) {
     WorkerThreadData workerThreadData = {};
@@ -25,7 +30,7 @@ TEST(BigQTest, TestCleanUpMethod) {
     workerThreadData.outputPipe = new Pipe(10);
     CleanUp(&workerThreadData);
 
-    EXPECT_FALSE(workerThreadData.outputPipe->isOpen());
+    EXPECT_FALSE(workerThreadData.outputPipe->IsOpen());
 
     ifstream iFile;
     iFile.open(workerThreadData.bigQFileName);
@@ -40,7 +45,10 @@ TEST(BigQTest, TestAddRecordToCurrentRunMethod) {
     InitializeWorkerThreadData(&workerThreadData);
 
     DBFile dbfile;
-    dbfile.Open ("nation.bin");
+    dbfile.Create(nation_bin_file_name, heap, NULL);
+    Schema *rschema = new Schema (catalog_path, "nation");
+    dbfile.Load(*rschema, nation_tbl_file);
+
     int numberOfRecordAdded = 0;
     Record temp;
     while(dbfile.GetNext(temp)) {
@@ -56,6 +64,7 @@ TEST(BigQTest, TestAddRecordToCurrentRunMethod) {
     }
     EXPECT_EQ(numberOfRecordAdded, recordsInCurrentRun);
     CleanUp(&workerThreadData);
+    remove(nation_bin_file_name);
 }
 
 TEST(BigQTest, TestLoadCurrentRunPriorityQueueMethod) {
@@ -66,7 +75,10 @@ TEST(BigQTest, TestLoadCurrentRunPriorityQueueMethod) {
     InitializeWorkerThreadData(&workerThreadData);
 
     DBFile dbfile;
-    dbfile.Open ("nation.bin");
+    dbfile.Create(nation_bin_file_name, heap, NULL);
+    Schema *rschema = new Schema (catalog_path, "nation");
+    dbfile.Load(*rschema, nation_tbl_file);
+
     int numberOfRecordAdded = 0;
     Record temp;
     while(dbfile.GetNext(temp)) {
@@ -88,8 +100,8 @@ TEST(BigQTest, TestLoadCurrentRunPriorityQueueMethod) {
 
     EXPECT_EQ(recordsInCurrentRun, 0);
     CleanUp(&workerThreadData);
+    remove(nation_bin_file_name);
 }
-
 
 int main(int argc, char *argv[]) {
     testing::InitGoogleTest(&argc, argv);

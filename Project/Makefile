@@ -25,11 +25,11 @@ test.o: test.cc
 a1-test.o: a1-test.cc
 	$(CC) -g -c a1-test.cc
 
-DBFileGTests.o: DBFileGTests.cc
-	$(CC) -g -c DBFileGTests.cc
+DBFileGTests.o: gtests/DBFileGTests.cc
+	$(CC) -g -c gtests/DBFileGTests.cc
 
-BigQGTests.o: BigQGTests.cc
-	$(CC) -g -c BigQGTests.cc
+BigQGTests.o: gtests/BigQGTests.cc
+	$(CC) -g -c gtests/BigQGTests.cc
 
 Comparison.o: Comparison.cc
 	$(CC) -g -c Comparison.cc

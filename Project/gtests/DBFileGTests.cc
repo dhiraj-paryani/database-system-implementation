@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
-#include "DBFile.h"
+#include "../DBFile.h"
+
 #include <iostream>
 
 // Varibales for file creation path.
