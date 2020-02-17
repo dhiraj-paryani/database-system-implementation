@@ -11,6 +11,7 @@ BigQ :: BigQ (Pipe &in, Pipe &out, OrderMaker &sortOrder, int runlen) {
 
     // Create the worker thread.
     pthread_create(&workerThread, NULL, TPMMS, (void *) &my_data);
+    pthread_join(workerThread, NULL);
 }
 
 BigQ::~BigQ () {

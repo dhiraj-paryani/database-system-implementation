@@ -7,7 +7,7 @@
 #include <iostream>
 
 char *catalog_path = "catalog";
-char *nation_tbl_file = "gtests/db-tbl-files/nation.tbl";
+char *tpch_dir ="../tpch-dbgen/"; // dir where dbgen tpch files (extension *.tbl) can be found
 char *nation_bin_file_name = "nation.bin";
 
 TEST(BigQTest, TestInitializeWorkerThreadDataMethod) {
@@ -47,7 +47,9 @@ TEST(BigQTest, TestAddRecordToCurrentRunMethod) {
     DBFile dbfile;
     dbfile.Create(nation_bin_file_name, heap, NULL);
     Schema *rschema = new Schema (catalog_path, "nation");
-    dbfile.Load(*rschema, nation_tbl_file);
+    char tbl_path[100]; // construct path of the tpch flat text file
+    sprintf (tbl_path, "%s%s.tbl", tpch_dir, "nation");
+    dbfile.Load(*rschema, tbl_path);
 
     int numberOfRecordAdded = 0;
     Record temp;
@@ -77,7 +79,9 @@ TEST(BigQTest, TestLoadCurrentRunPriorityQueueMethod) {
     DBFile dbfile;
     dbfile.Create(nation_bin_file_name, heap, NULL);
     Schema *rschema = new Schema (catalog_path, "nation");
-    dbfile.Load(*rschema, nation_tbl_file);
+    char tbl_path[100]; // construct path of the tpch flat text file
+    sprintf (tbl_path, "%s%s.tbl", tpch_dir, "nation");
+    dbfile.Load(*rschema, tbl_path);
 
     int numberOfRecordAdded = 0;
     Record temp;
