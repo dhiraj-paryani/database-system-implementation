@@ -22,6 +22,8 @@ struct WorkerThreadData {
 
     Page* currentRunPages;
     int currentRunPageNumber;
+
+    bool overflowIsThere;
 };
 
 struct PriorityQueueItem {

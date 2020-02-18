@@ -41,6 +41,7 @@ void InitializeWorkerThreadData(WorkerThreadData *threadData) {
     threadData->currentRunPages = currentRunPages;
     threadData->currentRunPageNumber = 0;
     threadData->numberOfRuns = 0;
+    threadData->overflowIsThere = false;
 
     // Create temporary file for storing runs.
     sprintf(threadData->bigQFileName, "%d.bin", pthread_self());
@@ -56,7 +57,9 @@ void RunGeneration(WorkerThreadData *threadData) {
             AddRecordToCurrentRun(threadData, nextRecord);
         }
     }
-    CreateRun(threadData);
+    do {
+        CreateRun(threadData);
+    } while(threadData->overflowIsThere);
 }
 
 int AddRecordToCurrentRun(WorkerThreadData *threadData, Record* nextRecord) {
@@ -102,6 +105,7 @@ void LoadCurrentRunPriorityQueue(WorkerThreadData *workerThreadData,
 
 void WritePriorityQueueContentToBigQFile(WorkerThreadData *workerThreadData,
         priority_queue<Record*, vector<Record*>, RecordComparator>& pq) {
+    workerThreadData->overflowIsThere = false;
     Page* bufferPage = new Page();
     // Get next empty page offset of BigQFile.
     off_t currentPageIndexOfBigQFile =
@@ -118,7 +122,7 @@ void WritePriorityQueueContentToBigQFile(WorkerThreadData *workerThreadData,
                 pq.pop();
             }
         }
-            // If the current buffer is full.
+        // If the current buffer is full.
         else if(!bufferPage->Append(pq.top())) {
             workerThreadData->bigQFile.AddPage(bufferPage, currentPageIndexOfBigQFile++);
             bufferPage->EmptyItOut();
@@ -130,6 +134,8 @@ void WritePriorityQueueContentToBigQFile(WorkerThreadData *workerThreadData,
     // If data is not over flow, store the last page in the BigQFile.
     if (currentPageIndexOfBigQFile <= maxRunPageNumber) {
         workerThreadData->bigQFile.AddPage(bufferPage, currentPageIndexOfBigQFile);
+    } else {
+        workerThreadData->overflowIsThere = true;
     }
 }
 
