@@ -2,16 +2,14 @@
 
 BigQ :: BigQ (Pipe &in, Pipe &out, OrderMaker &sortOrder, int runlen) {
     // Initialize worker thread data.
-    WorkerThreadData my_data = {
-            .inputPipe = &in,
-            .outputPipe = &out,
-            .sortOrder = &sortOrder,
-            .runLength = runlen,
-    };
+    WorkerThreadData* my_data = new WorkerThreadData();
+    my_data->inputPipe = &in;
+    my_data->outputPipe = &out;
+    my_data->sortOrder = &sortOrder;
+    my_data->runLength = runlen;
 
     // Create the worker thread.
-    pthread_create(&workerThread, NULL, TPMMS, (void *) &my_data);
-    pthread_join(workerThread, NULL);
+    pthread_create(&workerThread, NULL, TPMMS, (void *) my_data);
 }
 
 BigQ::~BigQ () {
