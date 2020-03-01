@@ -1,30 +1,20 @@
 #ifndef DBFILE_H
 #define DBFILE_H
 
-#include "TwoWayList.h"
-#include "Record.h"
-#include "Schema.h"
-#include "File.h"
-#include "Comparison.h"
-#include "ComparisonEngine.h"
+#include "GenericDBFile.h"
+#include "Heap.h"
+#include "Sorted.h"
+
+#include <iostream>
+#include <fstream>
 
 typedef enum {heap, sorted, tree} fType;
 
 class DBFile {
 private:
-    off_t currentlyBeingWritenPageNumber;
-    off_t currentlyBeingReadPageNumber;
+    GenericDBFile* myInternalVar;
 
-    bool writePerformedAfterOpen;
-    bool isFileOpen;
-
-    File file;
-
-    Page* readBufferPage;
-    Page* writeBufferPage;
-
-    void addRecordToBuffer(Record &rec);
-    int readRecordFromBuffer(Record &rec);
+    string GetMataDataFilePath(const char *fpath);
 
 public:
     // constructor

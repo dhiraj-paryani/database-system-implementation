@@ -117,7 +117,45 @@ void OrderMaker :: Print () {
 	}
 }
 
+std::string OrderMaker :: ToString() {
+    string str = "";
+    str += std::to_string(numAtts) + " ";
+    for (int i = 0; i < numAtts; i++)
+        str += std::to_string(whichAtts[i]) + ":" + std::to_string(whichTypes[i]) + " ";
+    return str;
+}
 
+void OrderMaker :: FromString(std::string str) {
+    int index = 0;
+    string word = "";
+    for(; index < str.size(); index++) {
+        if (str[index] == ' ') {
+            index++;
+            break;
+        } else {
+            word += str[index];
+        }
+    }
+    this->numAtts = stoi(word);
+    word = "";
+    int attributeIndex = 0;
+    for(; index < str.size(); index++) {
+        if (str[index] == ':') {
+            whichAtts[attributeIndex] = stoi(word);
+            word = "";
+        } else if (str[index] == ' ') {
+            whichTypes[attributeIndex] = Type(stoi(word));
+            word = "";
+            attributeIndex++;
+        } else {
+            word += str[index];
+        }
+    }
+}
+
+bool OrderMaker :: isEmpty() {
+    return numAtts == 0;
+}
 
 int CNF :: GetSortOrders (OrderMaker &left, OrderMaker &right) {
 
@@ -178,6 +216,42 @@ int CNF :: GetSortOrders (OrderMaker &left, OrderMaker &right) {
 
 }
 
+void CNF :: GetCommonSortOrder(OrderMaker &fileSortOrder, OrderMaker &putItHere) {
+    putItHere.numAtts = 0;
+
+    for (int i=0; i < fileSortOrder.numAtts; i++) {
+        bool correspondingFoundInCNF = false;
+
+        for (int j=0; j < numAnds; j++) {
+            if (orLens[j] != 1) {
+                continue;
+            }
+
+            if (!(orList[j][0].operand1 == Literal ^ orList[j][0].operand2 == Literal)) {
+                continue;
+            }
+
+            int literalWhichAtt = orList[j][0].operand2 == Literal ? orList[j][0].whichAtt2 : orList[j][0].whichAtt1;
+            int LeftWhichAtt = orList[j][0].operand2 == Literal ? orList[j][0].whichAtt1 : orList[j][0].whichAtt2;
+
+            if(LeftWhichAtt == fileSortOrder.whichAtts[i] && orList[j][0].op == Equals) {
+                if (correspondingFoundInCNF) {
+                    cerr << "Error while building query order maker\n";
+                    exit(1);
+                }
+                correspondingFoundInCNF = true;
+                putItHere.whichAtts[putItHere.numAtts] = literalWhichAtt;
+                putItHere.whichTypes[putItHere.numAtts] = orList[j][0].attType;
+                putItHere.numAtts++;
+            }
+        }
+
+        if (!correspondingFoundInCNF) {
+            break;
+        }
+    }
+
+}
 
 void CNF :: Print () {
 

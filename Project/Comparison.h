@@ -7,6 +7,8 @@
 #include "Comparison.h"
 #include "ComparisonEngine.h"
 
+#include <iostream>
+
 
 // This stores an individual comparison that is part of a CNF
 class Comparison {
@@ -59,6 +61,12 @@ public:
 
 	// print to the screen
 	void Print ();
+
+	std::string ToString();
+
+	void FromString(std::string str);
+
+    bool isEmpty();
 };
 
 class Record;
@@ -83,6 +91,8 @@ public:
 	// only if it is impossible to determine an acceptable ordering
 	// for the given comparison
 	int GetSortOrders (OrderMaker &left, OrderMaker &right);
+
+    void GetCommonSortOrder(OrderMaker &fileSortOrder, OrderMaker &putItHere);
 
 	// print the comparison structure to the screen
 	void Print ();
