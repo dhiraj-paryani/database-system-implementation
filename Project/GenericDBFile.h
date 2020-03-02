@@ -7,7 +7,7 @@
 
 class GenericDBFile {
 private:
-    void FileOpenCheck ();
+    void DoFileOpenCheck ();
 
 protected:
     char dbFileName[100];

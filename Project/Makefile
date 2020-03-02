@@ -13,11 +13,11 @@ test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile
 a2test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o a2-test.o
 	$(CC) -o a21test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o a2-test.o -ll -lpthread
 	
-a1test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Pipe.o y.tab.o Sorted.o lex.yy.o a1-test.o
-	$(CC) -o a1test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Pipe.o Sorted.o y.tab.o lex.yy.o a1-test.o -ll
+a1test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o Sorted.o lex.yy.o a1-test.o
+	$(CC) -o a1test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o Sorted.o y.tab.o lex.yy.o a1-test.o -ll
 	
-gTestDBFile.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o y.tab.o lex.yy.o DBFileGTests.o
-	$(CC) -o gTestDBFile.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o y.tab.o lex.yy.o DBFileGTests.o -ll -lpthread -lgtest
+gTestDBFile.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o DBFileGTests.o
+	$(CC) -o gTestDBFile.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o DBFileGTests.o -ll -lpthread -lgtest
 
 gTestBigQ.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o BigQGTests.o
 	$(CC) -o gTestBigQ.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o BigQGTests.o -ll -lpthread -lgtest

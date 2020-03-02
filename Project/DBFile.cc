@@ -50,6 +50,8 @@ int DBFile::Open (const char *f_path) {
     string readLine;
 
     fIn.open(metadataPath);
+    if(!fIn.is_open()) return 0;
+
     getline(fIn, readLine);
 
     switch (stoi(readLine)) {
@@ -72,7 +74,7 @@ int DBFile::Open (const char *f_path) {
         }
         default:
             cerr << "Not yet implemented";
-            exit(1);
+            return 0;
     }
 
     fIn.close();

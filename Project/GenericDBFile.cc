@@ -33,7 +33,7 @@ int GenericDBFile :: Open (const char *fpath) {
 void GenericDBFile :: Add (Record &addme) {
 
     // Throw error if file is not open.
-    FileOpenCheck();
+    DoFileOpenCheck();
 
     SwitchToWriteMode();
 
@@ -43,7 +43,7 @@ void GenericDBFile :: Add (Record &addme) {
 void GenericDBFile :: Load (Schema &myschema, const char *loadpath) {
 
     // Throw error if file is not open.
-    FileOpenCheck();
+    DoFileOpenCheck();
 
     SwitchToWriteMode();
 
@@ -59,7 +59,7 @@ void GenericDBFile :: Load (Schema &myschema, const char *loadpath) {
 void GenericDBFile :: MoveFirst () {
 
     // Throw error if file is not open.
-    FileOpenCheck();
+    DoFileOpenCheck();
 
     SwitchToReadMode();
 
@@ -70,34 +70,34 @@ void GenericDBFile :: MoveFirst () {
 
 int GenericDBFile :: GetNext (Record &fetchme) {
 
-    // Throw error if file is not open.
-    FileOpenCheck();
+    // Return 0 if file is not open.
+    if (!isDBFileOpen) return 0;
 
     SwitchToReadMode();
 
-    GetNextFromDBFile(fetchme);
+    return GetNextFromDBFile(fetchme);
 }
 
 int GenericDBFile :: GetNext (Record &fetchme, CNF &cnf, Record &literal) {
 
-    // Throw error if file is not open.
-    FileOpenCheck();
+    // Return 0 if file is not open.
+    if (!isDBFileOpen) return 0;
 
     SwitchToReadMode();
 
-    GetNextFromDBFile(fetchme, cnf, literal);
+    return GetNextFromDBFile(fetchme, cnf, literal);
 }
 
 int GenericDBFile :: Close () {
 
-    // Throw error if file is not open.
-    FileOpenCheck();
+    // Return 0 if file is not open.
+    if (!isDBFileOpen) return 0;
 
     SwitchToReadMode();
 
     // Close the file.
     dbFile.Close();
-    return !(isDBFileOpen = true);
+    return !(isDBFileOpen = false);
 }
 
 /* **************************************** ALL PROTECTED METHODS ************************************************** */
@@ -129,7 +129,7 @@ int GenericDBFile :: GetRecordFromReadBufferPage(Record &rec) {
 }
 
 /* **************************************** ALL PRIVATE METHODS ************************************************** */
-void GenericDBFile :: FileOpenCheck () {
+void GenericDBFile :: DoFileOpenCheck () {
     if (!isDBFileOpen) {
         std::cerr << "BAD: File is not open!\n";
         exit(1);
