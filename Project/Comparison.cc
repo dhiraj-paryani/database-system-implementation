@@ -227,6 +227,10 @@ void CNF :: GetCommonSortOrder(OrderMaker &fileSortOrder, OrderMaker &putItHere)
                 continue;
             }
 
+            if (orList[j][0].op != Equals) {
+                continue;
+            }
+
             if (!(orList[j][0].operand1 == Literal ^ orList[j][0].operand2 == Literal)) {
                 continue;
             }
@@ -234,7 +238,7 @@ void CNF :: GetCommonSortOrder(OrderMaker &fileSortOrder, OrderMaker &putItHere)
             int literalWhichAtt = orList[j][0].operand2 == Literal ? orList[j][0].whichAtt2 : orList[j][0].whichAtt1;
             int LeftWhichAtt = orList[j][0].operand2 == Literal ? orList[j][0].whichAtt1 : orList[j][0].whichAtt2;
 
-            if(LeftWhichAtt == fileSortOrder.whichAtts[i] && orList[j][0].op == Equals) {
+            if(LeftWhichAtt == fileSortOrder.whichAtts[i]) {
                 if (correspondingFoundInCNF) {
                     cerr << "Error while building query order maker\n";
                     exit(1);

@@ -2,271 +2,157 @@
 #include "GenericDBFile.h"
 
 
-Sorted :: Sorted(SortInfo* sortInfo) {
-    file = new File();
+Sorted :: Sorted(SortInfo* sortInfoParameter) {
+    sortInfo = sortInfoParameter;
 
-    this->currentlyInWriteMode = false;
-    this->sortInfo = sortInfo;
-
-    isFileOpen = false;
-
-    this->currentlyBeingReadPageNumber = 0;
-    readBufferPage = new Page();
     pipeBufferSize = 100;
+    inputPipe = new Pipe(pipeBufferSize);
+    outputPipe = new Pipe(pipeBufferSize);
 
     queryOrderMaker = new OrderMaker();
     useSameQueryOrderMaker = false;
 }
 
 Sorted :: ~Sorted() {
+    delete inputPipe;
+    delete outputPipe;
+
+    delete queryOrderMaker;
 }
 
-int Sorted::Create (const char *f_path) {
-    int createStatus = file->Open(0, const_cast<char *>(f_path));
-    isFileOpen = createStatus;
-    return createStatus;
-}
+/* ****************************************** ALL OVERRIDDEN METHODS *********************************************** */
 
-int Sorted::Open (const char *f_path) {
-    fileName = f_path;
-    file->Open(1, const_cast<char *>(f_path));
-    int status = file->Open(1, const_cast<char *>(f_path));
-    isFileOpen = status;
-    this->MoveFirst();
-    return status;
-}
+void Sorted :: SwitchToWriteMode() {
+    if(isInWriteMode) return;
 
-void Sorted::Add (Record &rec) {
-    CreateBigQIfRequired();
-
-    inputPipe->Insert(&rec);
-}
-
-void Sorted::Load (Schema &f_schema, const char *loadpath) {
-    CreateBigQIfRequired();
-
-    FILE *tableFile = fopen (loadpath, "r");
-    Record temp;
-    while (temp.SuckNextRecord (&f_schema, tableFile)) {
-        inputPipe->Insert(&temp);
-    }
-}
-
-void Sorted::MoveFirst() {
-    if (!isFileOpen) {
-        cerr << "BAD: File is not open!\n";
-        exit(1);
-    }
+    BigQ (*inputPipe, *outputPipe, *sortInfo->myOrder, sortInfo->runLength);
     useSameQueryOrderMaker = false;
-    readBufferPage->EmptyItOut();
-    this->currentlyBeingReadPageNumber = 0;
-    if (file->GetLength() - 2 >= this->currentlyBeingReadPageNumber) {
-        file->GetPage(readBufferPage, this->currentlyBeingReadPageNumber);
-    }
+    isInWriteMode = true;
 }
 
-int Sorted::GetNext (Record &fetchme) {
-    MergeAndCreateNewSortedFileIfRequired();
-    return readRecordFromBuffer(fetchme);
+void Sorted :: SwitchToReadMode() {
+    if(!isInWriteMode) return;
+
+    isInWriteMode = false;
+    MergeAndCreateNewSortedFile();
 }
 
-int Sorted::GetNext (Record &fetchme, CNF &cnf, Record &literal) {
-    MergeAndCreateNewSortedFileIfRequired();
+void Sorted :: AddToDBFile(Record &addme) {
+    inputPipe->Insert(&addme);
+}
+
+int Sorted :: GetNextFromDBFile(Record &fetchme) {
+    return GetRecordFromReadBufferPage(fetchme);
+}
+
+int Sorted :: GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal) {
     if (!useSameQueryOrderMaker) {
-        cnf.GetCommonSortOrder(*this->sortInfo->myOrder, *queryOrderMaker);
+        cnf.GetCommonSortOrder(*sortInfo->myOrder, *queryOrderMaker);
     }
     return GetNextForSortedFile(fetchme, cnf, literal);
 }
 
-int Sorted::Close () {
-    MergeAndCreateNewSortedFileIfRequired();
-    return 0;
-}
+/* ****************************************** ALL PRIVATE METHODS *********************************************** */
 
-void Sorted::CreateBigQIfRequired() {
-    if(!currentlyInWriteMode) {
-        CreateBigQ();
-        currentlyInWriteMode = true;
-    }
-}
+void Sorted :: MergeAndCreateNewSortedFile() {
 
-void Sorted::CreateBigQ() {
-    inputPipe = new Pipe(pipeBufferSize);
-    outputPipe = new Pipe(pipeBufferSize);
-    BigQ(*inputPipe, *outputPipe, *this->sortInfo->myOrder, this->sortInfo->runLength);
-}
-
-void Sorted::MergeAndCreateNewSortedFileIfRequired() {
-    if(currentlyInWriteMode) {
-        MergeAndCreateNewSortedFile();
-        delete inputPipe;
-        delete outputPipe;
-    }
-    currentlyInWriteMode = false;
-}
-
-void Sorted::MergeAndCreateNewSortedFile() {
     // Shut down input pipe of BigQ so that BigQ gives sorted records in output pipe.
     inputPipe->ShutDown();
-    file->Close();
 
-    // Creating temp file.
-    string tempFileName = fileName + ".temp";
+    // Create Tempt file as Heap and keep on adding records in sorted order.
+    char tempFileName[100];
+    strcpy(tempFileName, dbFileName);
+    strcat(tempFileName, ".temp");
+    Heap tempFile;
+    tempFile.Create(tempFileName);
 
-    // Reading currentFile as heap file.
-    Heap* currentFile = new Heap();
-    currentFile->Open(const_cast<char*>(fileName.c_str()));
-    currentFile->MoveFirst();
-
+    // Move first current file for reading.
+    MoveFirst();
     Record currentFileRecord;
-    bool currentFileNotFullyConsumed = currentFile->GetNext(currentFileRecord);
-
-    // Writing sorted records by using heap file.
-    Heap* newFile = new Heap();
-    newFile->Create(const_cast<char*>(tempFileName.c_str()));
+    bool currentFileNotFullyConsumed = GetRecordFromReadBufferPage(currentFileRecord);
 
     // Output pipe variables.
     Record outputPipeRecord;
     bool outputPipeNotFullyConsumed = outputPipe->Remove(&outputPipeRecord);
 
-    ComparisonEngine cmp;
     // If either of the stream is fully consumed - Break;
     while(outputPipeNotFullyConsumed && currentFileNotFullyConsumed) {
         // If currentFileRecord is less
-        if (cmp.Compare(&currentFileRecord, &outputPipeRecord, this->sortInfo->myOrder) < 1) {
-            newFile->Add(currentFileRecord);
-            currentFileNotFullyConsumed = currentFile->GetNext(currentFileRecord);
+        if (comparisonEngine.Compare(&currentFileRecord, &outputPipeRecord, sortInfo->myOrder) < 1) {
+            tempFile.Add(currentFileRecord);
+            currentFileNotFullyConsumed = GetRecordFromReadBufferPage(currentFileRecord);
         }
         // If BigQ output pipe's record is less.
         else {
-            newFile->Add(outputPipeRecord);
+            tempFile.Add(outputPipeRecord);
             outputPipeNotFullyConsumed = outputPipe->Remove(&outputPipeRecord);
         }
     }
+
     // If output pipe is not fully consumed.
     while(outputPipeNotFullyConsumed) {
-        newFile->Add(outputPipeRecord);
+        tempFile.Add(outputPipeRecord);
         outputPipeNotFullyConsumed = outputPipe->Remove(&outputPipeRecord);
     }
+
     // If current file records are not fully consumed.
     while(currentFileNotFullyConsumed) {
-        newFile->Add(currentFileRecord);
-        currentFileNotFullyConsumed = currentFile->GetNext(currentFileRecord);
+        tempFile.Add(currentFileRecord);
+        currentFileNotFullyConsumed = GetRecordFromReadBufferPage(currentFileRecord);
     }
 
     // Close both files
-    newFile->Close();
-    currentFile->Close();
+    tempFile.Close();
+    dbFile.Close();
 
     // remove the old file.
-    remove(const_cast<char*>(fileName.c_str()));
+    remove(dbFileName);
 
     // rename the file name.
-    rename(const_cast<char*>(tempFileName.c_str()), const_cast<char*>(fileName.c_str()));
-    file->Open(1, const_cast<char*>(fileName.c_str()));
-}
-
-int Sorted::readRecordFromBuffer(Record &rec) {
-    if (!readBufferPage->GetFirst(&rec)) {
-        ++currentlyBeingReadPageNumber;
-        if (file->GetLength() - 2 < currentlyBeingReadPageNumber) {
-            return 0;
-        }
-        file->GetPage(readBufferPage, currentlyBeingReadPageNumber);
-        this->readRecordFromBuffer(rec);
-    }
-    return 1;
+    rename(tempFileName, dbFileName);
+    dbFile.Open(1, dbFileName);
 }
 
 int Sorted::GetNextForSortedFile(Record &fetchme, CNF &cnf, Record &literal) {
     if (queryOrderMaker->isEmpty()) {
-        return SequentialSearchWithCNF(fetchme, cnf, literal);
-    }
-
-    if (useSameQueryOrderMaker) {
-        return SequentialSearchWithQueryAndCNF(fetchme, cnf, literal);
-    }
-
-    useSameQueryOrderMaker = true;
-    Record firstQueryMatchedRecord;
-    int comparisonValue = SequentialSearchOnPageWithQuery(readBufferPage, &literal, &firstQueryMatchedRecord);
-    if(comparisonValue == 0) {
-        return SequentialSearchWithQueryAndCNF(fetchme, cnf, literal, firstQueryMatchedRecord);
-    } else if (comparisonValue == -1) {
+        while(GetRecordFromReadBufferPage(fetchme)) {
+            if(CheckForCNF(fetchme, cnf, literal)) return 1;
+        }
         return 0;
     }
 
-    // Applying Binary Search to get a page.
-    // where the first record of the page is less than the literal
-    // and the next page is greater than or equal to the literal.
-    off_t searchedPageNumber = BinarySearch(currentlyBeingReadPageNumber + 1, file->GetLength() - 2, literal);
-    currentlyBeingReadPageNumber = searchedPageNumber;
-    file->GetPage(readBufferPage, searchedPageNumber);
-
-    // Try to match query on 2 pages, we are sure we will get result.
-    // Because first record of (searchedPageNumber + 1)'s page will contain record which is greater than or equal to the query.
-    comparisonValue = SequentialSearchOnPageWithQuery(readBufferPage, &literal, &firstQueryMatchedRecord);
-    if(comparisonValue == 0) {
-        return SequentialSearchWithQueryAndCNF(fetchme, cnf, literal, firstQueryMatchedRecord);
-    } else if (comparisonValue == -1) {
-        return 0;
-    }
-
-    file->GetPage(readBufferPage, ++currentlyBeingReadPageNumber);
-    comparisonValue = SequentialSearchOnPageWithQuery(readBufferPage, &literal, &firstQueryMatchedRecord);
-    if(comparisonValue == 0) {
-        return SequentialSearchWithQueryAndCNF(fetchme, cnf, literal, firstQueryMatchedRecord);
-    } else if (comparisonValue == -1) {
-        return 0;
-    }
-
-    return 0;
-}
-
-int Sorted::SequentialSearchOnPageWithQuery(Page *page, Record* literal, Record* searchedRecord) {
-    while(page->GetFirst(searchedRecord)) {
-        int comparisonValue = cng.Compare(literal, this->queryOrderMaker, searchedRecord, this->sortInfo->myOrder);
-        if (comparisonValue == 0) {
-            return 0;
+    if (!useSameQueryOrderMaker) {
+        useSameQueryOrderMaker = true;
+        bool doBinarySearch = true;
+        while(readBufferPage.GetFirst(&fetchme)) {
+            if (CheckForCNF(fetchme, cnf, literal)) return 1;
+            int comparisonValue = CheckForQuery(fetchme, literal);
+            if(comparisonValue == 1) return 0;
+            if (comparisonValue == 0) {
+                if(CheckForCNF(fetchme, cnf, literal)) return 1;
+                doBinarySearch = false;
+                break;
+            }
         }
-        if (comparisonValue < 0) {
-            return -1;
+        if (doBinarySearch) {
+            if (GetLengthInPages() - 1 <= currentlyBeingReadPageNumber + 1) return 0;
+            currentlyBeingReadPageNumber = BinarySearch(++currentlyBeingReadPageNumber, GetLengthInPages() - 1, literal);
         }
     }
-    return 1;
-}
 
-int Sorted::SequentialSearchWithCNF(Record &fetchme, CNF &cnf, Record &literal) {
-    ComparisonEngine comp;
-    while(true) {
-        if (this->readRecordFromBuffer(fetchme) == 0) return 0;
-        else if (comp.Compare(&fetchme, &literal, &cnf)) break;
-    }
-    return 1;
-}
-
-int Sorted::SequentialSearchWithQueryAndCNF(Record &fetchme, CNF &cnf, Record &literal) {
-    Record nextRecord;
-    readRecordFromBuffer(nextRecord);
-    while(cng.Compare(&literal, queryOrderMaker, &nextRecord, this->sortInfo->myOrder) == 0) {
-        if (cng.Compare(&nextRecord, &literal, &cnf)) {
-            fetchme.Consume(&nextRecord);
-            return 1;
-        }
-        readRecordFromBuffer(nextRecord);
+    while (GetRecordFromReadBufferPage(fetchme)) {
+        if (CheckForCNF(fetchme, cnf, literal)) return 1;
+        if(CheckForQuery(fetchme, literal)) return 0;
     }
     return 0;
 }
 
-int Sorted::SequentialSearchWithQueryAndCNF(Record &fetchme, CNF &cnf, Record &literal, Record &firstQueryMatchedRecord) {
-    while(cng.Compare(&literal, queryOrderMaker, &firstQueryMatchedRecord, this->sortInfo->myOrder) == 0) {
-        if (cng.Compare(&firstQueryMatchedRecord, &literal, &cnf)) {
-            fetchme.Consume(&firstQueryMatchedRecord);
-            return 1;
-        }
-        readRecordFromBuffer(firstQueryMatchedRecord);
-    }
-    return 0;
+int Sorted :: CheckForQuery(Record &fetchme, Record &literal) {
+    return comparisonEngine.Compare(&literal, queryOrderMaker, &fetchme, sortInfo->myOrder);
+}
+
+bool Sorted :: CheckForCNF(Record &fetchme, CNF &cnf, Record &literal) {
+    return comparisonEngine.Compare(&fetchme, &literal, &cnf);
 }
 
 off_t Sorted::BinarySearch(off_t low, off_t high, Record &literal) {
@@ -274,20 +160,14 @@ off_t Sorted::BinarySearch(off_t low, off_t high, Record &literal) {
     Record temp;
 
     // Base condition or Break condition
-    if(low == high) {
-        file->GetPage(&bufferPage, low);
-        bufferPage.GetFirst(&temp);
-        if(cng.Compare(&literal, this->queryOrderMaker, &temp, this->sortInfo->myOrder) > 0) {
-            return low;
-        }
-        return std::max(low-1, currentlyBeingReadPageNumber + 1);
-    }
+    if(low == high) return low;
 
     // Get first record of the middle page.
     off_t mid = (low+high)/2;
-    file->GetPage(&bufferPage, mid);
+    dbFile.GetPage(&bufferPage, mid);
     bufferPage.GetFirst(&temp);
-    if(cng.Compare(&literal, this->queryOrderMaker, &temp, this->sortInfo->myOrder) > 0) {
+
+    if(comparisonEngine.Compare(&literal, queryOrderMaker, &temp, sortInfo->myOrder) > 0) {
         return BinarySearch(mid+1, high, literal);
     }
     return BinarySearch(low, mid-1, literal);

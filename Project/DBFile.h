@@ -14,7 +14,7 @@ class DBFile {
 private:
     GenericDBFile* myInternalVar;
 
-    string GetMataDataFilePath(const char *fpath);
+    void GetMataDataFilePath(const char *fpath, char *metadataPath);
 
 public:
     // constructor

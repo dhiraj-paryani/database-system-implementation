@@ -7,21 +7,15 @@
 #include "Heap.h"
 #include "Pipe.h"
 
-struct SortInfo { OrderMaker *myOrder; int runLength; };
+struct SortInfo {
+    OrderMaker *myOrder;
+    int runLength;
+};
 
 class Sorted : public GenericDBFile {
 
 private:
-    File* file;
-    string fileName;
-    bool isFileOpen;
-
     SortInfo* sortInfo;
-
-    bool currentlyInWriteMode;
-
-    off_t currentlyBeingReadPageNumber;
-    Page* readBufferPage;
 
     int pipeBufferSize;
     Pipe* inputPipe;
@@ -30,39 +24,26 @@ private:
     OrderMaker* queryOrderMaker;
     bool useSameQueryOrderMaker;
 
-    ComparisonEngine cng;
 
-    Schema* customerSchema = new Schema ("catalog", "customer");
-
-    void CreateBigQIfRequired();
-        void CreateBigQ();
-
-    void MergeAndCreateNewSortedFileIfRequired();
-        void MergeAndCreateNewSortedFile();
-
-    int readRecordFromBuffer(Record &rec);
+    void MergeAndCreateNewSortedFile();
 
     int GetNextForSortedFile(Record &fetchme, CNF &cnf, Record &literal);
-        int SequentialSearchWithCNF(Record &fetchme, CNF &cnf, Record &literal);
-        int SequentialSearchWithQueryAndCNF(Record &fetchme, CNF &cnf, Record &literal);
-        int SequentialSearchWithQueryAndCNF(Record &fetchme, CNF &cnf, Record &literal, Record &firstQueryMatchedRecord);
-        int SequentialSearchOnPageWithQuery(Page *page, Record* literal, Record* searchedRecord);
-    off_t BinarySearch(off_t low, off_t high, Record &literal);
+        int CheckForQuery(Record &fetchme, Record &literal);
+        bool CheckForCNF(Record &fetchme, CNF &cnf, Record &literal);
+        off_t BinarySearch(off_t low, off_t high, Record &literal);
 public:
     // constructor and destructor
     explicit Sorted(SortInfo* sortInfo);
     ~Sorted ();
 
-    int Create (const char *f_path);
-    int Open (const char *fpath);
+    void SwitchToWriteMode();
 
-    void Add (Record &addme);
-    void Load (Schema &myschema, const char *loadpath);
+    void SwitchToReadMode();
 
-    void MoveFirst ();
-    int GetNext (Record &fetchme);
-    int GetNext (Record &fetchme, CNF &cnf, Record &literal);
+    void AddToDBFile(Record &addme);
 
-    int Close ();
+    int GetNextFromDBFile(Record &fetchme);
+
+    int GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal);
 };
 #endif

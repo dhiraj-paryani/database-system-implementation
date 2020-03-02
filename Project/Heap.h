@@ -7,35 +7,23 @@
 
 class Heap : public GenericDBFile {
 private:
-    File file;
-    bool isFileOpen;
 
     off_t currentlyBeingWritenPageNumber;
-    off_t currentlyBeingReadPageNumber;
-
-    bool writePerformedAfterOpen;
-
-    Page* readBufferPage;
-    Page* writeBufferPage;
-
-    void addRecordToBuffer(Record &rec);
-    int readRecordFromBuffer(Record &rec);
+    Page writeBufferPage;
 
 public:
     // constructor and destructor
     Heap();
     ~Heap ();
 
-    int Create (const char *f_path);
-    int Open (const char *fpath);
+    void SwitchToWriteMode();
 
-    void Add (Record &addme);
-    void Load (Schema &myschema, const char *loadpath);
+    void SwitchToReadMode();
 
-    void MoveFirst ();
-    int GetNext (Record &fetchme);
-    int GetNext (Record &fetchme, CNF &cnf, Record &literal);
+    void AddToDBFile(Record &addme);
 
-    int Close ();
+    int GetNextFromDBFile(Record &fetchme);
+
+    int GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal);
 };
 #endif

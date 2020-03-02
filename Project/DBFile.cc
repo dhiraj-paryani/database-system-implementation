@@ -8,7 +8,9 @@ DBFile::~DBFile () {
 
 int DBFile::Create (const char *f_path, fType f_type, void *startup) {
     ofstream fOut;
-    fOut.open(GetMataDataFilePath(f_path));
+    char metadataPath[100];
+    GetMataDataFilePath(f_path, metadataPath);
+    fOut.open(metadataPath);
     fOut << f_type << "\n";
 
     switch (f_type) {
@@ -38,7 +40,9 @@ int DBFile::Open (const char *f_path) {
     ifstream fIn;
     string readLine;
 
-    fIn.open(GetMataDataFilePath(f_path));
+    char metadataPath[100];
+    GetMataDataFilePath(f_path, metadataPath);
+    fIn.open(metadataPath);
     getline(fIn, readLine);
 
     switch (stoi(readLine)) {
@@ -92,8 +96,7 @@ int DBFile::Close () {
     return myInternalVar->Close();
 }
 
-string DBFile::GetMataDataFilePath(const char *fpath) {
-    string metadata_path = fpath;
-    metadata_path += ".metadata";
-    return metadata_path;
+void DBFile::GetMataDataFilePath(const char *fpath, char *metadataPath) {
+    strcpy(metadataPath, fpath);
+    strcat(metadataPath, ".metadata");
 }
