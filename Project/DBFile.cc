@@ -7,10 +7,15 @@ DBFile::~DBFile () {
 }
 
 int DBFile::Create (const char *f_path, fType f_type, void *startup) {
-    ofstream fOut;
+
+    // Meta data file path.
     char metadataPath[100];
     GetMataDataFilePath(f_path, metadataPath);
+
+    // Open file for writing.
+    ofstream fOut;
     fOut.open(metadataPath);
+
     fOut << f_type << "\n";
 
     switch (f_type) {
@@ -37,11 +42,13 @@ int DBFile::Create (const char *f_path, fType f_type, void *startup) {
 }
 
 int DBFile::Open (const char *f_path) {
+    // Meta data file path.
+    char metadataPath[100];
+    GetMataDataFilePath(f_path, metadataPath);
+
     ifstream fIn;
     string readLine;
 
-    char metadataPath[100];
-    GetMataDataFilePath(f_path, metadataPath);
     fIn.open(metadataPath);
     getline(fIn, readLine);
 

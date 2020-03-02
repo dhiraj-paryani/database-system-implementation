@@ -118,7 +118,7 @@ void OrderMaker :: Print () {
 }
 
 std::string OrderMaker :: ToString() {
-    string str = "";
+    string str;
     str += std::to_string(numAtts) + " ";
     for (int i = 0; i < numAtts; i++)
         str += std::to_string(whichAtts[i]) + ":" + std::to_string(whichTypes[i]) + " ";
@@ -127,7 +127,7 @@ std::string OrderMaker :: ToString() {
 
 void OrderMaker :: FromString(std::string str) {
     int index = 0;
-    string word = "";
+    string word;
     for(; index < str.size(); index++) {
         if (str[index] == ' ') {
             index++;
