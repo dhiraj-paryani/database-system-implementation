@@ -22,6 +22,9 @@ gTestDBFile.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o
 gTestBigQ.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o BigQGTests.o
 	$(CC) -o gTestBigQ.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o BigQGTests.o -ll -lpthread -lgtest
 
+gTestSortedDBFile.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o SortedDBFileTests.o
+	$(CC) -o gTestSortedDBFile.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o SortedDBFileTests.o -ll -lpthread -lgtest
+
 test.o: test.cc
 	$(CC) -g -c test.cc
 
@@ -36,6 +39,9 @@ DBFileGTests.o: gtests/DBFileGTests.cc
 
 BigQGTests.o: gtests/BigQGTests.cc
 	$(CC) -g -c gtests/BigQGTests.cc
+
+SortedDBFileTests.o: gtests/SortedDBFileTests.cc
+	$(CC) -g -c gtests/SortedDBFileTests.cc
 
 Comparison.o: Comparison.cc
 	$(CC) -g -c Comparison.cc
