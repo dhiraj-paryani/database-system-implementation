@@ -1,16 +1,16 @@
-#include "Heap.h"
+#include "HeapDBFile.h"
 
-Heap ::Heap() {
+HeapDBFile ::HeapDBFile() {
     currentlyBeingWritenPageNumber = 0;
     writeBufferPage.EmptyItOut();
 }
 
-Heap ::~Heap() {
+HeapDBFile ::~HeapDBFile() {
 }
 
 /* ****************************************** ALL OVERRIDDEN METHODS *********************************************** */
 
-void Heap :: SwitchToWriteMode() {
+void HeapDBFile :: SwitchToWriteMode() {
     if (isInWriteMode) return;
 
     writeBufferPage.EmptyItOut();
@@ -19,24 +19,24 @@ void Heap :: SwitchToWriteMode() {
     isInWriteMode = true;
 }
 
-void Heap :: SwitchToReadMode() {
+void HeapDBFile :: SwitchToReadMode() {
     if (!isInWriteMode) return;
     AddPageToDataFile(writeBufferPage, currentlyBeingWritenPageNumber);
     isInWriteMode = false;
 }
 
-void Heap :: AddToDBFile(Record &addme) {
+void HeapDBFile :: AddToDBFile(Record &addme) {
     if(writeBufferPage.Append(&addme)) return;
 
     AddPageToDataFile(writeBufferPage, currentlyBeingWritenPageNumber++);
     writeBufferPage.Append(&addme);
 }
 
-int Heap :: GetNextFromDBFile(Record &fetchme) {
+int HeapDBFile :: GetNextFromDBFile(Record &fetchme) {
     return GetRecordFromReadBufferPage(fetchme);
 }
 
-int Heap :: GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal) {
+int HeapDBFile :: GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal) {
     while(GetRecordFromReadBufferPage(fetchme))
         if (comparisonEngine.Compare(&fetchme, &literal, &cnf)) return 1;
 

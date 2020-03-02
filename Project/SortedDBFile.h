@@ -4,7 +4,7 @@
 #include "GenericDBFile.h"
 #include "File.h"
 #include "BigQ.h"
-#include "Heap.h"
+#include "HeapDBFile.h"
 #include "Pipe.h"
 
 #include <cstring>
@@ -14,7 +14,7 @@ struct SortInfo {
     int runLength;
 };
 
-class Sorted : public GenericDBFile {
+class SortedDBFile : public GenericDBFile {
 
 private:
     SortInfo* sortInfo;
@@ -35,8 +35,8 @@ private:
         off_t BinarySearch(off_t low, off_t high, Record &literal);
 public:
     // constructor and destructor
-    explicit Sorted(SortInfo* sortInfo);
-    ~Sorted ();
+    explicit SortedDBFile(SortInfo* sortInfo);
+    ~SortedDBFile ();
 
     void SwitchToWriteMode();
 

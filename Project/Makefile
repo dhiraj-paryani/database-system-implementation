@@ -7,23 +7,23 @@ ifdef linux
 tag = -n
 endif
 
-test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o test.o
-	$(CC) -o test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o test.o -ll -lpthread
+test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o test.o
+	$(CC) -o test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o test.o -ll -lpthread
 
-a2test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o a2-test.o
-	$(CC) -o a21test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o a2-test.o -ll -lpthread
+a2test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o a2-test.o
+	$(CC) -o a21test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o a2-test.o -ll -lpthread
 	
-a1test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o Sorted.o lex.yy.o a1-test.o
-	$(CC) -o a1test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o Sorted.o y.tab.o lex.yy.o a1-test.o -ll
+a1test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o Sorted.o lex.yy.o a1-test.o
+	$(CC) -o a1test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o Sorted.o y.tab.o lex.yy.o a1-test.o -ll
 	
-gTestDBFile.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o DBFileGTests.o
-	$(CC) -o gTestDBFile.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o DBFileGTests.o -ll -lpthread -lgtest
+gTestDBFile.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o DBFileGTests.o
+	$(CC) -o gTestDBFile.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o DBFileGTests.o -ll -lpthread -lgtest
 
-gTestBigQ.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o BigQGTests.o
-	$(CC) -o gTestBigQ.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o BigQGTests.o -ll -lpthread -lgtest
+gTestBigQ.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o BigQGTests.o
+	$(CC) -o gTestBigQ.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o BigQGTests.o -ll -lpthread -lgtest
 
-gTestSortedDBFile.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o SortedDBFileTests.o
-	$(CC) -o gTestSortedDBFile.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o Heap.o Sorted.o Pipe.o y.tab.o lex.yy.o SortedDBFileTests.o -ll -lpthread -lgtest
+gTestSortedDBFile.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o SortedDBFileTests.o
+	$(CC) -o gTestSortedDBFile.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o SortedDBFileTests.o -ll -lpthread -lgtest
 
 test.o: test.cc
 	$(CC) -g -c test.cc
@@ -60,11 +60,12 @@ DBFile.o: DBFile.cc
 
 GenericDBFile.o: GenericDBFile.cc
 	$(CC) -g -c GenericDBFile.cc
-Heap.o: Heap.cc
-	$(CC) -g -c Heap.cc
 
-Sorted.o: Sorted.cc
-	$(CC) -g -c Sorted.cc
+HeapDBFile.o: HeapDBFile.cc
+	$(CC) -g -c HeapDBFile.cc
+
+SortedDBFile.o: SortedDBFile.cc
+	$(CC) -g -c SortedDBFile.cc
 
 File.o: File.cc
 	$(CC) -g -c File.cc

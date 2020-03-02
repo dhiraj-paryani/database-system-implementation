@@ -1,8 +1,8 @@
-#include "Sorted.h"
+#include "SortedDBFile.h"
 #include "GenericDBFile.h"
 
 
-Sorted :: Sorted(SortInfo* sortInfoParameter) {
+SortedDBFile :: SortedDBFile(SortInfo* sortInfoParameter) {
     sortInfo = sortInfoParameter;
 
     pipeBufferSize = 100;
@@ -13,7 +13,7 @@ Sorted :: Sorted(SortInfo* sortInfoParameter) {
     useSameQueryOrderMaker = false;
 }
 
-Sorted :: ~Sorted() {
+SortedDBFile :: ~SortedDBFile() {
     delete inputPipe;
     delete outputPipe;
 
@@ -22,7 +22,7 @@ Sorted :: ~Sorted() {
 
 /* ****************************************** ALL OVERRIDDEN METHODS *********************************************** */
 
-void Sorted :: SwitchToWriteMode() {
+void SortedDBFile :: SwitchToWriteMode() {
     if(isInWriteMode) return;
 
     BigQ (*inputPipe, *outputPipe, *sortInfo->myOrder, sortInfo->runLength);
@@ -30,22 +30,22 @@ void Sorted :: SwitchToWriteMode() {
     isInWriteMode = true;
 }
 
-void Sorted :: SwitchToReadMode() {
+void SortedDBFile :: SwitchToReadMode() {
     if(!isInWriteMode) return;
 
     isInWriteMode = false;
     MergeAndCreateNewSortedFile();
 }
 
-void Sorted :: AddToDBFile(Record &addme) {
+void SortedDBFile :: AddToDBFile(Record &addme) {
     inputPipe->Insert(&addme);
 }
 
-int Sorted :: GetNextFromDBFile(Record &fetchme) {
+int SortedDBFile :: GetNextFromDBFile(Record &fetchme) {
     return GetRecordFromReadBufferPage(fetchme);
 }
 
-int Sorted :: GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal) {
+int SortedDBFile :: GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal) {
     if (!useSameQueryOrderMaker) {
         cnf.GetCommonSortOrder(*sortInfo->myOrder, *queryOrderMaker);
     }
@@ -54,7 +54,7 @@ int Sorted :: GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal) {
 
 /* ****************************************** ALL PRIVATE METHODS *********************************************** */
 
-void Sorted :: MergeAndCreateNewSortedFile() {
+void SortedDBFile :: MergeAndCreateNewSortedFile() {
 
     // Shut down input pipe of BigQ so that BigQ gives sorted records in output pipe.
     inputPipe->ShutDown();
@@ -63,7 +63,7 @@ void Sorted :: MergeAndCreateNewSortedFile() {
     char tempFileName[100];
     strcpy(tempFileName, dbFileName);
     strcat(tempFileName, ".temp");
-    Heap tempFile;
+    HeapDBFile tempFile;
     tempFile.Create(tempFileName);
 
     // Move first current file for reading.
@@ -113,7 +113,7 @@ void Sorted :: MergeAndCreateNewSortedFile() {
     dbFile.Open(1, dbFileName);
 }
 
-int Sorted::GetNextForSortedFile(Record &fetchme, CNF &cnf, Record &literal) {
+int SortedDBFile::GetNextForSortedFile(Record &fetchme, CNF &cnf, Record &literal) {
     if (queryOrderMaker->isEmpty()) {
         while(GetRecordFromReadBufferPage(fetchme)) {
             if(CheckForCNF(fetchme, cnf, literal)) return 1;
@@ -147,15 +147,15 @@ int Sorted::GetNextForSortedFile(Record &fetchme, CNF &cnf, Record &literal) {
     return 0;
 }
 
-int Sorted :: CheckForQuery(Record &fetchme, Record &literal) {
+int SortedDBFile :: CheckForQuery(Record &fetchme, Record &literal) {
     return comparisonEngine.Compare(&literal, queryOrderMaker, &fetchme, sortInfo->myOrder);
 }
 
-bool Sorted :: CheckForCNF(Record &fetchme, CNF &cnf, Record &literal) {
+bool SortedDBFile :: CheckForCNF(Record &fetchme, CNF &cnf, Record &literal) {
     return comparisonEngine.Compare(&fetchme, &literal, &cnf);
 }
 
-off_t Sorted::BinarySearch(off_t low, off_t high, Record &literal) {
+off_t SortedDBFile::BinarySearch(off_t low, off_t high, Record &literal) {
     Page bufferPage;
     Record temp;
 

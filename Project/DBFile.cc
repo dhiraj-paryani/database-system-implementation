@@ -20,7 +20,7 @@ int DBFile::Create (const char *f_path, fType f_type, void *startup) {
 
     switch (f_type) {
         case heap: {
-            myInternalVar = new Heap();
+            myInternalVar = new HeapDBFile();
             break;
         }
         case sorted: {
@@ -28,7 +28,7 @@ int DBFile::Create (const char *f_path, fType f_type, void *startup) {
             fOut << sortInfo->runLength << "\n";
             fOut << sortInfo->myOrder->ToString() << "\n";
 
-            myInternalVar = new Sorted(sortInfo);
+            myInternalVar = new SortedDBFile(sortInfo);
             break;
         }
         default: {
@@ -56,7 +56,7 @@ int DBFile::Open (const char *f_path) {
 
     switch (stoi(readLine)) {
         case heap: {
-            myInternalVar = new Heap();
+            myInternalVar = new HeapDBFile();
             break;
         }
         case sorted: {
@@ -69,7 +69,7 @@ int DBFile::Open (const char *f_path) {
             getline(fIn, readLine);
             sortInfo->myOrder->FromString(readLine);
 
-            myInternalVar = new Sorted(sortInfo);
+            myInternalVar = new SortedDBFile(sortInfo);
             break;
         }
         default:

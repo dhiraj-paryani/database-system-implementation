@@ -2,8 +2,8 @@
 #define DBFILE_H
 
 #include "GenericDBFile.h"
-#include "Heap.h"
-#include "Sorted.h"
+#include "HeapDBFile.h"
+#include "SortedDBFile.h"
 
 #include <iostream>
 #include <fstream>

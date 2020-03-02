@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-class Heap : public GenericDBFile {
+class HeapDBFile : public GenericDBFile {
 private:
 
     off_t currentlyBeingWritenPageNumber;
@@ -13,8 +13,8 @@ private:
 
 public:
     // constructor and destructor
-    Heap();
-    ~Heap ();
+    HeapDBFile();
+    ~HeapDBFile ();
 
     void SwitchToWriteMode();
 
