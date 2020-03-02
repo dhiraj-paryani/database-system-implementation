@@ -7,6 +7,8 @@
 #include "Heap.h"
 #include "Pipe.h"
 
+#include <cstring>
+
 struct SortInfo {
     OrderMaker *myOrder;
     int runLength;

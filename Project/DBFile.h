@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 typedef enum {heap, sorted, tree} fType;
 

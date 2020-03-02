@@ -3,6 +3,8 @@
 
 #include "File.h"
 
+#include <cstring>
+
 class GenericDBFile {
 private:
     void FileOpenCheck ();
