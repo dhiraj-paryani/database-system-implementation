@@ -12,11 +12,10 @@ int add_data (FILE *src, int numrecs, int &res) {
 
 	int proc = 0;
 	int xx = 20000;
-	while (proc+1 <= numrecs && (res = temp.SuckNextRecord (rel->schema (), src))) {
+	while ((res = temp.SuckNextRecord (rel->schema (), src)) && ++proc < numrecs) {
 		dbfile.Add (temp);
 		if (proc == xx) cerr << "\t ";
 		if (proc % xx == 0) cerr << ".";
-        proc++;
 	}
 
 	dbfile.Close ();
@@ -34,9 +33,7 @@ void test1 () {
 	int runlen = 0;
 	while (runlen < 1) {
 		cout << "\t\n specify runlength:\n\t ";
-		// cin >> runlen;
-		// cout << runlen << "\n";
-        runlen = 8;
+		cin >> runlen;
 	}
 	struct {OrderMaker *o; int l;} startup = {&o, runlen};
 
@@ -61,8 +58,7 @@ void test1 () {
 			cout << " \t 1. add a few (1 to 1k recs)\n";
 			cout << " \t 2. add a lot (1k to 1e+06 recs) \n";
 			cout << " \t 3. run some query \n \t ";
-			// cin >> x;
-			x = 2;
+			cin >> x;
 		}
 		if (x < 3) {
 			proc = add_data (tblfile,lrand48()%(int)pow(1e3,x)+(x-1)*1000, res);
@@ -76,35 +72,6 @@ void test1 () {
 	}
 	cout << "\n create finished.. " << tot << " recs inserted\n";
 	fclose (tblfile);
-
-	// Checking Sort Order -- START
-
-    int err = 0;
-    int i = 0;
-
-    Record rec[2];
-    Record *last = NULL, *prev = NULL;
-
-    dbfile.Open(rel->path());
-    dbfile.MoveFirst();
-    ComparisonEngine ceng;
-    while (dbfile.GetNext(rec[i%2])) {
-        prev = last;
-        last = &rec[i%2];
-
-        if (prev && last) {
-            if (ceng.Compare (prev, last, &o) == 1) {
-                err++;
-            }
-        }
-        i++;
-    }
-
-    cerr << " consumer: " << (i - err) << " recs out of " << i << " recs in sorted order \n";
-    if (err) {
-        cerr << " consumer: " <<  err << " recs failed sorted order test \n" << endl;
-    }
-    // Checking Sort Order -- END
 }
 
 // sequential scan of a DBfile 
