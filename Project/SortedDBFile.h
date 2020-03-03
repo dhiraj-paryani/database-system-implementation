@@ -27,7 +27,7 @@ private:
     bool useSameQueryOrderMaker;
 
 
-    void MergeAndCreateNewSortedFile();
+    void MergeCurrentFileAndBigQOutput();
 
     int GetNextForSortedFile(Record &fetchme, CNF &cnf, Record &literal);
         int CheckForQuery(Record &fetchme, Record &literal);

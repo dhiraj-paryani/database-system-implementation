@@ -34,7 +34,7 @@ void SortedDBFile :: SwitchToReadMode() {
     if(!isInWriteMode) return;
 
     isInWriteMode = false;
-    MergeAndCreateNewSortedFile();
+    MergeCurrentFileAndBigQOutput();
 }
 
 void SortedDBFile :: AddToDBFile(Record &addme) {
@@ -54,7 +54,7 @@ int SortedDBFile :: GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal
 
 /* ****************************************** ALL PRIVATE METHODS *********************************************** */
 
-void SortedDBFile :: MergeAndCreateNewSortedFile() {
+void SortedDBFile :: MergeCurrentFileAndBigQOutput() {
 
     // Shut down input pipe of BigQ so that BigQ gives sorted records in output pipe.
     inputPipe->ShutDown();

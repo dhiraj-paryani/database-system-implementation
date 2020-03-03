@@ -13,7 +13,7 @@ void GetMataDataFilePath(const char *fpath, char *metadataPath) {
     strcat(metadataPath, ".metadata");
 }
 
-TEST(SortedDBFileTest, TestMergeAndCreateNewSortedFile) {
+TEST(SortedDBFileTest, TestMetaDataFile) {
     // Create nation new File.
     char filePath[100];
     sprintf (filePath, "%s%s.bin", dbfile_dir, "nation");
