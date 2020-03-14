@@ -79,7 +79,7 @@ int main () {
 	setup (catalog_path, dbfile_dir, tpch_dir);
 
 	void (*test) ();
-	relation *rel_ptr[] = {n, r, c, p, ps, o, li};
+    relation *rel_ptr[] = {n, r, c, p, ps, s, o, li};
 	void (*test_ptr[]) () = {&test1, &test2, &test3};  
 
 	int tindx = 0;
@@ -99,8 +99,9 @@ int main () {
 		cout << "\t 3. customer \n";
 		cout << "\t 4. part \n";
 		cout << "\t 5. partsupp \n";
-		cout << "\t 6. orders \n";
-		cout << "\t 7. lineitem \n \t ";
+        cout << "\t 6. supplier \n";
+		cout << "\t 7. orders \n";
+		cout << "\t 8. lineitem \n \t ";
 		cin >> findx;
 	}
 

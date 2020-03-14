@@ -44,6 +44,7 @@ class OrderMaker {
 
 	friend class ComparisonEngine;
 	friend class CNF;
+	friend class Schema;
 
 	int numAtts;
 
@@ -51,7 +52,7 @@ class OrderMaker {
 	Type whichTypes[MAX_ANDS];
 
 public:
-	
+
 	// creates an empty OrdermMaker
 	OrderMaker();
 
@@ -59,6 +60,9 @@ public:
 	// based upon ALL of their attributes
 	OrderMaker(Schema *schema);
 
+    int GetNumAtts ();
+
+	int *GetAtts();
 	// print to the screen
 	void Print ();
 
