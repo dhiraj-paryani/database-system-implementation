@@ -495,5 +495,29 @@ void Record :: Print (Schema *mySchema) {
 	cout << "\n";
 }
 
+std::string Record :: ToString (Schema *mySchema) {
+    string str;
+
+    int n = mySchema->GetNumAtts();
+    Attribute *atts = mySchema->GetAtts();
+
+    for (int i = 0; i < n; i++) {
+        int pointer = ((int *) bits)[i + 1];
+
+        switch (atts[i].myType) {
+            case Int:
+                str += std::to_string(*((int *) &(bits[pointer]))) + "|";
+                break;
+            case Double:
+                str += std::to_string(*(double *) &(bits[pointer])) + "|";
+                break;
+            case String:
+                str += std::to_string(*(char *) &(bits[pointer])) + "|";
+                break;
+        }
+    }
+    return str;
+}
+
 
 

@@ -19,7 +19,6 @@ class SortedDBFile : public GenericDBFile {
 private:
     SortInfo* sortInfo;
 
-    int pipeBufferSize;
     Pipe* inputPipe;
     Pipe* outputPipe;
 

@@ -5,9 +5,8 @@
 SortedDBFile :: SortedDBFile(SortInfo* sortInfoParameter) {
     sortInfo = sortInfoParameter;
 
-    pipeBufferSize = 100;
-    inputPipe = new Pipe(pipeBufferSize);
-    outputPipe = new Pipe(pipeBufferSize);
+    inputPipe = new Pipe(PIPE_BUFFER_SIZE);
+    outputPipe = new Pipe(PIPE_BUFFER_SIZE);
 
     queryOrderMaker = new OrderMaker();
     useSameQueryOrderMaker = false;
