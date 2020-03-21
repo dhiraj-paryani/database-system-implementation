@@ -164,6 +164,10 @@ bool OrderMaker :: isEmpty() {
     return numAtts == 0;
 }
 
+CNF :: CNF () {
+    numAnds = 0;
+}
+
 int CNF :: GetSortOrders (OrderMaker &left, OrderMaker &right) {
 
 	// initialize the size of the OrderMakers
