@@ -34,8 +34,7 @@ void test1 () {
     int runlen = 0;
     while (runlen < 1) {
         cout << "\t\n specify runlength:\n\t ";
-        // cin >> runlen;
-        runlen = 10;
+        cin >> runlen;
     }
     struct {OrderMaker *o; int l;} startup = {&o, runlen};
 
@@ -60,8 +59,7 @@ void test1 () {
             cout << " \t 1. add a few (1 to 1k recs)\n";
             cout << " \t 2. add a lot (1k to 1e+06 recs) \n";
             cout << " \t 3. run some query \n \t ";
-            // cin >> x;
-            x = 2;
+            cin >> x;
         }
         if (x < 3) {
             proc = add_data (tblfile,lrand48()%(int)pow(1e3,x)+(x-1)*1000, res);
