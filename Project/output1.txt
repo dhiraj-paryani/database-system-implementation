@@ -79,7 +79,7 @@ double: [9.24623e+07]
  
 
  query4 
-double: [4.0042e+08]
+double: [4.00421e+08]
  query4 returned 1 recs 
 
 

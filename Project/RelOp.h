@@ -32,7 +32,7 @@ struct SelectFileData {
     Record *literal;
 };
 
-void *SelectFileFunction(void *threadData);
+void *SelectFileThreadMethod(void *threadData);
 
 class SelectFile : public RelationalOp {
 public:
@@ -46,7 +46,7 @@ struct SelectPipeData {
     Record *literal;
 };
 
-void *SelectPipeFunction(void *threadData);
+void *SelectPipeThreadMethod(void *threadData);
 
 class SelectPipe : public RelationalOp {
     void Run(Pipe &inPipe, Pipe &outPipe, CNF &selOp, Record &literal);
@@ -60,7 +60,7 @@ struct ProjectData {
     int numAttsOutput;
 };
 
-void *ProjectFunction(void *threadData);
+void *ProjectThreadMethod(void *threadData);
 
 class Project : public RelationalOp {
 public:
@@ -76,7 +76,7 @@ struct JoinData {
     int runLength;
 };
 
-void *JoinFunction(void *threadData);
+void *JoinThreadMethod(void *threadData);
 
 void NestedBlockJoin(Pipe *leftInputPipe, Pipe *rightInputPipe, Pipe *outputPipe, int runLength);
 
@@ -99,7 +99,7 @@ struct DuplicateRemovalData {
     int runLength;
 };
 
-void *DuplicateRemovalFunction(void *threadData);
+void *DuplicateRemovalThreadMethod(void *threadData);
 
 class DuplicateRemoval : public RelationalOp {
 public:
@@ -112,7 +112,7 @@ struct SumData {
     Function *computeMe;
 };
 
-void *SumFunction(void *threadData);
+void *SumThreadMethod(void *threadData);
 
 class Sum : public RelationalOp {
 public:
@@ -127,7 +127,7 @@ struct GroupByData {
     int runLength;
 };
 
-void *GroupByFunction(void *threadData);
+void *GroupByThreadMethod(void *threadData);
 
 void AddGroupByRecordToPipe(Pipe *outputPipe, Record *tableRecord, double sum, OrderMaker *order);
 
@@ -142,7 +142,7 @@ struct WriteOutData {
     Schema *schema;
 };
 
-void *WriteOutFunction(void *threadData);
+void *WriteOutThreadMethod(void *threadData);
 
 class WriteOut : public RelationalOp {
 public:

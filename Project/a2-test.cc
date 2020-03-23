@@ -1,4 +1,4 @@
-#include "a22-test.h"
+#include "a2-test.h"
 #include "BigQ.h"
 #include <pthread.h>
 void test1 ();
@@ -12,7 +12,8 @@ int add_data (FILE *src, int numrecs, int &res) {
 
     int proc = 0;
     int xx = 20000;
-    while ((res = temp.SuckNextRecord (rel->schema (), src)) && ++proc < numrecs) {
+    while (proc + 1 <= numrecs && (res = temp.SuckNextRecord (rel->schema (), src))) {
+        proc++;
         dbfile.Add (temp);
         if (proc == xx) cerr << "\t ";
         if (proc % xx == 0) cerr << ".";
@@ -89,7 +90,7 @@ void test2 () {
     int cnt = 0;
     cerr << "\t";
     while (dbfile.GetNext (temp) && ++cnt) {
-        temp.Print (rel->schema());
+        // temp.Print (rel->schema());
         if (cnt % 10000) {
             cerr << ".";
         }

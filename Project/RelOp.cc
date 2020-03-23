@@ -20,10 +20,10 @@ void SelectPipe::Run(Pipe &inPipe, Pipe &outPipe, CNF &selOp, Record &literal) {
     my_data->cnf = &selOp;
     my_data->literal = &literal;
 
-    pthread_create(&thread, nullptr, SelectPipeFunction, (void *) my_data);
+    pthread_create(&thread, nullptr, SelectPipeThreadMethod, (void *) my_data);
 }
 
-void *SelectPipeFunction(void *threadData) {
+void *SelectPipeThreadMethod(void *threadData) {
     SelectPipeData *my_data = (SelectPipeData *) threadData;
 
     ComparisonEngine comparisonEngine;
@@ -44,10 +44,10 @@ void SelectFile::Run(DBFile &inFile, Pipe &outPipe, CNF &selOp, Record &literal)
     my_data->cnf = &selOp;
     my_data->literal = &literal;
 
-    pthread_create(&thread, nullptr, SelectFileFunction, (void *) my_data);
+    pthread_create(&thread, nullptr, SelectFileThreadMethod, (void *) my_data);
 }
 
-void *SelectFileFunction(void *threadData) {
+void *SelectFileThreadMethod(void *threadData) {
     SelectFileData *my_data = (SelectFileData *) threadData;
 
     Record temp;
@@ -67,10 +67,10 @@ void Project::Run(Pipe &inPipe, Pipe &outPipe, int *keepMe, int numAttsInput, in
     my_data->numAttsInput = numAttsInput;
     my_data->numAttsOutput = numAttsOutput;
 
-    pthread_create(&thread, nullptr, ProjectFunction, (void *) my_data);
+    pthread_create(&thread, nullptr, ProjectThreadMethod, (void *) my_data);
 }
 
-void *ProjectFunction(void *threadData) {
+void *ProjectThreadMethod(void *threadData) {
     ProjectData *my_data = (ProjectData *) threadData;
 
     Record temp;
@@ -90,10 +90,10 @@ void DuplicateRemoval::Run(Pipe &inPipe, Pipe &outPipe, Schema &mySchema) {
     my_data->schema = &mySchema;
     my_data->runLength = this->runLength;
 
-    pthread_create(&thread, nullptr, DuplicateRemovalFunction, (void *) my_data);
+    pthread_create(&thread, nullptr, DuplicateRemovalThreadMethod, (void *) my_data);
 }
 
-void *DuplicateRemovalFunction(void *threadData) {
+void *DuplicateRemovalThreadMethod(void *threadData) {
     DuplicateRemovalData *my_data = (DuplicateRemovalData *) threadData;
     OrderMaker orderMaker(my_data->schema);
 
@@ -122,10 +122,10 @@ void WriteOut::Run(Pipe &inPipe, FILE *outFile, Schema &mySchema) {
     my_data->outputFile = outFile;
     my_data->schema = &mySchema;
 
-    pthread_create(&thread, nullptr, WriteOutFunction, (void *) my_data);
+    pthread_create(&thread, nullptr, WriteOutThreadMethod, (void *) my_data);
 }
 
-void *WriteOutFunction(void *threadData) {
+void *WriteOutThreadMethod(void *threadData) {
     WriteOutData *my_data = (WriteOutData *) threadData;
 
     Record temp;
@@ -141,10 +141,10 @@ void Sum::Run(Pipe &inPipe, Pipe &outPipe, Function &computeMe) {
     my_data->outputPipe = &outPipe;
     my_data->computeMe = &computeMe;
 
-    pthread_create(&thread, nullptr, SumFunction, (void *) my_data);
+    pthread_create(&thread, nullptr, SumThreadMethod, (void *) my_data);
 }
 
-void *SumFunction(void *threadData) {
+void *SumThreadMethod(void *threadData) {
     SumData *my_data = (SumData *) threadData;
 
     int intVal = 0; double doubleVal = 0;
@@ -173,10 +173,10 @@ void Join::Run(Pipe &inPipeL, Pipe &inPipeR, Pipe &outPipe, CNF &selOp, Record &
     my_data->literal = &literal;
     my_data->runLength = runLength;
 
-    pthread_create(&thread, nullptr, JoinFunction, (void *) my_data);
+    pthread_create(&thread, nullptr, JoinThreadMethod, (void *) my_data);
 }
 
-void *JoinFunction(void *threadData) {
+void *JoinThreadMethod(void *threadData) {
     JoinData *my_data = (JoinData *) threadData;
 
     OrderMaker leftOrderMaker, rightOrderMaker;
@@ -366,10 +366,10 @@ void GroupBy::Run(Pipe &inPipe, Pipe &outPipe, OrderMaker &groupAtts, Function &
     my_data->computeMe = &computeMe;
     my_data->runLength = runLength;
 
-    pthread_create(&thread, nullptr, GroupByFunction, (void *) my_data);
+    pthread_create(&thread, nullptr, GroupByThreadMethod, (void *) my_data);
 }
 
-void *GroupByFunction(void *threadData) {
+void *GroupByThreadMethod(void *threadData) {
     GroupByData *my_data = (GroupByData *) threadData;
 
     Pipe bigQOutputPipe(PIPE_BUFFER_SIZE);
