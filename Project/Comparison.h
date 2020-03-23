@@ -63,6 +63,8 @@ public:
     int GetNumAtts ();
 
 	int *GetAtts();
+
+    Type *GetAttTypes();
 	// print to the screen
 	void Print ();
 

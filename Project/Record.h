@@ -30,6 +30,7 @@ private:
 	char* GetBits ();
 	void SetBits (char *bits);
 	void CopyBits(char *bits, int b_len);
+    std::string ToString(int pointer, Type type);
 
 public:
 	char *bits;
@@ -74,6 +75,8 @@ public:
 	void Print (Schema *mySchema);
 
 	std::string ToString(Schema *mySchema);
+
+    std::string ToString(OrderMaker *mySchema);
 };
 
 #endif

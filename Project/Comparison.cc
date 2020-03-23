@@ -110,6 +110,9 @@ int *OrderMaker :: GetAtts() {
     return whichAtts;
 }
 
+Type *OrderMaker :: GetAttTypes() {
+    return whichTypes;
+}
 void OrderMaker :: Print () {
 	printf("NumAtts = %5d\n", numAtts);
 	for (int i = 0; i < numAtts; i++)

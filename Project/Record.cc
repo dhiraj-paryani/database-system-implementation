@@ -437,16 +437,18 @@ void Record ::  MergeRecords (Record *left, Record *right) {
     int rightNumAtts = right->GetNumberOfAtts();
     int totalNumAtts = leftNumAtts + rightNumAtts;
 
-    int attsToKeep[totalNumAtts];
+    int *attsToKeep = new int[totalNumAtts];
 
-    for (int i=0; i<leftNumAtts; i++) {
+    for (int i=0; i < leftNumAtts; i++) {
         attsToKeep[i] = i;
     }
-    for (int i=0; i<rightNumAtts; i++) {
+    for (int i=0; i < rightNumAtts; i++) {
         attsToKeep[leftNumAtts + i] = i;
     }
 
     MergeRecords(left, right, leftNumAtts, rightNumAtts, attsToKeep, totalNumAtts, leftNumAtts);
+
+    delete[] attsToKeep;
 }
 
 void Record :: Print (Schema *mySchema) {
@@ -502,21 +504,33 @@ std::string Record :: ToString (Schema *mySchema) {
     Attribute *atts = mySchema->GetAtts();
 
     for (int i = 0; i < n; i++) {
-        int pointer = ((int *) bits)[i + 1];
-
-        switch (atts[i].myType) {
-            case Int:
-                str += std::to_string(*((int *) &(bits[pointer]))) + "|";
-                break;
-            case Double:
-                str += std::to_string(*(double *) &(bits[pointer])) + "|";
-                break;
-            case String:
-                str += std::to_string(*(char *) &(bits[pointer])) + "|";
-                break;
-        }
+        str += ToString(((int *) bits)[i + 1], atts[i].myType);
     }
     return str;
+}
+
+std::string Record :: ToString(OrderMaker *order) {
+    string str;
+    int n = order->GetNumAtts();
+    int *atts = order->GetAtts();
+    Type *attTypes = order->GetAttTypes();
+
+    for (int i = 0; i < n; i++) {
+        str += ToString(((int *) bits)[atts[i] + 1], attTypes[i]);
+    }
+    return str;
+}
+
+std::string Record :: ToString(int pointer, Type type) {
+    switch (type) {
+        case Int:
+            return std::to_string(*((int *) &(bits[pointer]))) + "|";
+        case Double:
+            return std::to_string(*(double *) &(bits[pointer])) + "|";
+        case String:
+            std::string str((char *) &(bits[pointer]));
+            return str + "|";
+    }
 }
 
 

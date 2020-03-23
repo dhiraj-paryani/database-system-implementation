@@ -84,6 +84,7 @@ void *ProjectFunction(void *threadData) {
 
 void DuplicateRemoval::Run(Pipe &inPipe, Pipe &outPipe, Schema &mySchema) {
     DuplicateRemovalData *my_data = new DuplicateRemovalData();
+
     my_data->inputPipe = &inPipe;
     my_data->outputPipe = &outPipe;
     my_data->schema = &mySchema;
@@ -96,16 +97,14 @@ void *DuplicateRemovalFunction(void *threadData) {
     DuplicateRemovalData *my_data = (DuplicateRemovalData *) threadData;
     OrderMaker orderMaker(my_data->schema);
 
-    Pipe intermediatePipe(PIPE_BUFFER_SIZE);
+    Pipe bigQOutputPipe(PIPE_BUFFER_SIZE);
 
-    BigQ(*my_data->inputPipe, intermediatePipe, orderMaker, my_data->runLength);
+    BigQ(*my_data->inputPipe, bigQOutputPipe, orderMaker, my_data->runLength);
 
-    int i = 0;
-    Record rec[2];
     ComparisonEngine comparisonEngine;
-
-    if (intermediatePipe.Remove(&rec[(i++) % 2])) {
-        while (intermediatePipe.Remove(&rec[i % 2])) {
+    int i = 0; Record rec[2];
+    if (bigQOutputPipe.Remove(&rec[(i++) % 2])) {
+        while (bigQOutputPipe.Remove(&rec[i % 2])) {
             if (comparisonEngine.Compare(&rec[(i + 1) % 2], &rec[i % 2], &orderMaker) != 0) {
                 my_data->outputPipe->Insert(&rec[(i + 1) % 2]);
             }
@@ -113,6 +112,7 @@ void *DuplicateRemovalFunction(void *threadData) {
         }
         my_data->outputPipe->Insert(&rec[(i + 1) % 2]);
     }
+
     my_data->outputPipe->ShutDown();
 }
 
@@ -136,6 +136,7 @@ void *WriteOutFunction(void *threadData) {
 
 void Sum::Run(Pipe &inPipe, Pipe &outPipe, Function &computeMe) {
     SumData *my_data = new SumData();
+
     my_data->inputPipe = &inPipe;
     my_data->outputPipe = &outPipe;
     my_data->computeMe = &computeMe;
@@ -146,14 +147,12 @@ void Sum::Run(Pipe &inPipe, Pipe &outPipe, Function &computeMe) {
 void *SumFunction(void *threadData) {
     SumData *my_data = (SumData *) threadData;
 
+    int intVal = 0; double doubleVal = 0;
     double sum = 0;
-    int intVal = 0;
-    double doubleVal = 0;
 
     Record temp;
     while (my_data->inputPipe->Remove(&temp)) {
-        intVal = 0;
-        doubleVal = 0;
+        intVal = 0; doubleVal = 0;
         my_data->computeMe->Apply(temp, intVal, doubleVal);
         sum += (intVal + doubleVal);
     }
@@ -166,6 +165,7 @@ void *SumFunction(void *threadData) {
 
 void Join::Run(Pipe &inPipeL, Pipe &inPipeR, Pipe &outPipe, CNF &selOp, Record &literal) {
     JoinData *my_data = new JoinData();
+
     my_data->leftInputPipe = &inPipeL;
     my_data->rightInputPipe = &inPipeR;
     my_data->outputPipe = &outPipe;
@@ -178,8 +178,8 @@ void Join::Run(Pipe &inPipeL, Pipe &inPipeR, Pipe &outPipe, CNF &selOp, Record &
 
 void *JoinFunction(void *threadData) {
     JoinData *my_data = (JoinData *) threadData;
-    OrderMaker leftOrderMaker, rightOrderMaker;
 
+    OrderMaker leftOrderMaker, rightOrderMaker;
     my_data->cnf->GetSortOrders(leftOrderMaker, rightOrderMaker);
 
     if (leftOrderMaker.isEmpty() || rightOrderMaker.isEmpty()) {
@@ -188,9 +188,10 @@ void *JoinFunction(void *threadData) {
         Pipe leftBigQOutputPipe(PIPE_BUFFER_SIZE), rightBigQOutputPipe(PIPE_BUFFER_SIZE);
         BigQ(*my_data->leftInputPipe, leftBigQOutputPipe, leftOrderMaker, my_data->runLength);
         BigQ(*my_data->rightInputPipe, rightBigQOutputPipe, rightOrderMaker, my_data->runLength);
-        JoinUsingSortMerge(&leftBigQOutputPipe, &rightBigQOutputPipe, my_data->outputPipe, &leftOrderMaker,
-                           &rightOrderMaker);
+        JoinUsingSortMerge(&leftBigQOutputPipe, &rightBigQOutputPipe, my_data->outputPipe,
+                &leftOrderMaker, &rightOrderMaker);
     }
+
     my_data->outputPipe->ShutDown();
 
 }
@@ -221,7 +222,6 @@ void NestedBlockJoin(Pipe *leftInputPipe, Pipe *rightInputPipe, Pipe *outputPipe
     // Create buffer page array to store current runs' records
     Page *recordsBlock = new(std::nothrow) Page[runLength];
     if (recordsBlock == NULL) {
-        cerr << "ERROR : Not enough memory. EXIT !!!\n";
         exit(1);
     }
 
@@ -285,11 +285,11 @@ void LoadVectorFromBlock(vector<Record *> *loadMe, Page *block, int blockLength)
 }
 
 void JoinTableBlocks(vector<Record *> *leftBlockRecords, vector<Record *> *rightBlockRecords, Pipe *outputPipe) {
-    Record mergedRecord;
+    Record *mergedRecord = new Record();
     for (Record *leftBlockRecord : *leftBlockRecords) {
         for (Record *rightBlockRecord : *rightBlockRecords) {
-            mergedRecord.MergeRecords(leftBlockRecord, rightBlockRecord);
-            outputPipe->Insert(&mergedRecord);
+            mergedRecord->MergeRecords(leftBlockRecord, rightBlockRecord);
+            outputPipe->Insert(mergedRecord);
         }
     }
 }
@@ -310,7 +310,6 @@ void JoinUsingSortMerge(Pipe *leftInputPipe, Pipe *rightInputPipe, Pipe *outputP
                                                        &rightOutputPipeRecord, rightOrderMaker);
 
         if (comparisonValue == 0) {
-            Record mergedRecord;
             vector<Record *> leftPipeRecords, rightPipeRecords;
 
             Record *tempLeft = new Record();
@@ -318,16 +317,11 @@ void JoinUsingSortMerge(Pipe *leftInputPipe, Pipe *rightInputPipe, Pipe *outputP
             leftPipeRecords.push_back(tempLeft);
 
             int index = 0;
-            while (true) {
-                leftOutputPipeNotFullyConsumed = leftInputPipe->Remove(&leftOutputPipeRecord);
-                if (leftOutputPipeNotFullyConsumed &&
-                    comparisonEngine.Compare(leftPipeRecords[index], &leftOutputPipeRecord, leftOrderMaker) == 0) {
-                    tempLeft = new Record();
-                    tempLeft->Consume(&leftOutputPipeRecord);
-                    leftPipeRecords.push_back(tempLeft);
-                } else {
-                    break;
-                }
+            while ((leftOutputPipeNotFullyConsumed = leftInputPipe->Remove(&leftOutputPipeRecord)) &&
+                   comparisonEngine.Compare(leftPipeRecords[index], &leftOutputPipeRecord, leftOrderMaker) == 0) {
+                tempLeft = new Record();
+                tempLeft->Consume(&leftOutputPipeRecord);
+                leftPipeRecords.push_back(tempLeft);
             }
 
             Record *tempRight = new Record();
@@ -336,18 +330,14 @@ void JoinUsingSortMerge(Pipe *leftInputPipe, Pipe *rightInputPipe, Pipe *outputP
 
 
             index = 0;
-            while (true) {
-                rightOutputPipeNotFullyConsumed = rightInputPipe->Remove(&rightOutputPipeRecord);
-                if (rightOutputPipeNotFullyConsumed &&
-                    comparisonEngine.Compare(rightPipeRecords[index++], &rightOutputPipeRecord, rightOrderMaker) == 0) {
-                    tempRight = new Record();
-                    tempRight->Consume(&rightOutputPipeRecord);
-                    rightPipeRecords.push_back(tempRight);
-                } else {
-                    break;
-                }
+            while ((rightOutputPipeNotFullyConsumed = rightInputPipe->Remove(&rightOutputPipeRecord)) &&
+                   comparisonEngine.Compare(rightPipeRecords[index++], &rightOutputPipeRecord, rightOrderMaker) == 0) {
+                tempRight = new Record();
+                tempRight->Consume(&rightOutputPipeRecord);
+                rightPipeRecords.push_back(tempRight);
             }
 
+            Record mergedRecord;
             for (Record *leftPipeRecord : leftPipeRecords) {
                 for (Record *rightPipeRecord : rightPipeRecords) {
                     mergedRecord.MergeRecords(leftPipeRecord, rightPipeRecord);

@@ -1,15 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
 project(Project)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 11)
 
 include_directories(.)
 
 add_executable(Project
-        gtests/BigQGTests.cc
-        gtests/DBFileGTests.cc
-        a1-test.cc
-        a1-test.h
         BigQ.cc
         BigQ.h
         Comparison.cc
@@ -41,4 +37,10 @@ add_executable(Project
         Function.cc
         Function.h
         test.cc
-        test.h)
+        test.h
+        yyfunc.tab.c
+        y.tab.c
+        Lexer.l
+        lex.yy.c
+        Lexerfunc.l
+        lex.yyfunc.c)
