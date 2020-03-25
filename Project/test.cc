@@ -284,7 +284,7 @@ void q6 () {
     cnf_c.GetSortOrders(groupOrderMaker, dummyOrderMaker);
     GroupBy G;
     // _s (input pipe)
-    Pipe _out (1000000);
+    Pipe _out (pipesz);
     Function func;
     char *str_sum = "(ps_supplycost)";
     get_cnf (str_sum, &join_sch, func);
