@@ -3,7 +3,7 @@
 #include "a1-test.h"
 
 // make sure that the file path/dir information below is correct
-char *dbfile_dir = "db-files/"; // dir where binary heap files should be stored
+char *dbfile_dir = "./"; // dir where binary heap files should be stored
 char *tpch_dir ="../tpch-dbgen/"; // dir where dbgen tpch files (extension *.tbl) can be found
 char *catalog_path = "catalog"; // full path of the catalog file
 
@@ -92,7 +92,7 @@ int main () {
 	}
 
 	int findx = 0;
-	while (findx < 1 || findx > 7) {
+	while (findx < 1 || findx > 8) {
 		cout << "\n select table: \n";
 		cout << "\t 1. nation \n";
 		cout << "\t 2. region \n";

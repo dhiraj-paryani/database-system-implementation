@@ -1,0 +1,22 @@
+**************** Group Relations *****************
+3
+rel3&rel4=3200
+rel2=200
+rel1=100
+**************** Attributes ******************
+4
+rel3.att=100
+rel4.att=100
+rel2.att=100
+rel1.att=100
+****************** GroupName to Relations ****************
+3
+rel3&rel4=rel4,rel3
+rel2=rel2
+rel1=rel1
+******************** Relation Name to Group Name *****************
+4
+rel3=rel3&rel4
+rel2=rel2
+rel4=rel3&rel4
+rel1=rel1

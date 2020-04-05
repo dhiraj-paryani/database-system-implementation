@@ -7,8 +7,11 @@ ifdef linux
 tag = -n
 endif
 
-test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o y.tab.o yyfunc.tab.o lex.yy.o lex.yyfunc.o test.o
-	$(CC) -o test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o y.tab.o yyfunc.tab.o lex.yy.o lex.yyfunc.o test.o -ll -lpthread
+a4-1.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o Statistics.o y.tab.o lex.yy.o test.o
+	$(CC) -o a4-1.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o Statistics.o y.tab.o lex.yy.o test.o -ll
+
+ a3test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o y.tab.o yyfunc.tab.o lex.yy.o lex.yyfunc.o a3-test.o
+	$(CC) -o a3test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o y.tab.o yyfunc.tab.o lex.yy.o lex.yyfunc.o a3-test.o -ll -lpthread
 
 a2test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o a2-test.o
 	$(CC) -o a2test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o BigQ.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o y.tab.o lex.yy.o a2-test.o -ll -lpthread
@@ -31,8 +34,14 @@ gTestSortedDBFile.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o 
 gTestRelOp.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o RelOpGTests.o y.tab.o yyfunc.tab.o lex.yy.o lex.yyfunc.o
 	$(CC) -o gTestRelOp.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o RelOpGTests.o y.tab.o yyfunc.tab.o lex.yy.o lex.yyfunc.o -ll -lpthread -lgtest
 
+gTestStatistics.out: Statistics.o y.tab.o lex.yy.o StatisticsGTests.o
+	$(CC) -o gTestStatistics.out Statistics.o y.tab.o lex.yy.o StatisticsGTests.o -ll -lgtest
+
 test.o: test.cc
 	$(CC) -g -c test.cc
+
+a3-test.o: a3-test.cc
+	$(CC) -g -c a3-test.cc
 
 a2-test.o: a2-test.cc
 	$(CC) -g -c a2-test.cc
@@ -42,6 +51,9 @@ a21-test.o: a21-test.cc
 
 a1-test.o: a1-test.cc
 	$(CC) -g -c a1-test.cc
+
+Statistics.o: Statistics.cc
+	$(CC) -g -c Statistics.cc
 
 DBFileGTests.o: gtests/DBFileGTests.cc
 	$(CC) -g -c gtests/DBFileGTests.cc
@@ -54,6 +66,9 @@ SortedDBFileGTests.o: gtests/SortedDBFileGTests.cc
 
 RelOpGTests.o: gtests/RelOpGTests.cc
 	$(CC) -g -c gtests/RelOpGTests.cc
+
+StatisticsGTests.o: gtests/StatisticsGTests.cc
+	$(CC) -g -c gtests/StatisticsGTests.cc
 
 Comparison.o: Comparison.cc
 	$(CC) -g -c Comparison.cc
