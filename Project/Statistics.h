@@ -3,6 +3,7 @@
 
 #include "ParseTree.h"
 
+#include <cstring>
 #include <string>
 #include <iostream>
 #include <unordered_map>

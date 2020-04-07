@@ -326,7 +326,6 @@ double Statistics::Estimate(struct AndList *parseTree, char **relNames, int numT
     Statistics dummy(*this);
 
     dummy.Apply(parseTree, relNames, numToJoin);
-    dummy.Write("dummy.txt");
     unordered_set<string> groupNames;
     for (int i = 0; i < numToJoin; i++) {
         groupNames.insert(dummy.relNameToGroupNameMap[relNames[i]]);
