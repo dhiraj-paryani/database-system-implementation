@@ -1,22 +1,17 @@
 **************** Group Relations *****************
-3
-rel3&rel4=3200
-rel2=200
-rel1=100
+1
+lineitem&part=21432.9
 **************** Attributes ******************
-4
-rel3.att=100
-rel4.att=100
-rel2.att=100
-rel1.att=100
+5
+lineitem.l_shipmode=7
+lineitem.l_shipinstruct=4
+lineitem.l_partkey=200000
+part.p_container=40
+part.p_partkey=200000
 ****************** GroupName to Relations ****************
-3
-rel3&rel4=rel4,rel3
-rel2=rel2
-rel1=rel1
+1
+lineitem&part=lineitem,part
 ******************** Relation Name to Group Name *****************
-4
-rel3=rel3&rel4
-rel2=rel2
-rel4=rel3&rel4
-rel1=rel1
+2
+lineitem=lineitem&part
+part=lineitem&part

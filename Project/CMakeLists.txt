@@ -32,15 +32,13 @@ add_executable(Project
         HeapDBFile.h
         SortedDBFile.cc
         SortedDBFile.h
+        Statistics.cc
+        Statistics.h
         RelOp.cc
         RelOp.h
         Function.cc
         Function.h
-        test.cc
-        test.h
-        yyfunc.tab.c
-        y.tab.c
+        a3-test.cc
+        a3-test.h
         Lexer.l
-        lex.yy.c
-        Lexerfunc.l
-        lex.yyfunc.c)
+        Lexerfunc.l)

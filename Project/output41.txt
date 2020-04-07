@@ -1,4 +1,4 @@
-************* Groups ***************
+**************** Group Relations *****************
 1
 lineitem=857316
 **************** Attributes ******************
@@ -6,14 +6,14 @@ lineitem=857316
 lineitem.l_shipmode=7
 lineitem.l_discount=11
 lineitem.l_returnflag=3
-**************** GroupNames to Relations ****************
+****************** GroupName to Relations ****************
 1
 lineitem=lineitem
-*************** Relation Name to Group Name ***************
+******************** Relation Name to Group Name *****************
 1
 lineitem=lineitem
 ***************************************************************************************************************************************
-************* Groups ***************
+**************** Group Relations *****************
 1
 customer&orders&nation=1.5e+06
 **************** Attributes ******************
@@ -22,16 +22,16 @@ customer.c_custkey=150000
 nation.n_nationkey=25
 customer.c_nationkey=25
 orders.o_custkey=150000
-**************** GroupNames to Relations ****************
+****************** GroupName to Relations ****************
 1
 customer&orders&nation=orders,customer,nation
-*************** Relation Name to Group Name ***************
+******************** Relation Name to Group Name *****************
 3
 nation=customer&orders&nation
 customer=customer&orders&nation
 orders=customer&orders&nation
 ***************************************************************************************************************************************
-************* Groups ***************
+**************** Group Relations *****************
 1
 lineitem&customer&orders=400081
 **************** Attributes ******************
@@ -42,40 +42,38 @@ lineitem.l_orderkey=1500000
 orders.o_orderkey=1500000
 customer.c_mktsegment=5
 customer.c_custkey=150000
-**************** GroupNames to Relations ****************
+****************** GroupName to Relations ****************
 1
 lineitem&customer&orders=lineitem,customer,orders
-*************** Relation Name to Group Name ***************
+******************** Relation Name to Group Name *****************
 3
 lineitem=lineitem&customer&orders
 orders=lineitem&customer&orders
 customer=lineitem&customer&orders
 ***************************************************************************************************************************************
-************* Groups ***************
+**************** Group Relations *****************
 1
 lineitem&customer&orders&nation=2.00041e+06
 **************** Attributes ******************
-8
-customer.c_custkey=150000
-customer.c_mktsegment=5
-lineitem.l_orderkey=1500000
-orders.o_orderkey=1500000
-orders.o_custkey=150000
+7
 nation.n_nationkey=25
 customer.c_nationkey=25
 orders.o_orderdate=99996
-**************** GroupNames to Relations ****************
+orders.o_custkey=150000
+lineitem.l_orderkey=1500000
+orders.o_orderkey=1500000
+customer.c_custkey=150000
+****************** GroupName to Relations ****************
 1
-lineitem&customer&orders&nation=lineitem,nation,customer,orders
-*************** Relation Name to Group Name ***************
-5
+lineitem&customer&orders&nation=lineitem,orders,customer,nation
+******************** Relation Name to Group Name *****************
+4
 nation=lineitem&customer&orders&nation
-customer=lineitem&customer&orders&nation
-orders=lineitem&customer&orders&nation
-=
 lineitem=lineitem&customer&orders&nation
+orders=lineitem&customer&orders&nation
+customer=lineitem&customer&orders&nation
 ***************************************************************************************************************************************
-************* Groups ***************
+**************** Group Relations *****************
 1
 lineitem&part=21432.9
 **************** Attributes ******************
@@ -85,10 +83,10 @@ lineitem.l_shipinstruct=4
 lineitem.l_partkey=200000
 part.p_container=40
 part.p_partkey=200000
-**************** GroupNames to Relations ****************
+****************** GroupName to Relations ****************
 1
 lineitem&part=lineitem,part
-*************** Relation Name to Group Name ***************
+******************** Relation Name to Group Name *****************
 2
 lineitem=lineitem&part
 part=lineitem&part

@@ -64,6 +64,9 @@ void Statistics::AddAtt(const string& relName, string attName, int numDistincts)
         exit(1);
     }
 
+    if (numDistincts == -1) {
+        numDistincts = groupNameToRelationMap[relNameToGroupNameMap[relName]].GetNumOfTuples();
+    }
     attNameToAttributeMap[attNameWithRelName] = Attribute(numDistincts);
 }
 

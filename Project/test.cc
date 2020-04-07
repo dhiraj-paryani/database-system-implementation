@@ -344,8 +344,6 @@ void q6 (){
 
 	Statistics s;
         char *relName[] = { "partsupp", "supplier", "nation"};
-
-	s.Read(fileName);
 	
 	s.AddRel(relName[0],800000);
 	s.AddAtt(relName[0], "ps_suppkey",10000);
@@ -385,7 +383,6 @@ void q7(){
 	Statistics s;
         char *relName[] = { "orders", "lineitem"};
 
-	s.Read(fileName);
 	
 
 	s.AddRel(relName[0],1500000);
@@ -418,7 +415,6 @@ void q8 (){
 	Statistics s;
         char *relName[] = { "part",  "partsupp"};
 
-	s.Read(fileName);
 	
 	s.AddRel(relName[0],200000);
 	s.AddAtt(relName[0], "p_partkey",200000);
@@ -484,7 +480,6 @@ void q10 (){
 	Statistics s;
         char *relName[] = { "customer", "orders", "lineitem","nation"};
 
-	s.Read(fileName);
 	
 	s.AddRel(relName[0],150000);
 	s.AddAtt(relName[0], "c_custkey",150000);
