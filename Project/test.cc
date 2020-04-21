@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include "Statistics.h"
-#include "ParseTree.h"
+#include "ParseTreeOld.h"
 #include <math.h>
 extern "C" struct YY_BUFFER_STATE *yy_scan_string(const char*);
 extern "C" int yyparse(void);
@@ -130,7 +130,6 @@ void q1 (){
 	s.AddAtt(relName[0], "l_returnflag",3);
 	s.AddAtt(relName[0], "l_discount",11);
 	s.AddAtt(relName[0], "l_shipmode",7);
-
 		
 	char *cnf = "(l_returnflag = 'R') AND (l_discount < 0.04 OR l_shipmode = 'MAIL')";
 

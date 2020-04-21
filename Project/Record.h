@@ -7,7 +7,7 @@
 #include <fcntl.h>
 
 #include "Defs.h"
-#include "ParseTree.h"
+#include "ParseTreeOld.h"
 #include "Schema.h"
 #include "File.h"
 #include "Comparison.h"

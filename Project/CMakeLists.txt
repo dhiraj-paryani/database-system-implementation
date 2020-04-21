@@ -17,7 +17,7 @@ add_executable(Project
         Defs.h
         File.cc
         File.h
-        ParseTree.h
+        ParseTreeOld.h
         Pipe.cc
         Pipe.h
         Record.cc
@@ -40,5 +40,5 @@ add_executable(Project
         Function.h
         a3-test.cc
         a3-test.h
-        Lexer.l
-        Lexerfunc.l)
+        LexerOld.l
+        LexerFuncOld.l)

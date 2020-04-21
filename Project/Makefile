@@ -109,24 +109,23 @@ Record.o: Record.cc
 Schema.o: Schema.cc
 	$(CC) -g -c Schema.cc
 	
-y.tab.o: Parser.y
-	yacc -d Parser.y
+y.tab.o: ParserOld.y
+	yacc -d ParserOld.y
 	#sed $(tag) y.tab.c -e "s/  __attribute__ ((__unused__))$$/# ifndef __cplusplus\n  __attribute__ ((__unused__));\n# endif/" 
 	g++ -c y.tab.c
 		
-yyfunc.tab.o: ParserFunc.y
-	yacc -p "yyfunc" -b "yyfunc" -d ParserFunc.y
+yyfunc.tab.o: ParserFuncOld.y
+	yacc -p "yyfunc" -b "yyfunc" -d ParserFuncOld.y
 	#sed $(tag) yyfunc.tab.c -e "s/  __attribute__ ((__unused__))$$/# ifndef __cplusplus\n  __attribute__ ((__unused__));\n# endif/" 
 	g++ -c yyfunc.tab.c
 	
-lex.yy.o: Lexer.l
-	lex  Lexer.l
+lex.yy.o: LexerOld.l
+	lex  LexerOld.l
 	gcc  -c lex.yy.c
 
-lex.yyfunc.o: LexerFunc.l
-	lex -Pyyfunc LexerFunc.l
+lex.yyfunc.o: LexerFuncOld.l
+	lex -Pyyfunc LexerFuncOld.l
 	gcc  -c lex.yyfunc.c
-
 
 clean: 
 	rm -f *.o
