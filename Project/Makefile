@@ -7,8 +7,11 @@ ifdef linux
 tag = -n
 endif
 
-a4-1.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o Statistics.o y.tab.o lex.yy.o test.o
-	$(CC) -o a4-1.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o Statistics.o y.tab.o lex.yy.o test.o -ll
+a42.out: y.tab.latest.o lex.yy.latest.o a42-test.o
+	$(CC) -o a42.out y.tab.o lex.yy.o a42-test.o -ll
+
+a4-1.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o Statistics.o y.tab.o lex.yy.o a41-test.o
+	$(CC) -o a4-1.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o Statistics.o y.tab.o lex.yy.o a41-test.o -ll
 
 a3test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o y.tab.o yyfunc.tab.o lex.yy.o lex.yyfunc.o a3-test.o
 	$(CC) -o a3test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o y.tab.o yyfunc.tab.o lex.yy.o lex.yyfunc.o a3-test.o -ll -lpthread
@@ -37,8 +40,11 @@ gTestRelOp.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.
 gTestStatistics.out: Statistics.o y.tab.o lex.yy.o StatisticsGTests.o
 	$(CC) -o gTestStatistics.out Statistics.o y.tab.o lex.yy.o StatisticsGTests.o -ll -lgtest
 
-test.o: test.cc
-	$(CC) -g -c test.cc
+a42-test.o: a42-test.cc
+	$(CC) -g -c a42-test.cc
+
+a41-test.o: a41-test.cc
+	$(CC) -g -c a41-test.cc
 
 a3-test.o: a3-test.cc
 	$(CC) -g -c a3-test.cc
@@ -108,7 +114,12 @@ Record.o: Record.cc
 
 Schema.o: Schema.cc
 	$(CC) -g -c Schema.cc
-	
+
+y.tab.latest.o: ParserLatest.y
+	yacc -d ParserLatest.y
+	sed $(tag) -e "s/  __attribute__ ((__unused__))$$/# ifndef __cplusplus\n  __attribute__ ((__unused__));\n# endif/" y.tab.c
+	g++ -c y.tab.c
+
 y.tab.o: Parser.y
 	yacc -d Parser.y
 	#sed $(tag) y.tab.c -e "s/  __attribute__ ((__unused__))$$/# ifndef __cplusplus\n  __attribute__ ((__unused__));\n# endif/" 
@@ -118,7 +129,11 @@ yyfunc.tab.o: ParserFunc.y
 	yacc -p "yyfunc" -b "yyfunc" -d ParserFunc.y
 	#sed $(tag) yyfunc.tab.c -e "s/  __attribute__ ((__unused__))$$/# ifndef __cplusplus\n  __attribute__ ((__unused__));\n# endif/" 
 	g++ -c yyfunc.tab.c
-	
+
+lex.yy.latest.o: LexerLatest.l
+	lex  LexerLatest.l
+	gcc  -c lex.yy.c
+
 lex.yy.o: Lexer.l
 	lex  Lexer.l
 	gcc  -c lex.yy.c
