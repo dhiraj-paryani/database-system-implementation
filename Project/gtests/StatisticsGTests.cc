@@ -44,7 +44,7 @@ TEST(StatisticsGTests, TestAddAtt) {
     statistics.AddAtt(relName, attName, numDistincts);
 
     // Test.
-    unordered_map<string, Attribute> *attNameToAttributeMap = statistics.GetAttNameToAttributeMap();
+    unordered_map<string, Att> *attNameToAttributeMap = statistics.GetAttNameToAttributeMap();
     EXPECT_EQ(1, attNameToAttributeMap->size());
     EXPECT_FALSE(attNameToAttributeMap->find(relNameWithAttName) == attNameToAttributeMap->end());
     EXPECT_EQ(numDistincts, (*attNameToAttributeMap)[relNameWithAttName].GetNumOfDistinct());

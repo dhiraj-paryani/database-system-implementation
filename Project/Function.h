@@ -40,7 +40,7 @@ public:
 	Type RecursivelyBuild (struct FuncOperator *parseTree, Schema &mySchema);
 
 	// prints out the function to the screen
-	void Print ();
+    void Print (Schema* schema);
 
 	// applies the function to the given record and returns the result
 	Type Apply (Record &toMe, int &intResult, double &doubleResult);

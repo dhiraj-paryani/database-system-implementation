@@ -102,6 +102,26 @@ OrderMaker :: OrderMaker(Schema *schema) {
         }
 }
 
+OrderMaker :: OrderMaker(Schema *schema, NameList *nameList) {
+    numAtts = 0;
+    Attribute* schemaAtts = schema->GetAtts();
+    int i=0;
+    while(nameList) {
+        int pos = schema->Find(nameList->name);
+
+        if (pos == -1) {
+            cerr << "Attribute " + string(nameList->name) + " is not present in the result relation\n";
+            exit(1);
+        }
+
+        whichAtts[i] = pos;
+        whichTypes[i++] = schemaAtts[pos].myType;
+        numAtts++;
+
+        nameList = nameList->next;
+    }
+}
+
 int OrderMaker :: GetNumAtts () {
     return numAtts;
 }

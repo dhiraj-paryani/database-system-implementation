@@ -53,10 +53,19 @@ public:
 	// this composes a schema instance in-memory
 	Schema (char *fName, int num_atts, Attribute *atts);
 
+	// Create new Schema by merging input schemas
+	Schema(Schema *schema1, Schema *schema2);
+
 	Schema (OrderMaker &order);
+
+	Schema(Schema *baseSchema, NameList *nameList, int* keepMe);
 	// this constructs a sort order structure that can be used to
 	// place a lexicographic ordering on the records using this type of schema
 	int GetSortOrder (OrderMaker &order);
+
+	void AliasAttributes(std::string aliasName);
+
+	void Print();
 
 	~Schema ();
 

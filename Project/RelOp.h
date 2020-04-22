@@ -6,7 +6,8 @@
 #include "Record.h"
 #include "Function.h"
 
-static Attribute doubleAtt = {"sum", Double};
+static char *SUM_ATT_NAME = "SUM";
+static Attribute doubleAtt = {SUM_ATT_NAME, Double};
 static Schema sumSchema("sum_schema", 1, &doubleAtt);
 
 class RelationalOp {

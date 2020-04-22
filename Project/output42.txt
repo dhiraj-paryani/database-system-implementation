@@ -1,0 +1,331 @@
+TC1
+ *********** 
+SELECT FILE operation
+Output Pipe 0
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+ *********** 
+SELECT PIPE operation
+Input Pipe 0
+Output Pipe 1
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+SELECTION CNF :
+( Att 1 from left record = Att 0 from literal record (String)) 
+
+ *********** 
+PROJECT operation
+Input Pipe 1
+Output Pipe 0
+Output Schema:
+	Att n.n_nationkey: INT
+
+***************************************************************************************************************************
+TC2
+ *********** 
+SELECT FILE operation
+Output Pipe 1
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+ *********** 
+SELECT PIPE operation
+Input Pipe 1
+Output Pipe 2
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+SELECTION CNF :
+( Att 0 from left record > Att 0 from literal record (Int)) 
+
+ *********** 
+SELECT FILE operation
+Output Pipe 0
+Output Schema:
+	Att r.r_regionkey: INT
+	Att r.r_name: STRING
+	Att r.r_comment: STRING
+
+ *********** 
+JOIN operation
+Input Pipe 2
+Input Pipe 0
+Output Pipe 1
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+	Att r.r_regionkey: INT
+	Att r.r_name: STRING
+	Att r.r_comment: STRING
+
+CNF: 
+( Att 2 from left record = Att 0 from right record (Int)) 
+
+ *********** 
+PROJECT operation
+Input Pipe 1
+Output Pipe 0
+Output Schema:
+	Att n.n_name: STRING
+
+***************************************************************************************************************************
+TC3
+ *********** 
+SELECT FILE operation
+Output Pipe 1
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+ *********** 
+SELECT PIPE operation
+Input Pipe 1
+Output Pipe 2
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+SELECTION CNF :
+( Att 1 from left record = Att 0 from literal record (String)) 
+
+ *********** 
+SELECT FILE operation
+Output Pipe 0
+Output Schema:
+	Att r.r_regionkey: INT
+	Att r.r_name: STRING
+	Att r.r_comment: STRING
+
+ *********** 
+JOIN operation
+Input Pipe 2
+Input Pipe 0
+Output Pipe 1
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+	Att r.r_regionkey: INT
+	Att r.r_name: STRING
+	Att r.r_comment: STRING
+
+CNF: 
+( Att 2 from left record = Att 0 from right record (Int)) 
+
+ *********** 
+SUM operation
+Input Pipe 1
+Output Schema:
+	Att SUM: DOUBLE
+
+FUNCTION
+(n.n_nationkey)
+
+Distinct Function: 0
+
+***************************************************************************************************************************
+TC4
+ *********** 
+SELECT FILE operation
+Output Pipe 1
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+ *********** 
+SELECT PIPE operation
+Input Pipe 1
+Output Pipe 2
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+SELECTION CNF :
+( Att 1 from left record = Att 0 from literal record (String)) 
+
+ *********** 
+SELECT FILE operation
+Output Pipe 0
+Output Schema:
+	Att r.r_regionkey: INT
+	Att r.r_name: STRING
+	Att r.r_comment: STRING
+
+ *********** 
+JOIN operation
+Input Pipe 2
+Input Pipe 0
+Output Pipe 1
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+	Att r.r_regionkey: INT
+	Att r.r_name: STRING
+	Att r.r_comment: STRING
+
+CNF: 
+( Att 2 from left record = Att 0 from right record (Int)) 
+
+ *********** 
+GROUP BY operation
+Input Pipe 1
+Output Pipe 0
+Output Schema:
+	Att SUM: DOUBLE
+	Att n.n_regionkey: INT
+
+GROUPING ON
+NumAtts =     1
+  0:     2 Int
+
+FUNCTION
+(n.n_regionkey)
+
+Distinct Function: 0
+
+ *********** 
+PROJECT operation
+Input Pipe 0
+Output Pipe 1
+Output Schema:
+	Att SUM: DOUBLE
+
+***************************************************************************************************************************
+TC5
+ *********** 
+SELECT FILE operation
+Output Pipe 2
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+ *********** 
+SELECT PIPE operation
+Input Pipe 2
+Output Pipe 3
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+
+SELECTION CNF :
+( Att 0 from left record > Att 0 from literal record (Int)) 
+
+ *********** 
+SELECT FILE operation
+Output Pipe 1
+Output Schema:
+	Att r.r_regionkey: INT
+	Att r.r_name: STRING
+	Att r.r_comment: STRING
+
+ *********** 
+JOIN operation
+Input Pipe 3
+Input Pipe 1
+Output Pipe 2
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+	Att r.r_regionkey: INT
+	Att r.r_name: STRING
+	Att r.r_comment: STRING
+
+CNF: 
+( Att 2 from left record = Att 0 from right record (Int)) 
+
+ *********** 
+SELECT FILE operation
+Output Pipe 0
+Output Schema:
+	Att c.c_custkey: INT
+	Att c.c_name: STRING
+	Att c.c_address: STRING
+	Att c.c_nationkey: INT
+	Att c.c_phone: STRING
+	Att c.c_acctbal: DOUBLE
+	Att c.c_mktsegment: STRING
+	Att c.c_comment: STRING
+
+ *********** 
+JOIN operation
+Input Pipe 2
+Input Pipe 0
+Output Pipe 1
+Output Schema:
+	Att n.n_nationkey: INT
+	Att n.n_name: STRING
+	Att n.n_regionkey: INT
+	Att n.n_comment: STRING
+	Att r.r_regionkey: INT
+	Att r.r_name: STRING
+	Att r.r_comment: STRING
+	Att c.c_custkey: INT
+	Att c.c_name: STRING
+	Att c.c_address: STRING
+	Att c.c_nationkey: INT
+	Att c.c_phone: STRING
+	Att c.c_acctbal: DOUBLE
+	Att c.c_mktsegment: STRING
+	Att c.c_comment: STRING
+
+CNF: 
+( Att 0 from left record = Att 3 from right record (Int)) 
+
+ *********** 
+GROUP BY operation
+Input Pipe 1
+Output Pipe 0
+Output Schema:
+	Att SUM: DOUBLE
+	Att r.r_regionkey: INT
+
+GROUPING ON
+NumAtts =     1
+  0:     4 Int
+
+FUNCTION
+((n.n_nationkey + r.r_regionkey))
+
+Distinct Function: 1
+
+ *********** 
+PROJECT operation
+Input Pipe 0
+Output Pipe 1
+Output Schema:
+	Att SUM: DOUBLE
+
+***************************************************************************************************************************

@@ -53,12 +53,14 @@ class OrderMaker {
 
 public:
 
-	// creates an empty OrdermMaker
+	// creates an empty OrderMaker
 	OrderMaker();
 
 	// create an OrderMaker that can be used to sort records
 	// based upon ALL of their attributes
 	OrderMaker(Schema *schema);
+
+    OrderMaker(Schema *schema, NameList *nameList);
 
     int GetNumAtts ();
 

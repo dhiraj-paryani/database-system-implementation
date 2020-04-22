@@ -150,10 +150,10 @@ Type Function :: RecursivelyBuild (struct FuncOperator *parseTree, Schema &mySch
 
 		if (myTypeRight == Int) {
 
-                        // the left operand is an ant and needs to be cast
-                        opList[numOps].myOp = ToDouble;
-                        numOps++;
-                }
+			// the left operand is an ant and needs to be cast
+			opList[numOps].myOp = ToDouble;
+			numOps++;
+		}
 
 		// now, we know that the top two items on the stach are doubles,
 		// so we go ahead and do the math
@@ -200,8 +200,87 @@ void Function :: GrowFromParseTree (struct FuncOperator *parseTree, Schema &mySc
 
 }
 
-void Function :: Print () {
+void Function :: Print (Schema* schema) {
+	string stack[MAX_DEPTH];
+	int lastPos = -1;
 
+	Attribute *atts = schema->GetAtts();
+
+	for (int i = 0; i < numOps; i++) {
+		switch (opList[i].myOp) {
+			case PushInt:
+				lastPos++;
+
+				// See if we need attribute from schema
+				// see if we need to get the int from the record
+				if (opList[i].recInput >= 0) {
+					stack[lastPos] = string(atts[opList[i].recInput].name);
+
+					// or from the literal value
+				} else {
+					stack[lastPos] = to_string(*((int *) opList[i].litInput));
+				}
+
+				break;
+
+			case PushDouble:
+				lastPos++;
+
+				// see if we need to get the int from the record
+				if (opList[i].recInput >= 0) {
+					stack[lastPos] = string(atts[opList[i].recInput].name);
+
+					// or from the literal value
+				} else {
+					stack[lastPos] = to_string(*((double *) opList[i].litInput));
+				}
+
+				break;
+
+			case IntUnaryMinus:
+			case DblUnaryMinus:
+				stack[lastPos] = "-(" + stack[lastPos] + ")";
+				break;
+
+			case IntMinus:
+			case DblMinus:
+				stack[lastPos - 1] = "(" + stack[lastPos - 1] + " - " + stack[lastPos] + ")";
+				lastPos--;
+				break;
+
+			case IntPlus:
+			case DblPlus:
+				stack[lastPos - 1] = "(" + stack[lastPos - 1] + " + " + stack[lastPos] + ")";
+				lastPos--;
+				break;
+
+			case IntDivide:
+			case DblDivide:
+				stack[lastPos - 1] = "(" + stack[lastPos - 1] + " / " + stack[lastPos] + ")";
+				lastPos--;
+				break;
+
+			case IntMultiply:
+			case DblMultiply:
+				stack[lastPos - 1] = "(" + stack[lastPos - 1] + " * " + stack[lastPos] + ")";
+				lastPos--;
+				break;
+
+			default:
+				cerr << "Had a function operation I did not recognize!\n";
+				exit(1);
+		}
+	}
+
+	// now, we are just about done.  First we have a sanity check to make sure
+	// that exactly one value is on the stack!
+	if (lastPos != 0) {
+		cerr << "During print function, we did not have exactly one value ";
+		cerr << "left on the stack.  BAD!\n";
+		exit (1);
+	}
+
+	cout << "(" + stack[lastPos] + ")" << "\n";
 }
 
 Type Function :: Apply (Record &toMe, int &intResult, double &doubleResult) {

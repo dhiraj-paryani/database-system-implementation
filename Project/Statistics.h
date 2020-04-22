@@ -35,16 +35,16 @@ public:
     }
 };
 
-struct Attribute {
+struct Att {
 private:
     int numOfDistinct;
 
 public:
-    Attribute() {
+    Att() {
         this->numOfDistinct = 0;
     }
 
-    Attribute(int numOfDistinct) {
+    Att(int numOfDistinct) {
         this->numOfDistinct = numOfDistinct;
     }
 
@@ -61,7 +61,7 @@ class Statistics {
 
 private:
     unordered_map<string, Relation> groupNameToRelationMap;
-    unordered_map<string, Attribute> attNameToAttributeMap;
+    unordered_map<string, Att> attNameToAttributeMap;
     unordered_map<string, unordered_set<string> > groupNameToSetOfRelationsMap;
     unordered_map<string, string> relNameToGroupNameMap;
 
@@ -94,7 +94,7 @@ public:
 
     unordered_map<string, Relation> *GetGroupNameToRelationMap();
 
-    unordered_map<string, Attribute>* GetAttNameToAttributeMap();
+    unordered_map<string, Att>* GetAttNameToAttributeMap();
 
     unordered_map<string, unordered_set<string> >* GetGroupNameToSetOfRelationsMap();
 

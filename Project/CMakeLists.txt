@@ -5,6 +5,26 @@ set(CMAKE_CXX_STANDARD 11)
 
 include_directories(.)
 
+add_executable(a42
+        a42-test.cc
+        Schema.h
+        Schema.o
+        Record.h
+        Record.o
+        Comparison.h
+        Comparison.o
+        Function.h
+        Function.o
+        Statistics.h
+        Statistics.cc
+        QueryPlanNode.h
+        QueryPlanNode.cc
+        QueryPlan.h
+        QueryPlan.cc
+        ParseTree.h
+        y.tab.o
+        lex.yy.c)
+
 add_executable(Project
         BigQ.cc
         BigQ.h
@@ -41,4 +61,9 @@ add_executable(Project
         a3-test.cc
         a3-test.h
         Lexer.l
-        Lexerfunc.l)
+        Lexerfunc.l
+        QueryPlan.h
+        QueryPlan.cc
+        QueryPlanNode.h
+        QueryPlanNode.cc
+        a42-test.cc)

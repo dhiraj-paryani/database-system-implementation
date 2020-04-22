@@ -1,11 +1,19 @@
-
 #include <iostream>
-#include "ParseTreeLatest.h"
+#include "ParseTree.h"
+#include "QueryPlan.h"
+#include "Statistics.h"
 
 using namespace std;
 
+// test settings file should have the
+// catalog_path
+const char *settings = "test.cat";
+
+// donot change this information here
+char *catalog_path = NULL;
+
 extern "C" {
-	int yyparse(void);   // defined in y.tab.c
+int yyparse(void);   // defined in y.tab.c
 }
 
 extern struct FuncOperator *finalFunction;
@@ -16,21 +24,45 @@ extern struct NameList *attsToSelect;
 extern int distinctAtts;
 extern int distinctFunc;
 
-int main () {
+char *statisticsFileName = "Statistics-42.txt";
+
+void setup () {
+    FILE *fp = fopen (settings, "r");
+    if (fp) {
+        char *mem = (char *) malloc(80);
+        catalog_path = &mem[0];
+        char line[80];
+        fgets (line, 80, fp);
+        sscanf (line, "%s\n", catalog_path);
+
+        if (!catalog_path) {
+            cerr << " Test settings file 'test.cat' not in correct format.\n";
+            free (mem);
+            exit (1);
+        }
+    } else {
+        cerr << " Test settings files 'test.cat' missing \n";
+        exit (1);
+    }
+}
+
+int main() {
+    setup();
+
+    // Loading Statistics from the file.
+    Statistics statistics;
+    statistics.Read(statisticsFileName);
+
+    // Parse the query.
     yyparse();
 
-    struct FuncOperator *finalFunctionMain = finalFunction;
-    struct TableList *tablesMain = tables;
-    struct AndList *booleanMain = boolean;
-    struct NameList *groupingAttsMain = groupingAtts;
-    struct NameList *attsToSelectMain = attsToSelect;
-    int distinctAtts = distinctAtts;
-    int distinctFunc = distinctFunc;
+    Query query = {finalFunction, tables, boolean, groupingAtts, attsToSelect, distinctAtts, distinctFunc};
 
-    while(tablesMain) {
-        cerr << string(tablesMain->tableName) << "\n";
-        tablesMain = tablesMain->next;
-    }
+    // Create query plan/
+    QueryPlan queryPlan(catalog_path, &statistics, &query);
+
+    // Print the query plan in post order.
+    queryPlan.Print();
 }
 
 

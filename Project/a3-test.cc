@@ -149,7 +149,6 @@ void q3 () {
     Function func;
     char *str_sum = "(s_acctbal + (s_acctbal * 1.05))";
     get_cnf (str_sum, s->schema (), func);
-    func.Print ();
     T.Use_n_Pages (1);
     SF_s.Run (dbf_s, _s, cnf_s, lit_s);
     T.Run (_s, _out, func);
@@ -198,7 +197,6 @@ void q4 () {
     Function func;
     char *str_sum = "(ps_supplycost)";
     get_cnf (str_sum, &join_sch, func);
-    func.Print ();
     T.Use_n_Pages (1);
 
     SF_ps.Run (dbf_ps, _ps, cnf_ps, lit_ps); // 161 recs qualified
@@ -288,7 +286,6 @@ void q6 () {
     Function func;
     char *str_sum = "(ps_supplycost)";
     get_cnf (str_sum, &join_sch, func);
-    func.Print ();
     OrderMaker grp_order (&join_sch);
     G.Use_n_Pages (1);
 
@@ -372,18 +369,84 @@ void q8 () {
     cout << "Number of records : " << cnt << '\n';
 }
 
+void q9 () {
+    cout << " query9 - Number of distincts \"ps_supplycost\" \n";
+
+    char *pred_ps = "(ps_supplycost = ps_supplycost)";
+    init_SF_ps(pred_ps, 100);
+
+    Project P_ps;
+    Pipe _out (pipesz);
+
+    int keepMe[] = {3};
+    int numAttsIn = psAtts;
+    int numAttsOut = 1;
+    P_ps.Use_n_Pages (buffsz);
+
+    DuplicateRemoval DR;
+    Pipe _ps_dr(pipesz);
+
+    Attribute projectAtt[] = {DA};
+    Schema projectSchema("project_schema", numAttsOut, projectAtt);
+
+    SF_ps.Run(dbf_ps, _ps, cnf_ps, lit_ps);
+    P_ps.Run(_ps, _out, keepMe, numAttsIn, numAttsOut);
+    DR.Run(_out, _ps_dr, projectSchema);
+
+    int cnt = clear_pipe(_ps_dr, &projectSchema, false);
+
+    SF_ps.WaitUntilDone();
+    P_ps.WaitUntilDone();
+    DR.WaitUntilDone();
+
+    cout << "Number of records : " << cnt << '\n';
+}
+
+void q10 () {
+    cout << " query10 - Number of distincts \"s_acctbal\" \n";
+
+    char *pred_s = "(s_acctbal = s_acctbal)";
+    init_SF_s(pred_s, 100);
+
+    Project P_s;
+    Pipe _out (pipesz);
+
+    int keepMe[] = {5};
+    int numAttsIn = sAtts;
+    int numAttsOut = 1;
+    P_s.Use_n_Pages (buffsz);
+
+    DuplicateRemoval DR;
+    Pipe _ps_dr(pipesz);
+
+    Attribute projectAtt[] = {DA};
+    Schema projectSchema("project_schema", numAttsOut, projectAtt);
+
+    SF_ps.Run(dbf_s, _s, cnf_s, lit_s);
+    P_s.Run(_s, _out, keepMe, numAttsIn, numAttsOut);
+    DR.Run(_out, _ps_dr, projectSchema);
+
+    int cnt = clear_pipe(_ps_dr, &projectSchema, false);
+
+    SF_ps.WaitUntilDone();
+    P_s.WaitUntilDone();
+    DR.WaitUntilDone();
+
+    cout << "Number of records : " << cnt << '\n';
+}
+
 int main (int argc, char *argv[]) {
 
     if (argc != 2) {
-        cerr << " Usage: ./test.out [1-8] \n";
+        cerr << " Usage: ./test.out [1-9] \n";
         exit (0);
     }
 
-    void (*query_ptr[]) () = {&q1, &q2, &q3, &q4, &q5, &q6, &q7, &q8};
+    void (*query_ptr[]) () = {&q1, &q2, &q3, &q4, &q5, &q6, &q7, &q8, &q9, &q10};
     void (*query) ();
     int qindx = atoi (argv[1]);
 
-    if (qindx > 0 && qindx < 9) {
+    if (qindx > 0 && qindx < 11) {
         setup ();
         query = query_ptr [qindx - 1];
         query ();

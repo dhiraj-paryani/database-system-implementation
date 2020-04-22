@@ -163,6 +163,76 @@ Schema :: Schema (char *fName, char *relName) {
 	fclose (foo);
 }
 
+Schema :: Schema (Schema *schema1, Schema *schema2) {
+	int numAtts1 = schema1->numAtts;
+	int numAtts2 = schema2->numAtts;
+	numAtts = numAtts1 + numAtts2;
+	myAtts = new Attribute[numAtts];
+
+	for (int i=0; i < numAtts1; i++) {
+		myAtts[i] = schema1->myAtts[i];
+	}
+
+	for (int i=0; i < numAtts2; i++) {
+		myAtts[numAtts1 + i] = schema2->myAtts[i];
+	}
+}
+
+Schema :: Schema(Schema *baseSchema, NameList *nameList, int* keepMe) {
+    numAtts = 0;
+    NameList *nameListLocal = nameList;
+    while (nameListLocal) {
+        numAtts++;
+        nameListLocal = nameListLocal->next;
+    }
+
+    myAtts = new Attribute[numAtts];
+    keepMe = new int[numAtts];
+    int i = 0;
+
+    nameListLocal = nameList;
+    while (nameListLocal) {
+        int pos = baseSchema->Find(nameListLocal->name);
+        if (pos == -1) {
+            cerr << "Attribute " + string(nameListLocal->name) + " is not present in the base relation\n";
+            exit(1);
+        }
+
+        keepMe[i] = pos;
+        myAtts[i++] = baseSchema->myAtts[pos];
+
+        nameListLocal = nameListLocal->next;
+    }
+
+}
+
+void Schema :: AliasAttributes (std::string aliasName) {
+    // this is enough space to hold any tokens
+	for ( int i=0; i<numAtts; i++) {
+		string newAttName = aliasName + "." + string(myAtts[i].name);
+		char *newAttNameChar = new char[200];
+		strcpy(newAttNameChar, newAttName.c_str());
+        myAtts[i].name = newAttNameChar;
+	}
+}
+
+void Schema :: Print() {
+    for (int i=0; i < numAtts; i++) {
+        cout << "\t" << "Att " + string(myAtts[i].name) + ": ";
+        switch (myAtts[i].myType) {
+            case Int:
+				cout << "INT" << "\n";
+                break;
+            case Double:
+				cout << "DOUBLE" << "\n";
+                break;
+            case String:
+				cout << "STRING" << "\n";
+                break;
+        }
+    }
+}
+
 Schema :: ~Schema () {
 	delete [] myAtts;
 	myAtts = 0;

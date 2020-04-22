@@ -7,8 +7,8 @@ ifdef linux
 tag = -n
 endif
 
-a42.out: y.tab.latest.o lex.yy.latest.o a42-test.o
-	$(CC) -o a42.out y.tab.o lex.yy.o a42-test.o -ll
+a42.out: y.tab.latest.o lex.yy.latest.o QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o a42-test.o
+	$(CC) -o a42.out y.tab.o lex.yy.o QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o a42-test.o -ll
 
 a4-1.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o Statistics.o y.tab.o lex.yy.o a41-test.o
 	$(CC) -o a4-1.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o Statistics.o y.tab.o lex.yy.o a41-test.o -ll
@@ -57,6 +57,12 @@ a21-test.o: a21-test.cc
 
 a1-test.o: a1-test.cc
 	$(CC) -g -c a1-test.cc
+
+QueryPlan.o: QueryPlan.cc
+	$(CC) -g -c QueryPlan.cc
+
+QueryPlanNode.O: QueryPlanNode.cc
+	$(CC) -g -c QueryPlanNode.cc
 
 Statistics.o: Statistics.cc
 	$(CC) -g -c Statistics.cc
@@ -141,7 +147,6 @@ lex.yy.o: Lexer.l
 lex.yyfunc.o: LexerFunc.l
 	lex -Pyyfunc LexerFunc.l
 	gcc  -c lex.yyfunc.c
-
 
 clean: 
 	rm -f *.o

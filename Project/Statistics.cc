@@ -10,7 +10,7 @@ Statistics::Statistics(Statistics &copyMe) {
 
     for (auto &attNameToAttributeMapItem : copyMe.attNameToAttributeMap) {
         attNameToAttributeMap[attNameToAttributeMapItem.first] =
-                Attribute(attNameToAttributeMapItem.second.GetNumOfDistinct());
+                Att(attNameToAttributeMapItem.second.GetNumOfDistinct());
     }
 
     for (auto &setNameToSetOfRelationsMapItem : copyMe.groupNameToSetOfRelationsMap) {
@@ -67,7 +67,7 @@ void Statistics::AddAtt(const string& relName, string attName, int numDistincts)
     if (numDistincts == -1) {
         numDistincts = groupNameToRelationMap[relNameToGroupNameMap[relName]].GetNumOfTuples();
     }
-    attNameToAttributeMap[attNameWithRelName] = Attribute(numDistincts);
+    attNameToAttributeMap[attNameWithRelName] = Att(numDistincts);
 }
 
 void Statistics::CopyRel(char *oldName, char *newName) {
@@ -116,7 +116,7 @@ void Statistics::Read(char *fromWhere) {
         string attName = readLine;
         getline(fIn, readLine);
         int numOfDistinct = stoi(readLine);
-        attNameToAttributeMap[attName] = Attribute(numOfDistinct);
+        attNameToAttributeMap[attName] = Att(numOfDistinct);
     }
 
     getline(fIn, readLine);
@@ -424,7 +424,7 @@ unordered_map<string, Relation> *Statistics::GetGroupNameToRelationMap() {
     return &this->groupNameToRelationMap;
 }
 
-unordered_map<string, Attribute> *Statistics::GetAttNameToAttributeMap() {
+unordered_map<string, Att> *Statistics::GetAttNameToAttributeMap() {
     return &this->attNameToAttributeMap;
 }
 
