@@ -7,13 +7,13 @@
 
 class RelOpNode {
 public:
-    RelOpNode *child1;
+    RelOpNode *child1 = nullptr;
     int inputPipeId1 = -1;
 
-    RelOpNode *child2;
+    RelOpNode *child2 = nullptr;
     int inputPipeId2 = -1;
 
-    Schema *outputSchema;
+    Schema *outputSchema = nullptr;
     int outputPipeId = -1;
 
     RelOpNode(RelOpNode *child1, RelOpNode *child2);
@@ -24,7 +24,7 @@ public:
 
 class DuplicateRemovalNode : public RelOpNode {
 public:
-    Schema *inputSchema;
+    Schema *inputSchema = nullptr;
 
     DuplicateRemovalNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
 
@@ -34,9 +34,9 @@ public:
 
 class GroupByNode : public RelOpNode {
 public:
-    OrderMaker *groupAtts;
-    Function *computeMe;
-    int distinctFunc;
+    OrderMaker *groupAtts = nullptr;
+    Function *computeMe = nullptr;
+    int distinctFunc = 0;
 
     GroupByNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
 
@@ -46,8 +46,8 @@ public:
 
 class JoinNode : public RelOpNode {
 public:
-    CNF *selOp;
-    Record *literal;
+    CNF *selOp = nullptr;
+    Record *literal = nullptr;
 
     JoinNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
 
@@ -57,8 +57,8 @@ public:
 
 class SelectFileNode : public RelOpNode {
 public:
-    CNF *selOp;
-    Record *literal;
+    CNF *selOp = nullptr;
+    Record *literal = nullptr;
 
     SelectFileNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
 
@@ -68,8 +68,8 @@ public:
 
 class SelectPipeNode : public RelOpNode {
 public:
-    CNF *selOp;
-    Record *literal;
+    CNF *selOp = nullptr;
+    Record *literal = nullptr;
 
     SelectPipeNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
 
@@ -78,8 +78,8 @@ public:
 
 class SumNode : public RelOpNode {
 public:
-    Function *computeMe;
-    int distinctFunc;
+    Function *computeMe = nullptr;
+    int distinctFunc = 0;
 
     SumNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
 
@@ -88,7 +88,7 @@ public:
 
 class ProjectNode : public RelOpNode {
 public:
-    int *keepMe;
+    int *keepMe = nullptr;
     int numAttsInput;
     int numAttsOutput;
 
