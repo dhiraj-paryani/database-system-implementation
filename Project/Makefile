@@ -40,6 +40,9 @@ gTestRelOp.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.
 gTestStatistics.out: Statistics.o y.tab.o lex.yy.o StatisticsGTests.o
 	$(CC) -o gTestStatistics.out Statistics.o y.tab.o lex.yy.o StatisticsGTests.o -ll -lgtest
 
+gTestQueryPlan.out: QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o QueryPlanGTests.o
+	$(CC) -o gTestQueryPlan.out QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o QueryPlanGTests.o -ll -lgtest
+
 a42-test.o: a42-test.cc
 	$(CC) -g -c a42-test.cc
 
@@ -58,15 +61,6 @@ a21-test.o: a21-test.cc
 a1-test.o: a1-test.cc
 	$(CC) -g -c a1-test.cc
 
-QueryPlan.o: QueryPlan.cc
-	$(CC) -g -c QueryPlan.cc
-
-QueryPlanNode.O: QueryPlanNode.cc
-	$(CC) -g -c QueryPlanNode.cc
-
-Statistics.o: Statistics.cc
-	$(CC) -g -c Statistics.cc
-
 DBFileGTests.o: gtests/DBFileGTests.cc
 	$(CC) -g -c gtests/DBFileGTests.cc
 
@@ -81,6 +75,18 @@ RelOpGTests.o: gtests/RelOpGTests.cc
 
 StatisticsGTests.o: gtests/StatisticsGTests.cc
 	$(CC) -g -c gtests/StatisticsGTests.cc
+
+QueryPlanGTests.o: gtests/QueryPlanGTests.cc
+	$(CC) -g -c gtests/QueryPlanGTests.cc
+
+QueryPlan.o: QueryPlan.cc
+	$(CC) -g -c QueryPlan.cc
+
+QueryPlanNode.O: QueryPlanNode.cc
+	$(CC) -g -c QueryPlanNode.cc
+
+Statistics.o: Statistics.cc
+	$(CC) -g -c Statistics.cc
 
 Comparison.o: Comparison.cc
 	$(CC) -g -c Comparison.cc

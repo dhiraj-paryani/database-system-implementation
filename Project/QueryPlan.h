@@ -12,7 +12,7 @@
 #include "Comparison.h"
 #include "RelOp.h"
 
-void heapPermutation(int a[], int size, int n, vector<int *> *permutations);
+void HeapPermutation(int *a, int size, int n, vector<int *> *permutations);
 
 struct Query {
     FuncOperator *finalFunction;
@@ -34,15 +34,17 @@ private:
     unordered_map<string, RelOpNode *> groupNameToRelOpNode;
     unordered_map<string, string> relNameToGroupNameMap;
 
-    int nextAvailablePipeId = 0;
-    unordered_set<int> freePipeIds;
+    int nextAvailablePipeId = 1;
 
     void LoadAllTables();
 
     void SplitAndList(unordered_map<string, AndList *> *tableSelectionAndList, vector<AndList *> *joins);
-        void ApplySelection(unordered_map<string, AndList *> *tableSelectionAndList);
-        void RearrangeJoins(vector<AndList *> *joins, vector<AndList *> *joins_arranged);
-        void ApplyJoins(vector<AndList *> *joins);
+
+    void ApplySelection(unordered_map<string, AndList *> *tableSelectionAndList);
+
+    void RearrangeJoins(vector<AndList *> *joins, vector<AndList *> *joins_arranged);
+
+    void ApplyJoins(vector<AndList *> *joins);
 
     void ApplyGroupBy();
 
@@ -54,15 +56,15 @@ private:
 
     static void PrintQueryPlanPostOrder(RelOpNode *node);
 
-    int GetFreePipeId();
-    void FreePipeId(int pipeId);
     string GetResultantGroupName();
 
 public:
     QueryPlan(char *catalog_path, Statistics *statistics, Query *query);
+
     ~QueryPlan();
 
     void Print();
+
 private:
     void MakeQueryPlan();
 };

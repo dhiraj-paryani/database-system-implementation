@@ -2,16 +2,6 @@ TC1
 PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
-Output Pipe 0
-Output Schema:
-	Att n.n_nationkey: INT
-	Att n.n_name: STRING
-	Att n.n_regionkey: INT
-	Att n.n_comment: STRING
-
- *********** 
-SELECT PIPE operation
-Input Pipe 0
 Output Pipe 1
 Output Schema:
 	Att n.n_nationkey: INT
@@ -25,7 +15,7 @@ SELECTION CNF :
  *********** 
 PROJECT operation
 Input Pipe 1
-Output Pipe 0
+Output Pipe 2
 Output Schema:
 	Att n.n_nationkey: INT
 
@@ -34,16 +24,6 @@ TC2
 PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
-Output Pipe 1
-Output Schema:
-	Att n.n_nationkey: INT
-	Att n.n_name: STRING
-	Att n.n_regionkey: INT
-	Att n.n_comment: STRING
-
- *********** 
-SELECT PIPE operation
-Input Pipe 1
 Output Pipe 2
 Output Schema:
 	Att n.n_nationkey: INT
@@ -56,7 +36,7 @@ SELECTION CNF :
 
  *********** 
 SELECT FILE operation
-Output Pipe 0
+Output Pipe 1
 Output Schema:
 	Att r.r_regionkey: INT
 	Att r.r_name: STRING
@@ -65,8 +45,8 @@ Output Schema:
  *********** 
 JOIN operation
 Input Pipe 2
-Input Pipe 0
-Output Pipe 1
+Input Pipe 1
+Output Pipe 3
 Output Schema:
 	Att n.n_nationkey: INT
 	Att n.n_name: STRING
@@ -81,8 +61,8 @@ CNF:
 
  *********** 
 PROJECT operation
-Input Pipe 1
-Output Pipe 0
+Input Pipe 3
+Output Pipe 4
 Output Schema:
 	Att n.n_name: STRING
 
@@ -91,16 +71,6 @@ TC3
 PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
-Output Pipe 1
-Output Schema:
-	Att n.n_nationkey: INT
-	Att n.n_name: STRING
-	Att n.n_regionkey: INT
-	Att n.n_comment: STRING
-
- *********** 
-SELECT PIPE operation
-Input Pipe 1
 Output Pipe 2
 Output Schema:
 	Att n.n_nationkey: INT
@@ -113,7 +83,7 @@ SELECTION CNF :
 
  *********** 
 SELECT FILE operation
-Output Pipe 0
+Output Pipe 1
 Output Schema:
 	Att r.r_regionkey: INT
 	Att r.r_name: STRING
@@ -122,8 +92,8 @@ Output Schema:
  *********** 
 JOIN operation
 Input Pipe 2
-Input Pipe 0
-Output Pipe 1
+Input Pipe 1
+Output Pipe 3
 Output Schema:
 	Att n.n_nationkey: INT
 	Att n.n_name: STRING
@@ -138,8 +108,8 @@ CNF:
 
  *********** 
 SUM operation
-Input Pipe 1
-Output Pipe 0
+Input Pipe 3
+Output Pipe 4
 Output Schema:
 	Att SUM: DOUBLE
 
@@ -153,16 +123,6 @@ TC4
 PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
-Output Pipe 1
-Output Schema:
-	Att n.n_nationkey: INT
-	Att n.n_name: STRING
-	Att n.n_regionkey: INT
-	Att n.n_comment: STRING
-
- *********** 
-SELECT PIPE operation
-Input Pipe 1
 Output Pipe 2
 Output Schema:
 	Att n.n_nationkey: INT
@@ -175,7 +135,7 @@ SELECTION CNF :
 
  *********** 
 SELECT FILE operation
-Output Pipe 0
+Output Pipe 1
 Output Schema:
 	Att r.r_regionkey: INT
 	Att r.r_name: STRING
@@ -184,8 +144,8 @@ Output Schema:
  *********** 
 JOIN operation
 Input Pipe 2
-Input Pipe 0
-Output Pipe 1
+Input Pipe 1
+Output Pipe 3
 Output Schema:
 	Att n.n_nationkey: INT
 	Att n.n_name: STRING
@@ -200,8 +160,8 @@ CNF:
 
  *********** 
 GROUP BY operation
-Input Pipe 1
-Output Pipe 0
+Input Pipe 3
+Output Pipe 4
 Output Schema:
 	Att SUM: DOUBLE
 	Att n.n_regionkey: INT
@@ -217,8 +177,8 @@ Distinct Function: 0
 
  *********** 
 PROJECT operation
-Input Pipe 0
-Output Pipe 1
+Input Pipe 4
+Output Pipe 5
 Output Schema:
 	Att SUM: DOUBLE
 
@@ -227,16 +187,6 @@ TC5
 PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
-Output Pipe 2
-Output Schema:
-	Att n.n_nationkey: INT
-	Att n.n_name: STRING
-	Att n.n_regionkey: INT
-	Att n.n_comment: STRING
-
- *********** 
-SELECT PIPE operation
-Input Pipe 2
 Output Pipe 3
 Output Schema:
 	Att n.n_nationkey: INT
@@ -249,7 +199,7 @@ SELECTION CNF :
 
  *********** 
 SELECT FILE operation
-Output Pipe 1
+Output Pipe 2
 Output Schema:
 	Att r.r_regionkey: INT
 	Att r.r_name: STRING
@@ -258,8 +208,8 @@ Output Schema:
  *********** 
 JOIN operation
 Input Pipe 3
-Input Pipe 1
-Output Pipe 2
+Input Pipe 2
+Output Pipe 4
 Output Schema:
 	Att n.n_nationkey: INT
 	Att n.n_name: STRING
@@ -274,7 +224,7 @@ CNF:
 
  *********** 
 SELECT FILE operation
-Output Pipe 0
+Output Pipe 1
 Output Schema:
 	Att c.c_custkey: INT
 	Att c.c_name: STRING
@@ -287,9 +237,9 @@ Output Schema:
 
  *********** 
 JOIN operation
-Input Pipe 2
-Input Pipe 0
-Output Pipe 1
+Input Pipe 4
+Input Pipe 1
+Output Pipe 5
 Output Schema:
 	Att n.n_nationkey: INT
 	Att n.n_name: STRING
@@ -312,8 +262,8 @@ CNF:
 
  *********** 
 GROUP BY operation
-Input Pipe 1
-Output Pipe 0
+Input Pipe 5
+Output Pipe 6
 Output Schema:
 	Att SUM: DOUBLE
 	Att r.r_regionkey: INT
@@ -329,8 +279,8 @@ Distinct Function: 1
 
  *********** 
 PROJECT operation
-Input Pipe 0
-Output Pipe 1
+Input Pipe 6
+Output Pipe 7
 Output Schema:
 	Att SUM: DOUBLE
 

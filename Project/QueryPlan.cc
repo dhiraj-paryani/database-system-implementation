@@ -55,7 +55,7 @@ void QueryPlan::LoadAllTables() {
         schema->AliasAttributes(tableList->aliasAs);
 
         selectFileNode->outputSchema = schema;
-        selectFileNode->outputPipeId = GetFreePipeId();
+        selectFileNode->outputPipeId = nextAvailablePipeId++;
 
         relNameToGroupNameMap[tableList->aliasAs] = tableList->aliasAs;
         groupNameToRelOpNode[tableList->aliasAs] = selectFileNode;
@@ -68,7 +68,7 @@ void QueryPlan::ApplySelection(unordered_map<string, AndList *> *tableSelectionA
     for (auto const &item : *tableSelectionAndList) {
         string relName = item.first;
         string groupName = relNameToGroupNameMap[relName];
-        RelOpNode *inputRelOpNode = groupNameToRelOpNode[groupName];
+        SelectFileNode *inputRelOpNode = dynamic_cast<SelectFileNode *>(groupNameToRelOpNode[groupName]);
 
         // Create CNF
         AndList *andList = item.second;
@@ -76,17 +76,21 @@ void QueryPlan::ApplySelection(unordered_map<string, AndList *> *tableSelectionA
         Record *literal = new Record();
         cnf->GrowFromParseTree(andList, inputRelOpNode->outputSchema, *literal); // constructs CNF predicate
 
-        // Create SelectPipe
-        SelectPipeNode *selectPipeNode = new SelectPipeNode(inputRelOpNode, NULL);
+        if (!inputRelOpNode->selOp) {
+            inputRelOpNode->selOp = cnf;
+            inputRelOpNode->literal = literal;
+        } else {
+            // Create SelectPipe
+            SelectPipeNode *selectPipeNode = new SelectPipeNode(inputRelOpNode, NULL);
 
-        selectPipeNode->outputSchema = inputRelOpNode->outputSchema;
-        selectPipeNode->outputPipeId = GetFreePipeId();
+            selectPipeNode->outputSchema = inputRelOpNode->outputSchema;
+            selectPipeNode->outputPipeId = nextAvailablePipeId++;
 
-        selectPipeNode->selOp = cnf;
-        selectPipeNode->literal = literal;
+            selectPipeNode->selOp = cnf;
+            selectPipeNode->literal = literal;
 
-        groupNameToRelOpNode[groupName] = selectPipeNode;
-        FreePipeId(inputRelOpNode->outputPipeId);
+            groupNameToRelOpNode[groupName] = selectPipeNode;
+        }
 
         // Updating Statistics
         char *applyRelNames[] = {const_cast<char *>(relName.c_str())};
@@ -117,7 +121,7 @@ void QueryPlan::ApplyJoins(vector<AndList *> *joins) {
 
         Schema *outputSchema = new Schema(inputRelOp1->outputSchema, inputRelOp2->outputSchema);
         joinNode->outputSchema = outputSchema;
-        joinNode->outputPipeId = GetFreePipeId();
+        joinNode->outputPipeId = nextAvailablePipeId++;
 
         joinNode->selOp = cnf;
         joinNode->literal = literal;
@@ -130,9 +134,6 @@ void QueryPlan::ApplyJoins(vector<AndList *> *joins) {
         groupNameToRelOpNode.erase(groupName1);
         groupNameToRelOpNode.erase(groupName2);
         groupNameToRelOpNode[newGroupName] = joinNode;
-
-        FreePipeId(inputRelOp1->outputPipeId);
-        FreePipeId(inputRelOp2->outputPipeId);
     }
 }
 
@@ -164,13 +165,12 @@ void QueryPlan::ApplyGroupBy() {
     GroupByNode *groupByNode = new GroupByNode(inputRelOpNode, NULL);
 
     groupByNode->outputSchema = outputSchema;
-    groupByNode->outputPipeId = GetFreePipeId();
+    groupByNode->outputPipeId = nextAvailablePipeId++;
 
     groupByNode->groupAtts = orderMaker;
     groupByNode->computeMe = function;
     groupByNode->distinctFunc = query->distinctFunc;
 
-    FreePipeId(inputRelOpNode->outputPipeId);
     groupNameToRelOpNode[finalGroupName] = groupByNode;
 }
 
@@ -189,12 +189,11 @@ void QueryPlan::ApplySum() {
 
     SumNode *sumNode = new SumNode(inputRelOpNode, NULL);
     sumNode->outputSchema = &sumSchema;
-    sumNode->outputPipeId = GetFreePipeId();
+    sumNode->outputPipeId = nextAvailablePipeId++;
 
     sumNode->computeMe = function;
     sumNode->distinctFunc = query->distinctFunc;
 
-    FreePipeId(inputRelOpNode->outputPipeId);
     groupNameToRelOpNode[finalGroupName] = sumNode;
 }
 
@@ -228,13 +227,12 @@ void QueryPlan::ApplyProject() {
     ProjectNode *projectNode = new ProjectNode(inputRelOpNode, NULL);
 
     projectNode->outputSchema = outputSchema;
-    projectNode->outputPipeId = GetFreePipeId();
+    projectNode->outputPipeId = nextAvailablePipeId++;
 
     projectNode->keepMe = keepMe;
     projectNode->numAttsInput = inputSchema->GetNumAtts();
     projectNode->numAttsOutput = outputSchema->GetNumAtts();
 
-    FreePipeId(inputRelOpNode->outputPipeId);
     groupNameToRelOpNode[finalGroupName] = projectNode;
 }
 
@@ -249,13 +247,11 @@ void QueryPlan::ApplyDuplicateRemoval() {
     // Create Distinct RelOp Node.
     DuplicateRemovalNode *duplicateRemovalNode = new DuplicateRemovalNode(inputRelOpNode, NULL);
 
-    duplicateRemovalNode->outputPipeId = GetFreePipeId();
+    duplicateRemovalNode->outputPipeId = nextAvailablePipeId++;
     duplicateRemovalNode->outputSchema = inputRelOpNode->outputSchema;
 
     duplicateRemovalNode->inputSchema = inputRelOpNode->outputSchema;
 
-
-    FreePipeId(inputRelOpNode->outputPipeId);
     groupNameToRelOpNode[finalGroupName] = duplicateRemovalNode;
 }
 
@@ -335,7 +331,7 @@ void QueryPlan::RearrangeJoins(vector<AndList *> *joins, vector<AndList *> *join
 
     vector<int *> permutations;
 
-    heapPermutation(initialPermutation, joins->size(), joins->size(), &permutations);
+    HeapPermutation(initialPermutation, joins->size(), joins->size(), &permutations);
 
     int minI = -1;
     double minIntermediateTuples = DBL_MAX;
@@ -384,7 +380,7 @@ void QueryPlan::RearrangeJoins(vector<AndList *> *joins, vector<AndList *> *join
     }
 }
 
-void heapPermutation(int a[], int size, int n, vector<int *> *permutations) {
+void HeapPermutation(int *a, int size, int n, vector<int *> *permutations) {
     // if size becomes 1 then prints the obtained
     // permutation
     if (size == 1) {
@@ -398,7 +394,7 @@ void heapPermutation(int a[], int size, int n, vector<int *> *permutations) {
     }
 
     for (int i = 0; i < size; i++) {
-        heapPermutation(a, size - 1, n, permutations);
+        HeapPermutation(a, size - 1, n, permutations);
 
         // if size is odd, swap first and last
         // element
@@ -418,20 +414,6 @@ string QueryPlan::GetResultantGroupName() {
         exit(1);
     }
     return groupNameToRelOpNode.begin()->first;
-}
-
-int QueryPlan::GetFreePipeId() {
-    if (freePipeIds.empty()) {
-        return nextAvailablePipeId++;
-    } else {
-        int freeId = *freePipeIds.begin();
-        freePipeIds.erase(freeId);
-        return freeId;
-    }
-}
-
-void QueryPlan::FreePipeId(int pipeId) {
-    freePipeIds.insert(pipeId);
 }
 
 void QueryPlan::Print() {
