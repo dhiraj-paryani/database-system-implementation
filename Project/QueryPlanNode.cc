@@ -3,6 +3,19 @@
 
 #include "QueryPlanNode.h"
 
+RelOpNode::RelOpNode(RelOpNode *child1, RelOpNode *child2) {
+    this->child1 = child1;
+    this->child2 = child2;
+
+    if (this->child1) {
+        this->inputPipeId1 = this->child1->outputPipeId;
+    }
+
+    if (this->child2) {
+        this->inputPipeId2 = this->child2->outputPipeId;
+    }
+}
+
 void RelOpNode :: Print() {
     if (inputPipeId1 != -1) {
         cout << "Input Pipe " << inputPipeId1 << "\n";

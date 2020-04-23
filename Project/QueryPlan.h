@@ -52,7 +52,7 @@ private:
 
     void ApplyProject();
 
-    void PrintQueryPlanPostOrder(RelOpNode *node);
+    static void PrintQueryPlanPostOrder(RelOpNode *node);
 
     int GetFreePipeId();
     void FreePipeId(int pipeId);
@@ -61,8 +61,8 @@ private:
 public:
     QueryPlan(char *catalog_path, Statistics *statistics, Query *query);
     ~QueryPlan();
-    void Print();
 
+    void Print();
 private:
     void MakeQueryPlan();
 };

@@ -16,6 +16,8 @@ public:
     Schema *outputSchema;
     int outputPipeId = -1;
 
+    RelOpNode(RelOpNode *child1, RelOpNode *child2);
+
     virtual void Print();
 };
 
@@ -23,6 +25,8 @@ public:
 class DuplicateRemovalNode : public RelOpNode {
 public:
     Schema *inputSchema;
+
+    DuplicateRemovalNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
 
     void Print();
 };
@@ -34,6 +38,8 @@ public:
     Function *computeMe;
     int distinctFunc;
 
+    GroupByNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
+
     void Print();
 };
 
@@ -43,6 +49,8 @@ public:
     CNF *selOp;
     Record *literal;
 
+    JoinNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
+
     void Print();
 };
 
@@ -51,15 +59,19 @@ class SelectFileNode : public RelOpNode {
 public:
     CNF *selOp;
     Record *literal;
+
+    SelectFileNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
+
     void Print();
 };
 
 
 class SelectPipeNode : public RelOpNode {
 public:
-public:
     CNF *selOp;
     Record *literal;
+
+    SelectPipeNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
 
     void Print();
 };
@@ -69,6 +81,8 @@ public:
     Function *computeMe;
     int distinctFunc;
 
+    SumNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
+
     void Print();
 };
 
@@ -77,6 +91,9 @@ public:
     int *keepMe;
     int numAttsInput;
     int numAttsOutput;
+
+    ProjectNode(RelOpNode *child1, RelOpNode *child2) : RelOpNode(child1, child2) {};
+
     void Print();
 };
 

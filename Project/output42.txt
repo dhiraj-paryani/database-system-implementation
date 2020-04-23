@@ -1,4 +1,5 @@
 TC1
+PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
 Output Pipe 0
@@ -30,6 +31,7 @@ Output Schema:
 
 ***************************************************************************************************************************
 TC2
+PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
 Output Pipe 1
@@ -86,6 +88,7 @@ Output Schema:
 
 ***************************************************************************************************************************
 TC3
+PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
 Output Pipe 1
@@ -136,6 +139,7 @@ CNF:
  *********** 
 SUM operation
 Input Pipe 1
+Output Pipe 0
 Output Schema:
 	Att SUM: DOUBLE
 
@@ -146,6 +150,7 @@ Distinct Function: 0
 
 ***************************************************************************************************************************
 TC4
+PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
 Output Pipe 1
@@ -219,6 +224,7 @@ Output Schema:
 
 ***************************************************************************************************************************
 TC5
+PRINTING TREE POST ORDER: 
  *********** 
 SELECT FILE operation
 Output Pipe 2
