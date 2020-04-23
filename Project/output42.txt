@@ -10,7 +10,7 @@ Output Schema:
 	Att n.n_comment: STRING
 
 SELECTION CNF :
-( Att 1 from left record = Att 0 from literal record (String)) 
+( n.n_name = UNITED STATES ) 
 
  *********** 
 PROJECT operation
@@ -32,7 +32,7 @@ Output Schema:
 	Att n.n_comment: STRING
 
 SELECTION CNF :
-( Att 0 from left record > Att 0 from literal record (Int)) 
+( n.n_nationkey > 5 ) 
 
  *********** 
 SELECT FILE operation
@@ -57,7 +57,7 @@ Output Schema:
 	Att r.r_comment: STRING
 
 CNF: 
-( Att 2 from left record = Att 0 from right record (Int)) 
+( n.n_regionkey = r.r_regionkey ) 
 
  *********** 
 PROJECT operation
@@ -79,7 +79,7 @@ Output Schema:
 	Att n.n_comment: STRING
 
 SELECTION CNF :
-( Att 1 from left record = Att 0 from literal record (String)) 
+( n.n_name = UNITED STATES ) 
 
  *********** 
 SELECT FILE operation
@@ -104,7 +104,7 @@ Output Schema:
 	Att r.r_comment: STRING
 
 CNF: 
-( Att 2 from left record = Att 0 from right record (Int)) 
+( n.n_regionkey = r.r_regionkey ) 
 
  *********** 
 SUM operation
@@ -131,7 +131,7 @@ Output Schema:
 	Att n.n_comment: STRING
 
 SELECTION CNF :
-( Att 1 from left record = Att 0 from literal record (String)) 
+( n.n_name = UNITED STATES ) 
 
  *********** 
 SELECT FILE operation
@@ -156,7 +156,7 @@ Output Schema:
 	Att r.r_comment: STRING
 
 CNF: 
-( Att 2 from left record = Att 0 from right record (Int)) 
+( n.n_regionkey = r.r_regionkey ) 
 
  *********** 
 GROUP BY operation
@@ -167,8 +167,7 @@ Output Schema:
 	Att n.n_regionkey: INT
 
 GROUPING ON
-NumAtts =     1
-  0:     2 Int
+n.n_regionkey
 
 FUNCTION
 (n.n_regionkey)
@@ -195,7 +194,7 @@ Output Schema:
 	Att n.n_comment: STRING
 
 SELECTION CNF :
-( Att 0 from left record > Att 0 from literal record (Int)) 
+( n.n_nationkey > 10 ) 
 
  *********** 
 SELECT FILE operation
@@ -220,7 +219,7 @@ Output Schema:
 	Att r.r_comment: STRING
 
 CNF: 
-( Att 2 from left record = Att 0 from right record (Int)) 
+( n.n_regionkey = r.r_regionkey ) 
 
  *********** 
 SELECT FILE operation
@@ -258,7 +257,7 @@ Output Schema:
 	Att c.c_comment: STRING
 
 CNF: 
-( Att 0 from left record = Att 3 from right record (Int)) 
+( n.n_nationkey = c.c_nationkey ) 
 
  *********** 
 GROUP BY operation
@@ -269,8 +268,7 @@ Output Schema:
 	Att r.r_regionkey: INT
 
 GROUPING ON
-NumAtts =     1
-  0:     4 Int
+r.r_regionkey
 
 FUNCTION
 ((n.n_nationkey + r.r_regionkey))

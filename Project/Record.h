@@ -74,6 +74,8 @@ public:
 	// that the schema also be given so that the record can be interpreted
 	void Print (Schema *mySchema);
 
+    void PrintAttValue(int value, Type type);
+
 	std::string ToString(Schema *mySchema);
 
     std::string ToString(OrderMaker *mySchema);

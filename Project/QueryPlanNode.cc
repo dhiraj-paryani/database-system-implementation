@@ -49,7 +49,7 @@ void GroupByNode :: Print() {
 
     if(groupAtts) {
         cout << "GROUPING ON" << "\n";
-        groupAtts->Print();
+        groupAtts->Print(child1->outputSchema);
         cout << "\n";
     }
 
@@ -70,7 +70,7 @@ void JoinNode :: Print() {
 
     cout << "CNF: " << "\n";
     if (selOp) {
-        selOp->Print();
+        selOp->Print(child1->outputSchema, child2->outputSchema, literal);
         cout << "\n";
     }
 
@@ -84,7 +84,7 @@ void SelectFileNode :: Print() {
 
     if (selOp) {
         cout << "SELECTION CNF :" << "\n";
-        selOp->Print();
+        selOp->Print(outputSchema, NULL, literal);
         cout << "\n";
     }
 }
@@ -97,7 +97,7 @@ void SelectPipeNode :: Print() {
 
     if (selOp) {
         cout << "SELECTION CNF :" << "\n";
-        selOp->Print();
+        selOp->Print(child1->outputSchema, NULL, literal);
         cout << "\n";
     }
 }

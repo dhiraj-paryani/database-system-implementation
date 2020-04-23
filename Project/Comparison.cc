@@ -62,6 +62,33 @@ void Comparison :: Print () {
 		cout << "(String)";
 }
 
+void Comparison :: Print (Schema *leftSchema, Schema *rightSchema, Record *literal) {
+    if (operand1 == Left)
+        cout << leftSchema->GetAtts()[whichAtt1].name << " ";
+    else if (operand1 == Right)
+        cout << rightSchema->GetAtts()[whichAtt1].name << " ";
+    else {
+        literal->PrintAttValue(whichAtt1, attType);
+        cout << " ";
+    }
+
+
+    if (op == LessThan)
+        cout << "< ";
+    else if (op == GreaterThan)
+        cout << "> ";
+    else
+        cout << "= ";
+
+    if (operand2 == Left)
+        cout << leftSchema->GetAtts()[whichAtt2].name << " ";
+    else if (operand2 == Right)
+        cout << rightSchema->GetAtts()[whichAtt2].name << " ";
+    else {
+        literal->PrintAttValue(whichAtt2, attType);
+        cout << " ";
+    }
+}
 
 
 
@@ -146,6 +173,20 @@ void OrderMaker :: Print () {
 			printf("String\n");
 	}
 }
+
+// print to the screen with att names
+void OrderMaker :: Print (Schema *schema) {
+    if (numAtts < 1) return;
+
+    Attribute* schemaAtts = schema->GetAtts();
+    cout << schemaAtts[whichAtts[0]].name;
+    for (int i = 1; i < numAtts; i++)
+    {
+        cout << ", " << schemaAtts[whichAtts[i]].name;
+    }
+    cout << "\n";
+}
+
 
 std::string OrderMaker :: ToString() {
     string str;
@@ -307,6 +348,23 @@ void CNF :: Print () {
 		else
 			cout << "\n";
 	}
+}
+
+void CNF :: Print (Schema *leftSchema, Schema *rightSchema, Record *literal) {
+    for (int i = 0; i < numAnds; i++) {
+
+        cout << "( ";
+        for (int j = 0; j < orLens[i]; j++) {
+            orList[i][j].Print (leftSchema, rightSchema, literal);
+            if (j < orLens[i] - 1)
+                cout << " OR ";
+        }
+        cout << ") ";
+        if (i < numAnds - 1)
+            cout << " AND\n";
+        else
+            cout << "\n";
+    }
 }
 
 // this is a helper routine that writes out another field for the literal record and its schema

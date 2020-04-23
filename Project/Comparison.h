@@ -9,6 +9,7 @@
 
 #include <iostream>
 
+class Schema;
 
 // This stores an individual comparison that is part of a CNF
 class Comparison {
@@ -32,12 +33,12 @@ public:
 	//copy constructor
 	Comparison(const Comparison &copyMe);
 
-	// print to the screen
+    // print the comparison structure to the screen
 	void Print ();
+
+    // print the comparison
+    void Print (Schema *leftSchema, Schema *rightSchema, Record *literal);
 };
-
-
-class Schema;
 
 // This structure encapsulates a sort order for records
 class OrderMaker {
@@ -69,6 +70,9 @@ public:
     Type *GetAttTypes();
 	// print to the screen
 	void Print ();
+
+    // print to the screen with att names
+    void Print (Schema *schema);
 
 	std::string ToString();
 
@@ -105,6 +109,9 @@ public:
 
 	// print the comparison structure to the screen
 	void Print ();
+
+	// print the comparison
+	void Print (Schema *leftSchema, Schema *rightSchema, Record *literal);
 
         // this takes a parse tree for a CNF and converts it into a 2-D
         // matrix storing the same CNF expression.  This function is applicable
