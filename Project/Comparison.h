@@ -10,6 +10,7 @@
 #include <iostream>
 
 class Schema;
+class Record;
 
 // This stores an individual comparison that is part of a CNF
 class Comparison {
@@ -80,8 +81,6 @@ public:
 
     bool isEmpty();
 };
-
-class Record;
 
 // This structure stores a CNF expression that is to be evaluated
 // during query execution

@@ -102,7 +102,8 @@ void *DuplicateRemovalThreadMethod(void *threadData) {
     BigQ(*my_data->inputPipe, bigQOutputPipe, orderMaker, my_data->runLength);
 
     ComparisonEngine comparisonEngine;
-    int i = 0; Record rec[2];
+    int i = 0;
+    Record rec[2];
     if (bigQOutputPipe.Remove(&rec[(i++) % 2])) {
         while (bigQOutputPipe.Remove(&rec[i % 2])) {
             if (comparisonEngine.Compare(&rec[(i + 1) % 2], &rec[i % 2], &orderMaker) != 0) {
@@ -134,12 +135,13 @@ void *WriteOutThreadMethod(void *threadData) {
     }
 }
 
-void Sum::Run(Pipe &inPipe, Pipe &outPipe, Function &computeMe) {
+void Sum::Run(Pipe &inPipe, Pipe &outPipe, Function &computeMe, int distinctFunc) {
     SumData *my_data = new SumData();
 
     my_data->inputPipe = &inPipe;
     my_data->outputPipe = &outPipe;
     my_data->computeMe = &computeMe;
+    my_data->distinctFunc = distinctFunc;
 
     pthread_create(&thread, nullptr, SumThreadMethod, (void *) my_data);
 }
@@ -147,20 +149,59 @@ void Sum::Run(Pipe &inPipe, Pipe &outPipe, Function &computeMe) {
 void *SumThreadMethod(void *threadData) {
     SumData *my_data = (SumData *) threadData;
 
-    int intVal = 0; double doubleVal = 0;
+    if (my_data->distinctFunc) {
+        SumDistinct(my_data->inputPipe, my_data->outputPipe, my_data->computeMe);
+    } else {
+        SumAll(my_data->inputPipe, my_data->outputPipe, my_data->computeMe);
+    }
+
+    my_data->outputPipe->ShutDown();
+}
+
+void SumAll(Pipe *inputPipe, Pipe *outputPipe, Function *computeMe) {
+    int intVal = 0;
+    double doubleVal = 0;
     double sum = 0;
 
     Record temp;
-    while (my_data->inputPipe->Remove(&temp)) {
-        intVal = 0; doubleVal = 0;
-        my_data->computeMe->Apply(temp, intVal, doubleVal);
+    while (inputPipe->Remove(&temp)) {
+        intVal = 0;
+        doubleVal = 0;
+        computeMe->Apply(temp, intVal, doubleVal);
         sum += (intVal + doubleVal);
     }
 
     temp.ComposeRecord(&sumSchema, (std::to_string(sum) + "|").c_str());
-    my_data->outputPipe->Insert(&temp);
+    outputPipe->Insert(&temp);
+}
 
-    my_data->outputPipe->ShutDown();
+void SumDistinct(Pipe *inputPipe, Pipe *outputPipe, Function *computeMe) {
+    int intVal = 0;
+    double doubleVal = 0;
+
+    DuplicateRemoval dr;
+    Pipe drInPipe(PIPE_BUFFER_SIZE), drOutPipe(PIPE_BUFFER_SIZE);
+    dr.Run(drInPipe, drOutPipe, sumSchema);
+
+    Record *temp = new Record();
+    while (inputPipe->Remove(temp)) {
+        intVal = 0;
+        doubleVal = 0;
+        computeMe->Apply(*temp, intVal, doubleVal);
+        temp->ComposeRecord(&sumSchema, (std::to_string(intVal + doubleVal) + "|").c_str());
+        drInPipe.Insert(temp);
+        temp = new Record();
+    }
+    drInPipe.ShutDown();
+
+    double sum = 0;
+    while (drOutPipe.Remove(temp)) {
+        sum += *((double *) &(temp->bits[1]));
+    }
+    dr.WaitUntilDone();
+
+    temp->ComposeRecord(&sumSchema, (std::to_string(sum) + "|").c_str());
+    outputPipe->Insert(temp);
 }
 
 void Join::Run(Pipe &inPipeL, Pipe &inPipeR, Pipe &outPipe, CNF &selOp, Record &literal) {
@@ -189,7 +230,7 @@ void *JoinThreadMethod(void *threadData) {
         BigQ(*my_data->leftInputPipe, leftBigQOutputPipe, leftOrderMaker, my_data->runLength);
         BigQ(*my_data->rightInputPipe, rightBigQOutputPipe, rightOrderMaker, my_data->runLength);
         JoinUsingSortMerge(&leftBigQOutputPipe, &rightBigQOutputPipe, my_data->outputPipe,
-                &leftOrderMaker, &rightOrderMaker);
+                           &leftOrderMaker, &rightOrderMaker);
     }
 
     my_data->outputPipe->ShutDown();
@@ -358,13 +399,14 @@ void JoinUsingSortMerge(Pipe *leftInputPipe, Pipe *rightInputPipe, Pipe *outputP
     }
 }
 
-void GroupBy::Run(Pipe &inPipe, Pipe &outPipe, OrderMaker &groupAtts, Function &computeMe) {
+void GroupBy::Run(Pipe &inPipe, Pipe &outPipe, OrderMaker &groupAtts, Function &computeMe, int distinctFunc) {
     GroupByData *my_data = new GroupByData();
     my_data->inputPipe = &inPipe;
     my_data->outputPipe = &outPipe;
     my_data->groupAtts = &groupAtts;
     my_data->computeMe = &computeMe;
     my_data->runLength = runLength;
+    my_data->distinctFunc = distinctFunc;
 
     pthread_create(&thread, nullptr, GroupByThreadMethod, (void *) my_data);
 }
@@ -375,45 +417,50 @@ void *GroupByThreadMethod(void *threadData) {
     Pipe bigQOutputPipe(PIPE_BUFFER_SIZE);
     BigQ(*my_data->inputPipe, bigQOutputPipe, *my_data->groupAtts, my_data->runLength);
 
-    double sum = 0;
-    int intVal = 0;
-    double doubleVal = 0;
+    Pipe sumInPipe(PIPE_BUFFER_SIZE), sumOutPipe(PIPE_BUFFER_SIZE);
+    Sum sum;
+    sum.Run(sumInPipe, sumOutPipe, *my_data->computeMe, my_data->distinctFunc);
 
     int i = 0;
     Record recs[2];
+    Record *temp = new Record();
 
     ComparisonEngine comparisonEngine;
     if (bigQOutputPipe.Remove(&recs[i % 2])) {
-        my_data->computeMe->Apply(recs[i % 2], intVal, doubleVal);
-        sum += (intVal + doubleVal);
+        temp->Copy(&recs[i % 2]);
+        sumInPipe.Insert(temp);
+        temp = new Record();
         i++;
         while (bigQOutputPipe.Remove(&recs[i % 2])) {
             if (comparisonEngine.Compare(&recs[(i + 1) % 2], &recs[i % 2], my_data->groupAtts) != 0) {
-                AddGroupByRecordToPipe(my_data->outputPipe, &recs[(i + 1) % 2], sum, my_data->groupAtts);
-                intVal = 0;
-                doubleVal = 0;
-                sum = 0;
+                sumInPipe.ShutDown();
+                sumOutPipe.Remove(temp);
+                sum.WaitUntilDone();
+                AddGroupByRecordToPipe(my_data->outputPipe, &recs[(i + 1) % 2], temp, my_data->groupAtts);
+                sumInPipe = *(new Pipe(PIPE_BUFFER_SIZE));
+                sumOutPipe = *(new Pipe(PIPE_BUFFER_SIZE));
+                sum.Run(sumInPipe, sumOutPipe, *my_data->computeMe, my_data->distinctFunc);
             }
-            my_data->computeMe->Apply(recs[i % 2], intVal, doubleVal);
-            sum += (intVal + doubleVal);
-            intVal = 0;
-            doubleVal = 0;
+            temp->Copy(&recs[i % 2]);
+            sumInPipe.Insert(temp);
+            temp = new Record();
             i++;
         }
-        AddGroupByRecordToPipe(my_data->outputPipe, &recs[(i + 1) % 2], sum, my_data->groupAtts);
+        sumInPipe.ShutDown();
+        sumOutPipe.Remove(temp);
+        sum.WaitUntilDone();
+        AddGroupByRecordToPipe(my_data->outputPipe, &recs[(i + 1) % 2], temp, my_data->groupAtts);
     }
+
     my_data->outputPipe->ShutDown();
 }
 
-void AddGroupByRecordToPipe(Pipe *outputPipe, Record *tableRecord, double sum, OrderMaker *order) {
-    Record sumRecord;
-    sumRecord.ComposeRecord(&sumSchema, (std::to_string(sum) + "|").c_str());
-
+void AddGroupByRecordToPipe(Pipe *outputPipe, Record *tableRecord, Record *sumRecord, OrderMaker *order) {
     Schema groupAttributesSchema(*order);
     tableRecord->Project(order->GetAtts(), order->GetNumAtts());
 
     Record groupRecord;
-    groupRecord.MergeRecords(&sumRecord, tableRecord);
+    groupRecord.MergeRecords(sumRecord, tableRecord);
 
     outputPipe->Insert(&groupRecord);
 }

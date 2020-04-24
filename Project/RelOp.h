@@ -111,13 +111,16 @@ struct SumData {
     Pipe *inputPipe;
     Pipe *outputPipe;
     Function *computeMe;
+    int distinctFunc;
 };
 
 void *SumThreadMethod(void *threadData);
+    void SumAll(Pipe *inPipe, Pipe *outPipe, Function *computeMe);
+    void SumDistinct(Pipe *inPipe, Pipe *outPipe, Function *computeMe);
 
 class Sum : public RelationalOp {
 public:
-    void Run(Pipe &inPipe, Pipe &outPipe, Function &computeMe);
+    void Run(Pipe &inPipe, Pipe &outPipe, Function &computeMe, int distinctFunc);
 };
 
 struct GroupByData {
@@ -125,16 +128,18 @@ struct GroupByData {
     Pipe *outputPipe;
     OrderMaker *groupAtts;
     Function *computeMe;
+    int distinctFunc;
+
     int runLength;
 };
 
 void *GroupByThreadMethod(void *threadData);
 
-void AddGroupByRecordToPipe(Pipe *outputPipe, Record *tableRecord, double sum, OrderMaker *order);
+void AddGroupByRecordToPipe(Pipe *outputPipe, Record *tableRecord, Record *sumRecord, OrderMaker *order);
 
 class GroupBy : public RelationalOp {
 public:
-    void Run(Pipe &inPipe, Pipe &outPipe, OrderMaker &groupAtts, Function &computeMe);
+    void Run(Pipe &inPipe, Pipe &outPipe, OrderMaker &groupAtts, Function &computeMe, int distinctFunc);
 };
 
 struct WriteOutData {
