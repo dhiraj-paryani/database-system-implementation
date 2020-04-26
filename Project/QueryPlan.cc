@@ -1,7 +1,7 @@
 #include "QueryPlan.h"
 
-QueryPlan::QueryPlan(char *catalog_path, Statistics *statistics, Query *query) {
-    this->catalogPath = catalog_path;
+QueryPlan::QueryPlan(unordered_map<char *, DBFile *> *dbFileMap, Statistics *statistics, Query *query) {
+    this->dbFileMap = dbFileMap;
     this->statistics = statistics;
     this->query = query;
 
@@ -48,11 +48,20 @@ void QueryPlan::LoadAllTables() {
 
     while (tableList) {
         // Create SelectFileNode RelOp.
-        SelectFileNode *selectFileNode = new SelectFileNode(NULL, NULL);
+        SelectFilePlanNode *selectFileNode = new SelectFilePlanNode(NULL, NULL);
 
         // Create Schema with aliased attributes.
-        Schema *schema = new Schema(catalogPath, tableList->tableName);
+        PathConfig *pathConfig = PathConfig::GetInstance();
+        Schema *schema = new Schema(pathConfig->GetSchemaPath(tableList->tableName), tableList->tableName);
         schema->AliasAttributes(tableList->aliasAs);
+
+        if (dbFileMap) {
+            if (dbFileMap->find(tableList->tableName) == dbFileMap->end()) {
+                cerr << "ERROR: DB File is not open for table " << tableList->tableName << ".\n";
+                exit(1);
+            }
+            selectFileNode->dbFile = dbFileMap->at(tableList->tableName);
+        }
 
         selectFileNode->outputSchema = schema;
         selectFileNode->outputPipeId = nextAvailablePipeId++;
@@ -68,7 +77,7 @@ void QueryPlan::ApplySelection(unordered_map<string, AndList *> *tableSelectionA
     for (auto const &item : *tableSelectionAndList) {
         string relName = item.first;
         string groupName = relNameToGroupNameMap[relName];
-        SelectFileNode *inputRelOpNode = dynamic_cast<SelectFileNode *>(groupNameToRelOpNode[groupName]);
+        SelectFilePlanNode *inputRelOpNode = dynamic_cast<SelectFilePlanNode *>(groupNameToRelOpNode[groupName]);
 
         // Create CNF
         AndList *andList = item.second;
@@ -81,7 +90,7 @@ void QueryPlan::ApplySelection(unordered_map<string, AndList *> *tableSelectionA
             inputRelOpNode->literal = literal;
         } else {
             // Create SelectPipe
-            SelectPipeNode *selectPipeNode = new SelectPipeNode(inputRelOpNode, NULL);
+            SelectPipePlanNode *selectPipeNode = new SelectPipePlanNode(inputRelOpNode, NULL);
 
             selectPipeNode->outputSchema = inputRelOpNode->outputSchema;
             selectPipeNode->outputPipeId = nextAvailablePipeId++;
@@ -105,19 +114,19 @@ void QueryPlan::ApplyJoins(vector<AndList *> *joins) {
         string leftOperandName = string(orList->left->left->value);
         string tableName1 = leftOperandName.substr(0, leftOperandName.find('.'));
         string groupName1 = relNameToGroupNameMap[tableName1];
-        RelOpNode *inputRelOp1 = groupNameToRelOpNode[groupName1];
+        RelOpPlanNode *inputRelOp1 = groupNameToRelOpNode[groupName1];
 
         string rightOperandName = string(orList->left->right->value);
         string tableName2 = rightOperandName.substr(0, rightOperandName.find('.'));
         string groupName2 = relNameToGroupNameMap[tableName2];
-        RelOpNode *inputRelOp2 = groupNameToRelOpNode[groupName2];
+        RelOpPlanNode *inputRelOp2 = groupNameToRelOpNode[groupName2];
 
         // constructs CNF predicate
         CNF *cnf = new CNF();
         Record *literal = new Record();
         cnf->GrowFromParseTree(andList, inputRelOp1->outputSchema, inputRelOp2->outputSchema, *literal);
 
-        JoinNode *joinNode = new JoinNode(inputRelOp1, inputRelOp2);
+        JoinPlanNode *joinNode = new JoinPlanNode(inputRelOp1, inputRelOp2);
 
         Schema *outputSchema = new Schema(inputRelOp1->outputSchema, inputRelOp2->outputSchema);
         joinNode->outputSchema = outputSchema;
@@ -144,7 +153,7 @@ void QueryPlan::ApplyGroupBy() {
 
     // Get Resultant RelOp Node.
     string finalGroupName = GetResultantGroupName();
-    RelOpNode *inputRelOpNode = groupNameToRelOpNode[finalGroupName];
+    RelOpPlanNode *inputRelOpNode = groupNameToRelOpNode[finalGroupName];
 
     Schema *groupByInputSchema = inputRelOpNode->outputSchema;
 
@@ -156,13 +165,13 @@ void QueryPlan::ApplyGroupBy() {
     OrderMaker *orderMaker = new OrderMaker(groupByInputSchema, nameList);
 
     // Build Schema and keepMe From nameList
-    int *keepMe;
-    Schema *groupedAttsSchema = new Schema(groupByInputSchema, nameList, keepMe);
+    vector<int> keepMeVector;
+    Schema *groupedAttsSchema = new Schema(groupByInputSchema, nameList, &keepMeVector);
 
     Schema *outputSchema = new Schema(&sumSchema, groupedAttsSchema);
 
     // Create Group by Node.
-    GroupByNode *groupByNode = new GroupByNode(inputRelOpNode, NULL);
+    GroupByPlanNode *groupByNode = new GroupByPlanNode(inputRelOpNode, NULL);
 
     groupByNode->outputSchema = outputSchema;
     groupByNode->outputPipeId = nextAvailablePipeId++;
@@ -181,13 +190,13 @@ void QueryPlan::ApplySum() {
 
     // Get Resultant RelOp Node.
     string finalGroupName = GetResultantGroupName();
-    RelOpNode *inputRelOpNode = groupNameToRelOpNode[finalGroupName];
+    RelOpPlanNode *inputRelOpNode = groupNameToRelOpNode[finalGroupName];
 
     // Build Compute function.
     Function *function = new Function();
     function->GrowFromParseTree(query->finalFunction, *inputRelOpNode->outputSchema);
 
-    SumNode *sumNode = new SumNode(inputRelOpNode, NULL);
+    SumPlanNode *sumNode = new SumPlanNode(inputRelOpNode, NULL);
     sumNode->outputSchema = &sumSchema;
     sumNode->outputPipeId = nextAvailablePipeId++;
 
@@ -212,19 +221,22 @@ void QueryPlan::ApplyProject() {
 
     // Get Resultant RelOp Node.
     string finalGroupName = GetResultantGroupName();
-    RelOpNode *inputRelOpNode = groupNameToRelOpNode[finalGroupName];
+    RelOpPlanNode *inputRelOpNode = groupNameToRelOpNode[finalGroupName];
 
     Schema *inputSchema = inputRelOpNode->outputSchema;
 
-    int *keepMe;
-    Schema *outputSchema = new Schema(inputSchema, attsToSelect, keepMe);
+    vector<int> *keepMeVector = new vector<int>;
+    Schema *outputSchema = new Schema(inputSchema, attsToSelect, keepMeVector);
+
+    int *keepMe = new int();
+    keepMe = &keepMeVector->at(0);
 
     if (inputSchema->GetNumAtts() == outputSchema->GetNumAtts()) {
         return;
     }
 
     // Create Project RelOp Node
-    ProjectNode *projectNode = new ProjectNode(inputRelOpNode, NULL);
+    ProjectPlanNode *projectNode = new ProjectPlanNode(inputRelOpNode, NULL);
 
     projectNode->outputSchema = outputSchema;
     projectNode->outputPipeId = nextAvailablePipeId++;
@@ -242,10 +254,10 @@ void QueryPlan::ApplyDuplicateRemoval() {
 
     // Get Resultant RelOp Node.
     string finalGroupName = GetResultantGroupName();
-    RelOpNode *inputRelOpNode = groupNameToRelOpNode[finalGroupName];
+    RelOpPlanNode *inputRelOpNode = groupNameToRelOpNode[finalGroupName];
 
     // Create Distinct RelOp Node.
-    DuplicateRemovalNode *duplicateRemovalNode = new DuplicateRemovalNode(inputRelOpNode, NULL);
+    DuplicateRemovalPlanNode *duplicateRemovalNode = new DuplicateRemovalPlanNode(inputRelOpNode, NULL);
 
     duplicateRemovalNode->outputPipeId = nextAvailablePipeId++;
     duplicateRemovalNode->outputSchema = inputRelOpNode->outputSchema;
@@ -416,12 +428,16 @@ string QueryPlan::GetResultantGroupName() {
     return groupNameToRelOpNode.begin()->first;
 }
 
+RelOpPlanNode *QueryPlan::GetQueryPlan() {
+    return groupNameToRelOpNode[GetResultantGroupName()];
+}
+
 void QueryPlan::Print() {
     cout << "PRINTING TREE POST ORDER: " << "\n";
     PrintQueryPlanPostOrder(groupNameToRelOpNode[GetResultantGroupName()]);
 }
 
-void QueryPlan::PrintQueryPlanPostOrder(RelOpNode *node) {
+void QueryPlan::PrintQueryPlanPostOrder(RelOpPlanNode *node) {
     if (node == nullptr)
         return;
 

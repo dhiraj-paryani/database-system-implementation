@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "../QueryPlan.h"
-#include "../QueryPlanNode.h"
+#include "RelOpPlanNode.h"
 
 #include <vector>
 

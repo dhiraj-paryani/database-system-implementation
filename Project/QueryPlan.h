@@ -8,9 +8,11 @@
 #include "Statistics.h"
 #include "Schema.h"
 #include "Function.h"
-#include "QueryPlanNode.h"
+#include "RelOpPlanNode.h"
 #include "Comparison.h"
 #include "RelOp.h"
+#include "PathConfig.h"
+#include "DBFile.h"
 
 void HeapPermutation(int *a, int size, int n, vector<int *> *permutations);
 
@@ -27,11 +29,11 @@ struct Query {
 
 class QueryPlan {
 private:
-    char *catalogPath;
+    unordered_map<char *, DBFile *> *dbFileMap;
     Query *query;
     Statistics *statistics;
 
-    unordered_map<string, RelOpNode *> groupNameToRelOpNode;
+    unordered_map<string, RelOpPlanNode *> groupNameToRelOpNode;
     unordered_map<string, string> relNameToGroupNameMap;
 
     int nextAvailablePipeId = 1;
@@ -54,14 +56,16 @@ private:
 
     void ApplyProject();
 
-    static void PrintQueryPlanPostOrder(RelOpNode *node);
+    static void PrintQueryPlanPostOrder(RelOpPlanNode *node);
 
     string GetResultantGroupName();
 
 public:
-    QueryPlan(char *catalog_path, Statistics *statistics, Query *query);
+    QueryPlan(unordered_map<char *, DBFile *> *dbFileMap, Statistics *statistics, Query *query);
 
     ~QueryPlan();
+
+    RelOpPlanNode *GetQueryPlan();
 
     void Print();
 

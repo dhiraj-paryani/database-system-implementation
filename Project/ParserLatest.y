@@ -12,6 +12,12 @@
 	extern "C" void yyerror(char *s);
   
 	// these data structures hold the result of the parsing
+	QueryType queryType; // type of query
+	OutputType outputType;
+	struct NameList *createAtts; // attributes in create query.
+	struct NameList *sortAtts; // sort attributes in sorted file creation.
+	FileType fileType; // HEAP or SORTED file inside create operation.
+	char *fileName; // load file name given in Insert query.
 	struct FuncOperator *finalFunction; // the aggregate function (NULL if no agg)
 	struct TableList *tables; // the list of tables and aliases in the query
 	struct AndList *boolean; // the predicate in the WHERE clause
@@ -40,16 +46,31 @@
 %token <actualChars> Float
 %token <actualChars> Int
 %token <actualChars> String
-%token SELECT
-%token GROUP 
-%token DISTINCT
-%token BY
+%token CREATE_TOKEN
+%token INSERT_TOKEN
+%token DROP_TOKEN
+%token SELECT_TOKEN
+%token TABLE
 %token FROM
 %token WHERE
+%token INTO
 %token SUM
-%token AS
+%token GROUP
 %token AND
+%token DISTINCT
+%token BY
 %token OR
+%token AS
+%token ON
+%token HEAP_TOKEN
+%token SORTED_TOKEN
+%token INTEGER_TOKEN
+%token DOUBLE_TOKEN
+%token STRING_TOKEN
+%token SET_TOKEN
+%token OUTPUT
+%token STDOUT
+%token NONE
 
 %type <myOrList> OrList
 %type <myAndList> AndList
@@ -58,9 +79,9 @@
 %type <whichOne> Op 
 %type <myComparison> BoolComp
 %type <myComparison> Condition
-%type <myTables> Tables
+%type <myTables> Tables Table
 %type <myBoolOperand> Literal
-%type <myNames> Atts
+%type <myNames> Atts AttsWithType
 
 %start SQL
 
@@ -74,15 +95,64 @@
 
 %%
 
-SQL: SELECT WhatIWant FROM Tables WHERE AndList
+SQL: SET_TOKEN OUTPUT STDOUT
 {
+	queryType = SET;
+	outputType = STD_OUT;
+}
+
+| SET_TOKEN OUTPUT NONE {
+	queryType = SET;
+	outputType = NO_OUT;
+}
+
+| SET_TOKEN OUTPUT String {
+	queryType = SET;
+	outputType = STD_OUT;
+	fileName = $3;
+}
+
+| CREATE_TOKEN TABLE Table '('AttsWithType')' AS HEAP_TOKEN
+{
+	queryType = CREATE;
+	tables = $3;
+	createAtts = $5;
+	fileType = HEAP;
+}
+
+| CREATE_TOKEN TABLE Table '('AttsWithType')' AS SORTED_TOKEN ON Atts
+{
+	queryType = CREATE;
+	tables = $3;
+        createAtts = $5;
+	sortAtts = $10;
+	fileType = SORTED;
+}
+
+| INSERT_TOKEN String INTO Table
+{
+	queryType = INSERT;
+	fileName = $2;
 	tables = $4;
-	boolean = $6;	
+}
+
+| DROP_TOKEN TABLE Table
+{
+	queryType = DROP;
+	tables = $3;
+}
+
+| SELECT_TOKEN WhatIWant FROM Tables WHERE AndList
+{
+	queryType = SELECT;
+	tables = $4;
+	boolean = $6;
 	groupingAtts = NULL;
 }
 
-| SELECT WhatIWant FROM Tables WHERE AndList GROUP BY Atts
+| SELECT_TOKEN WhatIWant FROM Tables WHERE AndList GROUP BY Atts
 {
+	queryType = SELECT;
 	tables = $4;
 	boolean = $6;	
 	groupingAtts = $9;
@@ -138,7 +208,51 @@ Atts: Name
 	$$ = (struct NameList *) malloc (sizeof (struct NameList));
 	$$->name = $3;
 	$$->next = $1;
+};
+
+AttsWithType:
+| Name INTEGER_TOKEN
+{
+	$$ = (struct NameList *) malloc (sizeof (struct NameList));
+	$$->name = $1;
+	$$->type = INT;
+	$$->next = NULL;
 }
+| Name DOUBLE_TOKEN
+{
+	$$ = (struct NameList *) malloc (sizeof (struct NameList));
+	$$->name = $1;
+	$$->type = DOUBLE;
+	$$->next = NULL;
+}
+| Name STRING_TOKEN
+{
+	$$ = (struct NameList *) malloc (sizeof (struct NameList));
+	$$->name = $1;
+	$$->type = STRING;
+	$$->next = NULL;
+}
+| Name INTEGER_TOKEN ',' AttsWithType
+{
+	$$ = (struct NameList *) malloc (sizeof (struct NameList));
+	$$->name = $1;
+	$$->type = INT;
+	$$->next = $4;
+}
+| Name DOUBLE_TOKEN ',' AttsWithType
+{
+	$$ = (struct NameList *) malloc (sizeof (struct NameList));
+	$$->name = $1;
+	$$->type = DOUBLE;
+	$$->next = $4;
+}
+| Name STRING_TOKEN ',' AttsWithType
+{
+	$$ = (struct NameList *) malloc (sizeof (struct NameList));
+	$$->name = $1;
+	$$->type = STRING;
+	$$->next = $4;
+};
 
 Tables: Name AS Name 
 {
@@ -154,9 +268,15 @@ Tables: Name AS Name
 	$$->tableName = $3;
 	$$->aliasAs = $5;
 	$$->next = $1;
-}
+};
 
-
+Table: Name
+{
+	$$ = (struct TableList *) malloc (sizeof (struct TableList));
+	$$->tableName = $1;
+	$$->aliasAs = NULL;
+	$$->next = NULL;
+};
 
 CompoundExp: SimpleExp Op CompoundExp
 {

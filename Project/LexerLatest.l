@@ -35,11 +35,21 @@ void yyerror(char*s);
 
 %%
 
-"SELECT"		return(SELECT);
+"CREATE"        return(CREATE_TOKEN);
+
+"INSERT"        return(INSERT_TOKEN);
+
+"DROP"          return(DROP_TOKEN);
+
+"SELECT"		return(SELECT_TOKEN);
+
+"TABLE"         return(TABLE);
 
 "FROM"			return(FROM);
 
 "WHERE"			return(WHERE);
+
+"INTO"          return(INTO);
 
 "SUM"			return(SUM);
 
@@ -55,7 +65,27 @@ void yyerror(char*s);
 
 "AS"			return(AS);
 
-"("			return('(');
+"ON"			return(ON);
+
+"HEAP"          return(HEAP_TOKEN);
+
+"SORTED"        return(SORTED_TOKEN);
+
+"INTEGER"       return(INTEGER_TOKEN);
+
+"DOUBLE"        return(DOUBLE_TOKEN);
+
+"STRING"        return(STRING_TOKEN);
+
+"SET"           return(SET_TOKEN);
+
+"OUTPUT"        return(OUTPUT);
+
+"STDOUT"        return(STDOUT);
+
+"NONE"          return(NONE);
+
+"("             return('(');
 
 "<"                     return('<');
 

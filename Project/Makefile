@@ -7,6 +7,9 @@ ifdef linux
 tag = -n
 endif
 
+test.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o Statistics.o QueryRunner.o QueryPlan.o RelOpPlanNode.o PathConfig.o Database.o test.o y.tab.latest.o lex.yy.latest.o
+	$(CC) -o test.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o Statistics.o QueryRunner.o QueryPlan.o RelOpPlanNode.o PathConfig.o Database.o test.o y.tab.o lex.yy.o -ll -lpthread
+
 a42.out: y.tab.latest.o lex.yy.latest.o QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o a42-test.o
 	$(CC) -o a42.out y.tab.o lex.yy.o QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o a42-test.o -ll
 
@@ -42,6 +45,9 @@ gTestStatistics.out: Statistics.o y.tab.o lex.yy.o StatisticsGTests.o
 
 gTestQueryPlan.out: QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o QueryPlanGTests.o
 	$(CC) -o gTestQueryPlan.out QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o QueryPlanGTests.o -ll -lgtest
+
+test.o: test.cc
+	$(CC) -g -c test.cc
 
 a42-test.o: a42-test.cc
 	$(CC) -g -c a42-test.cc
@@ -79,11 +85,20 @@ StatisticsGTests.o: gtests/StatisticsGTests.cc
 QueryPlanGTests.o: gtests/QueryPlanGTests.cc
 	$(CC) -g -c gtests/QueryPlanGTests.cc
 
+QueryRunner.o: QueryRunner.cc
+	$(CC) -g -c QueryRunner.cc
+
 QueryPlan.o: QueryPlan.cc
 	$(CC) -g -c QueryPlan.cc
 
-QueryPlanNode.O: QueryPlanNode.cc
-	$(CC) -g -c QueryPlanNode.cc
+RelOpPlanNode.o: RelOpPlanNode.cc
+	$(CC) -g -c RelOpPlanNode.cc
+
+Database.o: Database.cc
+	$(CC) -g -c Database.cc
+
+PathConfig.o: PathConfig.cc
+	$(CC) -g -c PathConfig.cc
 
 Statistics.o: Statistics.cc
 	$(CC) -g -c Statistics.cc

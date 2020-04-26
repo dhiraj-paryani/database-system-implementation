@@ -5,20 +5,60 @@ set(CMAKE_CXX_STANDARD 11)
 
 include_directories(.)
 
+add_executable(test
+        test.cc
+        Record.h
+        Record.cc
+        Comparison.h
+        Comparison.cc
+        ComparisonEngine.h
+        ComparisonEngine.cc
+        Schema.h
+        Schema.cc
+        File.h
+        File.cc
+        DBFile.h
+        DBFile.cc
+        GenericDBFile.h
+        GenericDBFile.cc
+        HeapDBFile.h
+        HeapDBFile.cc
+        SortedDBFile.h
+        SortedDBFile.cc
+        Pipe.h
+        Pipe.cc
+        BigQ.h
+        BigQ.cc
+        RelOp.h
+        RelOp.cc
+        Function.h
+        Function.cc
+        Statistics.h
+        Statistics.cc
+        QueryPlan.h
+        QueryPlan.cc
+        RelOpPlanNode.h
+        RelOpPlanNode.cc
+        Database.h
+        Database.cc
+        ParseTree.h
+        PathConfig.h
+        PathConfig.cc
+        QueryRunner.h
+        QueryRunner.cc
+        y.tab.o
+        lex.yy.c)
+
 add_executable(a42
         a42-test.cc
         Schema.h
-        Schema.o
         Record.h
-        Record.o
         Comparison.h
-        Comparison.o
         Function.h
-        Function.o
         Statistics.h
         Statistics.cc
-        QueryPlanNode.h
-        QueryPlanNode.cc
+        RelOpPlanNode.h
+        RelOpPlanNode.cc
         QueryPlan.h
         QueryPlan.cc
         ParseTree.h
@@ -64,6 +104,6 @@ add_executable(Project
         Lexerfunc.l
         QueryPlan.h
         QueryPlan.cc
-        QueryPlanNode.h
-        QueryPlanNode.cc
+        RelOpPlanNode.h
+        RelOpPlanNode.cc
         a42-test.cc)

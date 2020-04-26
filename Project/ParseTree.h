@@ -11,6 +11,25 @@
 #define GREATER_THAN 6
 #define EQUALS 7
 
+enum QueryType {
+    CREATE,
+    INSERT,
+    DROP,
+    SELECT,
+    SET,
+};
+
+enum OutputType {
+    STD_OUT,
+    FILE_OUT,
+    NO_OUT,
+};
+
+enum FileType {
+    HEAP,
+    SORTED
+};
+
 // used in computational (funcional) expressions
 struct FuncOperand {
 
@@ -49,6 +68,9 @@ struct NameList {
 
     // this is the name
     char *name;
+
+    // this tells us the type of the name if present: DOUBLE, INT, STRING...
+    int type;
 
     // and this is the next name in the list
     struct NameList *next;

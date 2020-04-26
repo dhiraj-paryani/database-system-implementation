@@ -1,16 +1,16 @@
 #include "DBFile.h"
 
-DBFile::DBFile () {
+DBFile::DBFile() {
 }
 
-DBFile::~DBFile () {
+DBFile::~DBFile() {
 }
 
-int DBFile::Create (const char *f_path, fType f_type, void *startup) {
+int DBFile::Create(const char *f_path, fType f_type, void *startup) {
 
     // Meta data file path.
-    char metadataPath[100];
-    GetMataDataFilePath(f_path, metadataPath);
+    PathConfig *pathConfig = PathConfig::GetInstance();
+    char *metadataPath = pathConfig->GetMetadataFilePath(f_path);
 
     // Open file for writing.
     ofstream fOut;
@@ -24,7 +24,7 @@ int DBFile::Create (const char *f_path, fType f_type, void *startup) {
             break;
         }
         case sorted: {
-            SortInfo* sortInfo = (SortInfo*) startup;
+            SortInfo *sortInfo = (SortInfo *) startup;
             fOut << sortInfo->runLength << "\n";
             fOut << sortInfo->myOrder->ToString() << "\n";
 
@@ -41,16 +41,17 @@ int DBFile::Create (const char *f_path, fType f_type, void *startup) {
     return myInternalVar->Create(f_path);
 }
 
-int DBFile::Open (const char *f_path) {
+int DBFile::Open(const char *f_path) {
+
     // Meta data file path.
-    char metadataPath[100];
-    GetMataDataFilePath(f_path, metadataPath);
+    PathConfig *pathConfig = PathConfig::GetInstance();
+    char *metadataPath = pathConfig->GetMetadataFilePath(f_path);
 
     ifstream fIn;
     string readLine;
 
     fIn.open(metadataPath);
-    if(!fIn.is_open()) return 0;
+    if (!fIn.is_open()) return 0;
 
     getline(fIn, readLine);
 
@@ -60,7 +61,7 @@ int DBFile::Open (const char *f_path) {
             break;
         }
         case sorted: {
-            SortInfo* sortInfo = new SortInfo();
+            SortInfo *sortInfo = new SortInfo();
             sortInfo->myOrder = new OrderMaker();
 
             getline(fIn, readLine);
@@ -81,31 +82,26 @@ int DBFile::Open (const char *f_path) {
     return myInternalVar->Open(f_path);
 }
 
-void DBFile::Load (Schema &f_schema, const char *loadpath) {
+void DBFile::Load(Schema &f_schema, const char *loadpath) {
     myInternalVar->Load(f_schema, loadpath);
 }
 
-void DBFile::Add (Record &rec) {
+void DBFile::Add(Record &rec) {
     myInternalVar->Add(rec);
 }
 
-void DBFile::MoveFirst () {
+void DBFile::MoveFirst() {
     myInternalVar->MoveFirst();
 }
 
-int DBFile::GetNext (Record &fetchme) {
+int DBFile::GetNext(Record &fetchme) {
     return myInternalVar->GetNext(fetchme);
 }
 
-int DBFile::GetNext (Record &fetchme, CNF &cnf, Record &literal) {
+int DBFile::GetNext(Record &fetchme, CNF &cnf, Record &literal) {
     return myInternalVar->GetNext(fetchme, cnf, literal);
 }
 
-int DBFile::Close () {
+int DBFile::Close() {
     return myInternalVar->Close();
-}
-
-void DBFile::GetMataDataFilePath(const char *fpath, char *metadataPath) {
-    strcpy(metadataPath, fpath);
-    strcat(metadataPath, ".metadata");
 }

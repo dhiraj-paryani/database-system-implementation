@@ -50,6 +50,7 @@ struct SelectPipeData {
 void *SelectPipeThreadMethod(void *threadData);
 
 class SelectPipe : public RelationalOp {
+public:
     void Run(Pipe &inPipe, Pipe &outPipe, CNF &selOp, Record &literal);
 };
 

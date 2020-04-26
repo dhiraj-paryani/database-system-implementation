@@ -146,6 +146,9 @@ int ComparisonEngine :: Compare (Record *left, OrderMaker *order_left, Record *r
 // dpending upon wheter or not the CNF expression accepts the record
 int ComparisonEngine :: Compare (Record *left, Record *literal, CNF *myComparison) {
 
+    if (!myComparison) {
+        return 1;
+    }
 	for (int i = 0; i < myComparison->numAnds; i++) {
 
 		for (int j = 0; j < myComparison->orLens[i]; j++) {

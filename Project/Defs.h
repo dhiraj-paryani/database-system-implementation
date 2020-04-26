@@ -9,6 +9,8 @@
 
 #define PIPE_BUFFER_SIZE 100
 
+#define DEFAULT_RUN_LENGTH 16
+
 enum Target {Left, Right, Literal};
 enum CompOperator {LessThan, GreaterThan, Equals};
 enum Type {Int, Double, String};

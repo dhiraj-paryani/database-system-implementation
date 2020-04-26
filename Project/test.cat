@@ -1,3 +1,3 @@
-catalog
+schema_catalog/
 db-files/
-../tpch-dbgen/
+Statistics-42.txt

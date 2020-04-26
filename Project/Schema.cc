@@ -36,6 +36,11 @@ Attribute *Schema :: GetAtts () {
 	return myAtts;
 }
 
+Schema :: Schema () {
+    numAtts = 0;
+    myAtts = NULL;
+}
+
 Schema :: Schema (OrderMaker &order) {
     numAtts = order.numAtts;
     myAtts = new Attribute[numAtts];
@@ -178,7 +183,7 @@ Schema :: Schema (Schema *schema1, Schema *schema2) {
 	}
 }
 
-Schema :: Schema(Schema *baseSchema, NameList *nameList, int* keepMe) {
+Schema :: Schema(Schema *baseSchema, NameList *nameList, vector<int> *keepMeVector) {
     numAtts = 0;
     NameList *nameListLocal = nameList;
     while (nameListLocal) {
@@ -187,7 +192,7 @@ Schema :: Schema(Schema *baseSchema, NameList *nameList, int* keepMe) {
     }
 
     myAtts = new Attribute[numAtts];
-    keepMe = new int[numAtts];
+    int *keepAttsPos = new int[numAtts];
     int i = 0;
 
     nameListLocal = nameList;
@@ -198,22 +203,44 @@ Schema :: Schema(Schema *baseSchema, NameList *nameList, int* keepMe) {
             exit(1);
         }
 
-        keepMe[i] = pos;
+        keepMeVector->push_back(pos);
         myAtts[i++] = baseSchema->myAtts[pos];
 
         nameListLocal = nameListLocal->next;
     }
-
 }
 
 void Schema :: AliasAttributes (std::string aliasName) {
     // this is enough space to hold any tokens
-	for ( int i=0; i<numAtts; i++) {
+	for ( int i=0; i < numAtts; i++) {
 		string newAttName = aliasName + "." + string(myAtts[i].name);
 		char *newAttNameChar = new char[200];
 		strcpy(newAttNameChar, newAttName.c_str());
         myAtts[i].name = newAttNameChar;
 	}
+}
+
+void Schema :: Write(char* fileName, char* tableName) {
+	ofstream fOut;
+	fOut.open(fileName);
+	fOut << "BEGIN\n";
+    fOut << tableName << "\n";
+    fOut << tableName << ".tbl\n";
+    for (int i=0; i < numAtts; i++) {
+        switch (myAtts[i].myType) {
+            case Int:
+                fOut << myAtts[i].name << " Int\n";
+                break;
+            case Double:
+                fOut << myAtts[i].name << " Double\n";
+                break;
+            case String:
+                fOut << myAtts[i].name << " String\n";
+                break;
+        }
+    }
+    fOut << "END\n";
+    fOut.close();
 }
 
 void Schema :: Print() {
