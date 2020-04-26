@@ -95,15 +95,35 @@
 
 %%
 
-SQL: SET_TOKEN OUTPUT STDOUT
+SQL: SET_TOKEN OUTPUT STDOUT ';'
 {
 	queryType = SET;
 	outputType = STD_OUT;
 }
 
-| SET_TOKEN OUTPUT NONE {
+| SET_TOKEN OUTPUT STDOUT
+{
+	queryType = SET;
+	outputType = STD_OUT;
+}
+
+| SET_TOKEN OUTPUT NONE ';'
+{
 	queryType = SET;
 	outputType = NO_OUT;
+}
+
+| SET_TOKEN OUTPUT NONE
+{
+	queryType = SET;
+	outputType = NO_OUT;
+}
+
+| SET_TOKEN OUTPUT String ';'
+{
+	queryType = SET;
+	outputType = FILE_OUT;
+	fileName = $3;
 }
 
 | SET_TOKEN OUTPUT String {
@@ -112,12 +132,29 @@ SQL: SET_TOKEN OUTPUT STDOUT
 	fileName = $3;
 }
 
+| CREATE_TOKEN TABLE Table '('AttsWithType')' AS HEAP_TOKEN ';'
+{
+	queryType = CREATE;
+	tables = $3;
+	createAtts = $5;
+	fileType = HEAP;
+}
+
 | CREATE_TOKEN TABLE Table '('AttsWithType')' AS HEAP_TOKEN
 {
 	queryType = CREATE;
 	tables = $3;
 	createAtts = $5;
 	fileType = HEAP;
+}
+
+| CREATE_TOKEN TABLE Table '('AttsWithType')' AS SORTED_TOKEN ON Atts ';'
+{
+	queryType = CREATE;
+	tables = $3;
+        createAtts = $5;
+	sortAtts = $10;
+	fileType = SORTED;
 }
 
 | CREATE_TOKEN TABLE Table '('AttsWithType')' AS SORTED_TOKEN ON Atts
@@ -129,11 +166,24 @@ SQL: SET_TOKEN OUTPUT STDOUT
 	fileType = SORTED;
 }
 
+| INSERT_TOKEN String INTO Table ';'
+{
+	queryType = INSERT;
+	fileName = $2;
+	tables = $4;
+}
+
 | INSERT_TOKEN String INTO Table
 {
 	queryType = INSERT;
 	fileName = $2;
 	tables = $4;
+}
+
+| DROP_TOKEN TABLE Table ';'
+{
+	queryType = DROP;
+	tables = $3;
 }
 
 | DROP_TOKEN TABLE Table

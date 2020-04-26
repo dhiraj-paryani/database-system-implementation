@@ -85,6 +85,8 @@ void yyerror(char*s);
 
 "NONE"          return(NONE);
 
+";"             return (';');
+
 "("             return('(');
 
 "<"                     return('<');
