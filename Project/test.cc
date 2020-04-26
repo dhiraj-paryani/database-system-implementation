@@ -13,13 +13,13 @@ int main() {
 
     int input = 0;
     while(input != 2) {
-        cout << "\n\n select option: \n";
+        cout << "\n\n Select option: \n";
         cout << " \t 1. Execute a query \n";
         cout << " \t 2. Exit \n\n";
         cout << "Enter an option: ";
         cin >> input;
         if (input == 1) {
-            cout << "\nEnter Query: (when done press ctrl-D):\n";
+            cout << "\nEnter query: (when done press ctrl-D):\n";
 
             database.ExecuteQuery();
         }

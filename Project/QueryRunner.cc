@@ -84,6 +84,7 @@ void QueryRunner::OutputQueryResult() {
 
     if (queryOutputType == STD_OUT) {
         Record temp;
+        cout << "\n";
         while (finalOutPipe->Remove(&temp)) {
             temp.Print(planNode->outputSchema);
         }
