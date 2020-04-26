@@ -58,6 +58,8 @@ public:
 
     void ShutDown();
 
+    OutputType GetOutputType();
+
     ~Database();
 };
 

@@ -46,6 +46,9 @@ gTestStatistics.out: Statistics.o y.tab.o lex.yy.o StatisticsGTests.o
 gTestQueryPlan.out: QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o QueryPlanGTests.o
 	$(CC) -o gTestQueryPlan.out QueryPlan.o QueryPlanNode.o Statistics.o Record.o Comparison.o Schema.o Function.o QueryPlanGTests.o -ll -lgtest
 
+gTestDatabase.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o Statistics.o QueryRunner.o QueryPlan.o RelOpPlanNode.o PathConfig.o Database.o DatabaseGTests.o y.tab.latest.o lex.yy.latest.o
+	$(CC) -o gTestDatabase.out Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFile.o GenericDBFile.o HeapDBFile.o SortedDBFile.o Pipe.o BigQ.o RelOp.o Function.o Statistics.o QueryRunner.o QueryPlan.o RelOpPlanNode.o PathConfig.o Database.o DatabaseGTests.o y.tab.o lex.yy.o -ll -lpthread -lgtest
+
 test.o: test.cc
 	$(CC) -g -c test.cc
 
@@ -84,6 +87,9 @@ StatisticsGTests.o: gtests/StatisticsGTests.cc
 
 QueryPlanGTests.o: gtests/QueryPlanGTests.cc
 	$(CC) -g -c gtests/QueryPlanGTests.cc
+
+DatabaseGTests.o: gtests/DatabaseGTests.cc
+	$(CC) -g -c gtests/DatabaseGTests.cc
 
 QueryRunner.o: QueryRunner.cc
 	$(CC) -g -c QueryRunner.cc

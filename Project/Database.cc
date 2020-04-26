@@ -40,6 +40,9 @@ void Database::ExecuteQuery() {
 void Database::ShutDown() {
 }
 
+OutputType Database::GetOutputType() {
+    return this->queryOutputType;
+}
 void Database::ExecuteCreateQuery() {
     PathConfig *pathConfig = PathConfig::GetInstance();
 
