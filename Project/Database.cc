@@ -15,24 +15,24 @@ void Database::ExecuteQuery() {
     switch (queryType) {
         case CREATE:
             ExecuteCreateQuery();
-            cerr << "Table created successfully.\n";
+            cerr << "\nTable created successfully.\n";
             break;
         case INSERT:
             ExecuteInsertQuery();
-            cerr << "Table loaded successfully.\n";
+            cerr << "\nTable loaded successfully.\n";
             break;
         case DROP:
             ExecuteDropQuery();
-            cerr << "Table dropped successfully.\n";
+            cerr << "\nTable dropped successfully.\n";
             break;
         case SELECT:
             ExecuteSelectQuery();
-            cerr << "Query ran successfully.\n";
+            cerr << "\nQuery ran successfully.\n";
             break;
         case SET:
             this->queryOutputType = outputType;
             this->outputFileName = fileName;
-            cerr << "output mode changed successfully.\n";
+            cerr << "\nOutput mode changed successfully.\n";
             break;
     }
 }
