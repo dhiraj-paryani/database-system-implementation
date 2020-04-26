@@ -9,7 +9,7 @@ int main() {
 
     database.TurnOn();
 
-    cout << "Database Turned Up Successfully\n";
+    cout << "\nDatabase turned up successfully.\n";
 
     int input = 0;
     while(input != 2) {
@@ -27,5 +27,5 @@ int main() {
 
     database.ShutDown();
 
-    cout << "Database Shut Down Successfully\n";
+    cout << "\nDatabase shut down successfully.\n";
 }
