@@ -22,7 +22,6 @@ int main() {
 
             database.ExecuteQuery();
         }
-        input = 2;
     }
 
     database.ShutDown();
