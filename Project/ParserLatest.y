@@ -108,7 +108,7 @@ SQL: SET_TOKEN OUTPUT STDOUT
 
 | SET_TOKEN OUTPUT String {
 	queryType = SET;
-	outputType = STD_OUT;
+	outputType = FILE_OUT;
 	fileName = $3;
 }
 

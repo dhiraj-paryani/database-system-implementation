@@ -188,7 +188,9 @@ void SumDistinct(Pipe *inputPipe, Pipe *outputPipe, Function *computeMe) {
         intVal = 0;
         doubleVal = 0;
         computeMe->Apply(*temp, intVal, doubleVal);
+
         temp->ComposeRecord(&sumSchema, (std::to_string(intVal + doubleVal) + "|").c_str());
+
         drInPipe.Insert(temp);
         temp = new Record();
     }
@@ -196,8 +198,13 @@ void SumDistinct(Pipe *inputPipe, Pipe *outputPipe, Function *computeMe) {
 
     double sum = 0;
     while (drOutPipe.Remove(temp)) {
-        sum += *((double *) &(temp->bits[1]));
+
+        int pointer = ((int *) temp->bits)[1];
+        double *myDouble = (double *) &(temp->bits[pointer]);
+
+        sum += *myDouble;
     }
+
     dr.WaitUntilDone();
 
     temp->ComposeRecord(&sumSchema, (std::to_string(sum) + "|").c_str());

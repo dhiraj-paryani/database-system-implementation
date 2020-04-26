@@ -123,7 +123,7 @@ void Database::ExecuteSelectQuery() {
     // Generate query plan.
     QueryPlan queryPlan(&dbFileMap, &statistics, &query);
 
-    if (!queryOutputType || queryOutputType == NO_OUT) {
+    if (queryOutputType == NO_OUT) {
         queryPlan.Print();
     } else {
         // Get Query Plan.

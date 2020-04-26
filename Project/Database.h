@@ -34,7 +34,7 @@ extern int distinctFunc;
 class Database {
 private:
 
-    OutputType queryOutputType;
+    OutputType queryOutputType = STD_OUT;
 
     char *outputFileName;
 
