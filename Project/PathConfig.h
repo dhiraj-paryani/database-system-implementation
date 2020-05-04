@@ -7,7 +7,7 @@
 using namespace std;
 // test settings file should have the
 // catalog_dir, dbfile_dir, statistics_path information in separate lines
-static const char *settings = "test.cat";
+static const char *settings = "tests/test.cat";
 
 class PathConfig {
     friend class Database;
