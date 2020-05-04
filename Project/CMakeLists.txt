@@ -1,69 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
 project(Project)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
-
-add_executable(test
-        test.cc
-        Record.h
-        Record.cc
-        Comparison.h
-        Comparison.cc
-        ComparisonEngine.h
-        ComparisonEngine.cc
-        Schema.h
-        Schema.cc
-        File.h
-        File.cc
-        DBFile.h
-        DBFile.cc
-        GenericDBFile.h
-        GenericDBFile.cc
-        HeapDBFile.h
-        HeapDBFile.cc
-        SortedDBFile.h
-        SortedDBFile.cc
-        Pipe.h
-        Pipe.cc
-        BigQ.h
-        BigQ.cc
-        RelOp.h
-        RelOp.cc
-        Function.h
-        Function.cc
-        Statistics.h
-        Statistics.cc
-        QueryPlan.h
-        QueryPlan.cc
-        RelOpPlanNode.h
-        RelOpPlanNode.cc
-        Database.h
-        Database.cc
-        ParseTree.h
-        PathConfig.h
-        PathConfig.cc
-        QueryRunner.h
-        QueryRunner.cc
-        y.tab.o
-        lex.yy.c)
-
-add_executable(a42
-        a42-test.cc
-        Schema.h
-        Record.h
-        Comparison.h
-        Function.h
-        Statistics.h
-        Statistics.cc
-        RelOpPlanNode.h
-        RelOpPlanNode.cc
-        QueryPlan.h
-        QueryPlan.cc
-        ParseTree.h
-        y.tab.o
-        lex.yy.c)
 
 add_executable(Project
         BigQ.cc
@@ -72,38 +12,44 @@ add_executable(Project
         Comparison.h
         ComparisonEngine.cc
         ComparisonEngine.h
+        Database.cc
+        Database.h
         DBFile.cc
         DBFile.h
         Defs.h
         File.cc
         File.h
-        ParseTree.h
-        Pipe.cc
-        Pipe.h
-        Record.cc
-        Record.h
-        Schema.cc
-        Schema.h
-        TwoWayList.cc
-        TwoWayList.h
+        Function.cc
+        Function.h
         GenericDBFile.cc
         GenericDBFile.h
         HeapDBFile.cc
         HeapDBFile.h
+        lex.yy.c
+        ParseFunc.h
+        ParseTree.h
+        PathConfig.cc
+        PathConfig.h
+        Pipe.cc
+        Pipe.h
+        QueryPlan.cc
+        QueryPlan.h
+        QueryRunner.cc
+        QueryRunner.h
+        Record.cc
+        Record.h
+        RelOp.cc
+        RelOp.h
+        RelOpPlanNode.cc
+        RelOpPlanNode.h
+        Schema.cc
+        Schema.h
         SortedDBFile.cc
         SortedDBFile.h
         Statistics.cc
         Statistics.h
-        RelOp.cc
-        RelOp.h
-        Function.cc
-        Function.h
-        a3-test.cc
-        a3-test.h
-        Lexer.l
-        Lexerfunc.l
-        QueryPlan.h
-        QueryPlan.cc
-        RelOpPlanNode.h
-        RelOpPlanNode.cc
-        a42-test.cc)
+        test.cc
+        TwoWayList.cc
+        TwoWayList.h
+        y.tab.c
+        y.tab.h)

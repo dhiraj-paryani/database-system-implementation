@@ -1,6 +1,4 @@
 #include "a21-test.h"
-#include "BigQ.h"
-#include <pthread.h>
 
 void *producer (void *arg) {
 

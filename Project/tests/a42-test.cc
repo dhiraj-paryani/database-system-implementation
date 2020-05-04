@@ -1,7 +1,8 @@
 #include <iostream>
-#include "ParseTree.h"
-#include "QueryPlan.h"
-#include "Statistics.h"
+
+#include "../ParseTree.h"
+#include "../QueryPlan.h"
+#include "../Statistics.h"
 
 using namespace std;
 

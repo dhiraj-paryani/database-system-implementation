@@ -1,6 +1,5 @@
 #include "a2-test.h"
-#include "BigQ.h"
-#include <pthread.h>
+
 void test1 ();
 void test2 ();
 void test3 ();

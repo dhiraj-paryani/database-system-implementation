@@ -52,22 +52,22 @@ gTestDatabase.out: Record.o Comparison.o ComparisonEngine.o Schema.o File.o DBFi
 test.o: test.cc
 	$(CC) -g -c test.cc
 
-a42-test.o: a42-test.cc
+a42-test.o: tests/a42-test.cc
 	$(CC) -g -c a42-test.cc
 
-a41-test.o: a41-test.cc
+a41-test.o: tests/a41-test.cc
 	$(CC) -g -c a41-test.cc
 
-a3-test.o: a3-test.cc
+a3-test.o: tests/a3-test.cc
 	$(CC) -g -c a3-test.cc
 
-a2-test.o: a2-test.cc
+a2-test.o: tests/a2-test.cc
 	$(CC) -g -c a2-test.cc
 
-a21-test.o: a21-test.cc
+a21-test.o: tests/a21-test.cc
 	$(CC) -g -c a21-test.cc
 
-a1-test.o: a1-test.cc
+a1-test.o: tests/a1-test.cc
 	$(CC) -g -c a1-test.cc
 
 DBFileGTests.o: gtests/DBFileGTests.cc

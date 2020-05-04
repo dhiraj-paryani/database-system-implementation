@@ -1,14 +1,17 @@
 #ifndef A3_TEST_H
 #define A3_TEST_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <math.h>
 
-#include "Function.h"
-#include "Pipe.h"
-#include "DBFile.h"
-#include "Record.h"
+#include "../Function.h"
+#include "../Pipe.h"
+#include "../DBFile.h"
+#include "../Record.h"
+#include "../BigQ.h"
+#include "../RelOp.h"
 
 using namespace std;
 

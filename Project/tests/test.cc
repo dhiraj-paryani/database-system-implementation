@@ -23,8 +23,8 @@ int main() {
 
             database.ExecuteQuery();
         }
+        input = 2;
     }
-
     database.ShutDown();
 
     cout << "\nDatabase shut down successfully.\n";
