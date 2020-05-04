@@ -1,78 +1,81 @@
 #ifndef _TWO_WAY_LIST_H
 #define _TWO_WAY_LIST_H
 
-template <class Type>
+template<class Type>
 class TwoWayList {
 
-	public:
+public:
 
-		// basic constructor function
-		TwoWayList ();
-		
-		// deconstructor function
-		~TwoWayList ();
+    // basic constructor function
+    TwoWayList();
 
-		// swap operator 
-		void operator &= (TwoWayList & List);
+    // deconstructor function
+    ~TwoWayList();
 
-		// add to current pointer position
-		void Insert (Type *Item);
+    // swap operator
+    void operator&=(TwoWayList &List);
 
-		// remove from current position
-		void Remove (Type *Item);
+    // add to current pointer position
+    void Insert(Type *Item);
 
-		// get a reference to the current item, plus the offset given
-		Type* Current (int offset);
+    // remove from current position
+    void Remove(Type *Item);
 
-		// move the current pointer position backward through the list
-		void Retreat ();
+    // get a reference to the current item, plus the offset given
+    Type *Current(int offset);
 
-		// move the current pointer position forward through the list
-		void Advance ();
+    // move the current pointer position backward through the list
+    void Retreat();
 
-		// operations to check the size of both sides
-		int LeftLength ();
-		int RightLength ();
+    // move the current pointer position forward through the list
+    void Advance();
 
-		// operations to swap the left and right sides of two lists
-		void SwapLefts (TwoWayList & List); 
-		void SwapRights (TwoWayList & List); 
+    // operations to check the size of both sides
+    int LeftLength();
 
-		// operations to move the the start of end of a list
-		void MoveToStart ();
-		void MoveToFinish (); 
+    int RightLength();
 
-		TwoWayList (TwoWayList & List);
-	private:
+    // operations to swap the left and right sides of two lists
+    void SwapLefts(TwoWayList &List);
 
-		struct Node {
-			// data
-			Type *data;
-			Node *next;
-			Node *previous;
-			
-			// constructor
-			Node () : data (0), next (0), previous (0) {}
+    void SwapRights(TwoWayList &List);
 
-			// deconstructor 
-			~Node () 
-			{
-				delete data;
-			}
-		};
+    // operations to move the the start of end of a list
+    void MoveToStart();
+
+    void MoveToFinish();
+
+    TwoWayList(TwoWayList &List);
+
+private:
+
+    struct Node {
+        // data
+        Type *data;
+        Node *next;
+        Node *previous;
+
+        // constructor
+        Node() : data(0), next(0), previous(0) {}
+
+        // deconstructor
+        ~Node() {
+            delete data;
+        }
+    };
 
 
-		struct Header {
-			// data
-			Node * first;
-			Node * last;
-			Node * current;
-			int leftSize;
-			int rightSize;
-		};
+    struct Header {
+        // data
+        Node *first;
+        Node *last;
+        Node *current;
+        int leftSize;
+        int rightSize;
+    };
 
-		// the list itself is pointed to by this pointer	
-		Header *list;	
+    // the list itself is pointed to by this pointer
+    Header *list;
 
 };
 

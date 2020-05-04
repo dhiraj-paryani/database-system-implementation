@@ -2,7 +2,7 @@
 #include "GenericDBFile.h"
 
 
-SortedDBFile :: SortedDBFile(SortInfo* sortInfoParameter) {
+SortedDBFile::SortedDBFile(SortInfo *sortInfoParameter) {
     sortInfo = sortInfoParameter;
 
     inputPipe = new Pipe(PIPE_BUFFER_SIZE);
@@ -12,7 +12,7 @@ SortedDBFile :: SortedDBFile(SortInfo* sortInfoParameter) {
     useSameQueryOrderMaker = false;
 }
 
-SortedDBFile :: ~SortedDBFile() {
+SortedDBFile::~SortedDBFile() {
     delete inputPipe;
     delete outputPipe;
 
@@ -21,30 +21,30 @@ SortedDBFile :: ~SortedDBFile() {
 
 /* ****************************************** ALL OVERRIDDEN METHODS *********************************************** */
 
-void SortedDBFile :: SwitchToWriteMode() {
-    if(isInWriteMode) return;
+void SortedDBFile::SwitchToWriteMode() {
+    if (isInWriteMode) return;
 
-    BigQ (*inputPipe, *outputPipe, *sortInfo->myOrder, sortInfo->runLength);
+    BigQ(*inputPipe, *outputPipe, *sortInfo->myOrder, sortInfo->runLength);
     useSameQueryOrderMaker = false;
     isInWriteMode = true;
 }
 
-void SortedDBFile :: SwitchToReadMode() {
-    if(!isInWriteMode) return;
+void SortedDBFile::SwitchToReadMode() {
+    if (!isInWriteMode) return;
 
     isInWriteMode = false;
     MergeCurrentFileAndBigQOutput();
 }
 
-void SortedDBFile :: AddToDBFile(Record &addme) {
+void SortedDBFile::AddToDBFile(Record &addme) {
     inputPipe->Insert(&addme);
 }
 
-int SortedDBFile :: GetNextFromDBFile(Record &fetchme) {
+int SortedDBFile::GetNextFromDBFile(Record &fetchme) {
     return GetRecordFromReadBufferPage(fetchme);
 }
 
-int SortedDBFile :: GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal) {
+int SortedDBFile::GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal) {
     if (!useSameQueryOrderMaker) {
         cnf.GetCommonSortOrder(*sortInfo->myOrder, *queryOrderMaker);
     }
@@ -53,7 +53,7 @@ int SortedDBFile :: GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal
 
 /* ****************************************** ALL PRIVATE METHODS *********************************************** */
 
-void SortedDBFile :: MergeCurrentFileAndBigQOutput() {
+void SortedDBFile::MergeCurrentFileAndBigQOutput() {
 
     // Shut down input pipe of BigQ so that BigQ gives sorted records in output pipe.
     inputPipe->ShutDown();
@@ -75,13 +75,13 @@ void SortedDBFile :: MergeCurrentFileAndBigQOutput() {
     bool outputPipeNotFullyConsumed = outputPipe->Remove(&outputPipeRecord);
 
     // If either of the stream is fully consumed - Break;
-    while(outputPipeNotFullyConsumed && currentFileNotFullyConsumed) {
+    while (outputPipeNotFullyConsumed && currentFileNotFullyConsumed) {
         // If currentFileRecord is less
         if (comparisonEngine.Compare(&currentFileRecord, &outputPipeRecord, sortInfo->myOrder) < 1) {
             tempFile.Add(currentFileRecord);
             currentFileNotFullyConsumed = GetRecordFromReadBufferPage(currentFileRecord);
         }
-        // If BigQ output pipe's record is less.
+            // If BigQ output pipe's record is less.
         else {
             tempFile.Add(outputPipeRecord);
             outputPipeNotFullyConsumed = outputPipe->Remove(&outputPipeRecord);
@@ -89,13 +89,13 @@ void SortedDBFile :: MergeCurrentFileAndBigQOutput() {
     }
 
     // If output pipe is not fully consumed.
-    while(outputPipeNotFullyConsumed) {
+    while (outputPipeNotFullyConsumed) {
         tempFile.Add(outputPipeRecord);
         outputPipeNotFullyConsumed = outputPipe->Remove(&outputPipeRecord);
     }
 
     // If current file records are not fully consumed.
-    while(currentFileNotFullyConsumed) {
+    while (currentFileNotFullyConsumed) {
         tempFile.Add(currentFileRecord);
         currentFileNotFullyConsumed = GetRecordFromReadBufferPage(currentFileRecord);
     }
@@ -114,8 +114,8 @@ void SortedDBFile :: MergeCurrentFileAndBigQOutput() {
 
 int SortedDBFile::GetNextForSortedFile(Record &fetchme, CNF &cnf, Record &literal) {
     if (queryOrderMaker->isEmpty()) {
-        while(GetRecordFromReadBufferPage(fetchme)) {
-            if(CheckForCNF(fetchme, cnf, literal)) return 1;
+        while (GetRecordFromReadBufferPage(fetchme)) {
+            if (CheckForCNF(fetchme, cnf, literal)) return 1;
         }
         return 0;
     }
@@ -123,34 +123,35 @@ int SortedDBFile::GetNextForSortedFile(Record &fetchme, CNF &cnf, Record &litera
     if (!useSameQueryOrderMaker) {
         useSameQueryOrderMaker = true;
         bool doBinarySearch = true;
-        while(readBufferPage.GetFirst(&fetchme)) {
+        while (readBufferPage.GetFirst(&fetchme)) {
             if (CheckForCNF(fetchme, cnf, literal)) return 1;
             int comparisonValue = CheckForQuery(fetchme, literal);
-            if(comparisonValue == 1) return 0;
+            if (comparisonValue == 1) return 0;
             if (comparisonValue == 0) {
-                if(CheckForCNF(fetchme, cnf, literal)) return 1;
+                if (CheckForCNF(fetchme, cnf, literal)) return 1;
                 doBinarySearch = false;
                 break;
             }
         }
         if (doBinarySearch) {
             if (GetLengthInPages() - 1 <= currentlyBeingReadPageNumber + 1) return 0;
-            currentlyBeingReadPageNumber = BinarySearch(++currentlyBeingReadPageNumber, GetLengthInPages() - 1, literal);
+            currentlyBeingReadPageNumber = BinarySearch(++currentlyBeingReadPageNumber, GetLengthInPages() - 1,
+                                                        literal);
         }
     }
 
     while (GetRecordFromReadBufferPage(fetchme)) {
         if (CheckForCNF(fetchme, cnf, literal)) return 1;
-        if(CheckForQuery(fetchme, literal)) return 0;
+        if (CheckForQuery(fetchme, literal)) return 0;
     }
     return 0;
 }
 
-int SortedDBFile :: CheckForQuery(Record &fetchme, Record &literal) {
+int SortedDBFile::CheckForQuery(Record &fetchme, Record &literal) {
     return comparisonEngine.Compare(&literal, queryOrderMaker, &fetchme, sortInfo->myOrder);
 }
 
-bool SortedDBFile :: CheckForCNF(Record &fetchme, CNF &cnf, Record &literal) {
+bool SortedDBFile::CheckForCNF(Record &fetchme, CNF &cnf, Record &literal) {
     return comparisonEngine.Compare(&fetchme, &literal, &cnf);
 }
 
@@ -159,15 +160,15 @@ off_t SortedDBFile::BinarySearch(off_t low, off_t high, Record &literal) {
     Record temp;
 
     // Base condition or Break condition
-    if(low == high) return low;
+    if (low == high) return low;
 
     // Get first record of the middle page.
-    off_t mid = (low+high)/2;
+    off_t mid = (low + high) / 2;
     dbFile.GetPage(&bufferPage, mid);
     bufferPage.GetFirst(&temp);
 
-    if(comparisonEngine.Compare(&literal, queryOrderMaker, &temp, sortInfo->myOrder) > 0) {
-        return BinarySearch(mid+1, high, literal);
+    if (comparisonEngine.Compare(&literal, queryOrderMaker, &temp, sortInfo->myOrder) > 0) {
+        return BinarySearch(mid + 1, high, literal);
     }
-    return BinarySearch(low, mid-1, literal);
+    return BinarySearch(low, mid - 1, literal);
 }

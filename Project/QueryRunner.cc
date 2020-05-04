@@ -92,7 +92,7 @@ void QueryRunner::OutputQueryResult() {
     }
     if (queryOutputType == FILE_OUT) {
         WriteOut writeOut;
-        FILE *writefile = fopen (outputFileName, "w");
+        FILE *writefile = fopen(outputFileName, "w");
         writeOut.Run(*finalOutPipe, writefile, *planNode->outputSchema);
         writeOut.WaitUntilDone();
     }

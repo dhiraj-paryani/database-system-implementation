@@ -1,28 +1,28 @@
 #include "GenericDBFile.h"
 
-GenericDBFile::GenericDBFile () {
+GenericDBFile::GenericDBFile() {
     isDBFileOpen = false;
 
     isInWriteMode = false;
     currentlyBeingReadPageNumber = 0;
 }
 
-GenericDBFile::~GenericDBFile () {
+GenericDBFile::~GenericDBFile() {
 }
 
 /* **************************************** ALL PUBLIC METHODS *************************************************** */
 
-int GenericDBFile :: Create (const char *fpath) {
+int GenericDBFile::Create(const char *fpath) {
     strcpy(dbFileName, fpath);
     return isDBFileOpen = dbFile.Open(0, const_cast<char *>(fpath));
 }
 
-int GenericDBFile :: Open (const char *fpath) {
+int GenericDBFile::Open(const char *fpath) {
     strcpy(dbFileName, fpath);
     isDBFileOpen = dbFile.Open(1, const_cast<char *>(fpath));
 
     // Return 0 if it is not able to open the file.
-    if(!isDBFileOpen) return isDBFileOpen;
+    if (!isDBFileOpen) return isDBFileOpen;
 
     // Move read pointer to the first page.
     MoveFirst();
@@ -30,7 +30,7 @@ int GenericDBFile :: Open (const char *fpath) {
     return isDBFileOpen;
 }
 
-void GenericDBFile :: Add (Record &addme) {
+void GenericDBFile::Add(Record &addme) {
 
     // Throw error if file is not open.
     DoFileOpenCheck();
@@ -40,7 +40,7 @@ void GenericDBFile :: Add (Record &addme) {
     AddToDBFile(addme);
 }
 
-void GenericDBFile :: Load (Schema &myschema, const char *loadpath) {
+void GenericDBFile::Load(Schema &myschema, const char *loadpath) {
 
     // Throw error if file is not open.
     DoFileOpenCheck();
@@ -49,14 +49,14 @@ void GenericDBFile :: Load (Schema &myschema, const char *loadpath) {
 
     // Load record from table file and add record to the file recursively,
     // while all the records are loaded from table file.
-    FILE *tableFile = fopen (loadpath, "r");
+    FILE *tableFile = fopen(loadpath, "r");
     Record temp;
-    while (temp.SuckNextRecord (&myschema, tableFile)) {
+    while (temp.SuckNextRecord(&myschema, tableFile)) {
         AddToDBFile(temp);
     }
 }
 
-void GenericDBFile :: MoveFirst () {
+void GenericDBFile::MoveFirst() {
 
     // Throw error if file is not open.
     DoFileOpenCheck();
@@ -68,7 +68,7 @@ void GenericDBFile :: MoveFirst () {
     GetPageFromDataFile(readBufferPage, currentlyBeingReadPageNumber);
 }
 
-int GenericDBFile :: GetNext (Record &fetchme) {
+int GenericDBFile::GetNext(Record &fetchme) {
 
     // Return 0 if file is not open.
     if (!isDBFileOpen) return 0;
@@ -78,7 +78,7 @@ int GenericDBFile :: GetNext (Record &fetchme) {
     return GetNextFromDBFile(fetchme);
 }
 
-int GenericDBFile :: GetNext (Record &fetchme, CNF &cnf, Record &literal) {
+int GenericDBFile::GetNext(Record &fetchme, CNF &cnf, Record &literal) {
 
     // Return 0 if file is not open.
     if (!isDBFileOpen) return 0;
@@ -88,7 +88,7 @@ int GenericDBFile :: GetNext (Record &fetchme, CNF &cnf, Record &literal) {
     return GetNextFromDBFile(fetchme, cnf, literal);
 }
 
-int GenericDBFile :: Close () {
+int GenericDBFile::Close() {
 
     // Return 0 if file is not open.
     if (!isDBFileOpen) return 0;
@@ -102,11 +102,11 @@ int GenericDBFile :: Close () {
 
 /* **************************************** ALL PROTECTED METHODS ************************************************** */
 
-off_t GenericDBFile :: GetLengthInPages() {
+off_t GenericDBFile::GetLengthInPages() {
     return dbFile.GetLength() - 1;
 }
 
-bool GenericDBFile :: GetPageFromDataFile(Page &page, off_t pageNumber) {
+bool GenericDBFile::GetPageFromDataFile(Page &page, off_t pageNumber) {
     page.EmptyItOut();
 
     // if file contains that many pages, load the page from the file.
@@ -116,20 +116,20 @@ bool GenericDBFile :: GetPageFromDataFile(Page &page, off_t pageNumber) {
     return true;
 }
 
-void GenericDBFile :: AddPageToDataFile(Page &page, off_t pageNumber) {
+void GenericDBFile::AddPageToDataFile(Page &page, off_t pageNumber) {
     dbFile.AddPage(&page, pageNumber);
     page.EmptyItOut();
 }
 
-int GenericDBFile :: GetRecordFromReadBufferPage(Record &rec) {
-    if(readBufferPage.GetFirst(&rec)) return 1;
+int GenericDBFile::GetRecordFromReadBufferPage(Record &rec) {
+    if (readBufferPage.GetFirst(&rec)) return 1;
 
-    if(!GetPageFromDataFile(readBufferPage, ++currentlyBeingReadPageNumber)) return 0;
+    if (!GetPageFromDataFile(readBufferPage, ++currentlyBeingReadPageNumber)) return 0;
     return GetRecordFromReadBufferPage(rec);
 }
 
 /* **************************************** ALL PRIVATE METHODS ************************************************** */
-void GenericDBFile :: DoFileOpenCheck () {
+void GenericDBFile::DoFileOpenCheck() {
     if (!isDBFileOpen) {
         std::cerr << "BAD: File is not open!\n";
         exit(1);

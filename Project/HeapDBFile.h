@@ -14,7 +14,8 @@ private:
 public:
     // constructor and destructor
     HeapDBFile();
-    ~HeapDBFile ();
+
+    ~HeapDBFile();
 
     void SwitchToWriteMode();
 
@@ -26,4 +27,5 @@ public:
 
     int GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal);
 };
+
 #endif

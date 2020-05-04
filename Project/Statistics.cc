@@ -40,11 +40,11 @@ void Statistics::AddRel(char *relName, int numTuples) {
         groupNameToSetOfRelationsMap[relName] = newRelationSet;
         groupNameToRelationMap[relName] = Relation(numTuples);
 
-    // If the relation is not yet joined, update the number of tuples.
+        // If the relation is not yet joined, update the number of tuples.
     } else if (relNameToGroupNameMap[relName] == relName) {
         groupNameToRelationMap[relName].SetNumOfTuples(numTuples);
 
-    // Otherwise throw an error, as table is already joined.
+        // Otherwise throw an error, as table is already joined.
     } else {
         cerr << "Relation is already joined with some table.\n";
         exit(1);
@@ -55,7 +55,7 @@ void Statistics::AddAtt(char *relName, char *attName, int numDistincts) {
     AddAtt(string(relName), string(attName), numDistincts);
 }
 
-void Statistics::AddAtt(const string& relName, string attName, int numDistincts) {
+void Statistics::AddAtt(const string &relName, string attName, int numDistincts) {
     string attNameWithRelName = relName + "." + attName;
 
     if (attNameToAttributeMap.find(attNameWithRelName) != attNameToAttributeMap.end()

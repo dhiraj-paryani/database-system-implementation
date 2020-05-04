@@ -43,6 +43,7 @@ void Database::ShutDown() {
 OutputType Database::GetOutputType() {
     return this->queryOutputType;
 }
+
 void Database::ExecuteCreateQuery() {
     PathConfig *pathConfig = PathConfig::GetInstance();
 
@@ -143,8 +144,7 @@ void Database::ExecuteSelectQuery() {
     }
 
     // Close all tables.
-    for (auto const& dbFileMapItem : dbFileMap)
-    {
+    for (auto const &dbFileMapItem : dbFileMap) {
         dbFileMapItem.second->Close();
     }
 }

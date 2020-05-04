@@ -18,6 +18,7 @@ protected:
 
 public:
     RelationalOp();
+
     // blocks the caller until the particular relational operator
     // has run to completion
     void WaitUntilDone();
@@ -116,8 +117,10 @@ struct SumData {
 };
 
 void *SumThreadMethod(void *threadData);
-    void SumAll(Pipe *inPipe, Pipe *outPipe, Function *computeMe);
-    void SumDistinct(Pipe *inPipe, Pipe *outPipe, Function *computeMe);
+
+void SumAll(Pipe *inPipe, Pipe *outPipe, Function *computeMe);
+
+void SumDistinct(Pipe *inPipe, Pipe *outPipe, Function *computeMe);
 
 class Sum : public RelationalOp {
 public:

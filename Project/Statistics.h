@@ -65,11 +65,15 @@ private:
     unordered_map<string, unordered_set<string> > groupNameToSetOfRelationsMap;
     unordered_map<string, string> relNameToGroupNameMap;
 
-    void AddAtt(const string& relName, string attName, int numDistincts);
+    void AddAtt(const string &relName, string attName, int numDistincts);
+
     void PreProcessApply(struct AndList *parseTree, unordered_set<string> *relNames);
-        void ValidateApplyOnRelations(unordered_set<string> *relNames);
-        void PreProcessApplyOnAttributes(struct AndList *parseTree, unordered_set<string> *relNames);
-            void PreProcessNameOperand(Operand *operand, unordered_set<string> *relNames);
+
+    void ValidateApplyOnRelations(unordered_set<string> *relNames);
+
+    void PreProcessApplyOnAttributes(struct AndList *parseTree, unordered_set<string> *relNames);
+
+    void PreProcessNameOperand(Operand *operand, unordered_set<string> *relNames);
 
 public:
     Statistics();
@@ -94,11 +98,11 @@ public:
 
     unordered_map<string, Relation> *GetGroupNameToRelationMap();
 
-    unordered_map<string, Att>* GetAttNameToAttributeMap();
+    unordered_map<string, Att> *GetAttNameToAttributeMap();
 
-    unordered_map<string, unordered_set<string> >* GetGroupNameToSetOfRelationsMap();
+    unordered_map<string, unordered_set<string> > *GetGroupNameToSetOfRelationsMap();
 
-    unordered_map<string, string>* GetRelNameToGroupNameMap();
+    unordered_map<string, string> *GetRelNameToGroupNameMap();
 };
 
 #endif

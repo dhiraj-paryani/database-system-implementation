@@ -7,7 +7,7 @@
 
 class GenericDBFile {
 private:
-    void DoFileOpenCheck ();
+    void DoFileOpenCheck();
 
 protected:
     char dbFileName[100];
@@ -22,31 +22,44 @@ protected:
     ComparisonEngine comparisonEngine;
 
     off_t GetLengthInPages();
+
     bool GetPageFromDataFile(Page &page, off_t pageNumber);
+
     void AddPageToDataFile(Page &page, off_t pageNumber);
+
     int GetRecordFromReadBufferPage(Record &rec);
 
     // Child classes should add implementation of following methods.
     virtual void SwitchToWriteMode() = 0;
+
     virtual void SwitchToReadMode() = 0;
+
     virtual void AddToDBFile(Record &addme) = 0;
+
     virtual int GetNextFromDBFile(Record &fetchme) = 0;
+
     virtual int GetNextFromDBFile(Record &fetchme, CNF &cnf, Record &literal) = 0;
 
 public:
     GenericDBFile();
+
     ~GenericDBFile();
 
-    int Create (const char *fpath);
-    int Open (const char *fpath);
+    int Create(const char *fpath);
 
-    void Add (Record &addme);
-    void Load (Schema &myschema, const char *loadpath);
+    int Open(const char *fpath);
 
-    void MoveFirst ();
-    int GetNext (Record &fetchme);
-    int GetNext (Record &fetchme, CNF &cnf, Record &literal);
+    void Add(Record &addme);
 
-    int Close ();
+    void Load(Schema &myschema, const char *loadpath);
+
+    void MoveFirst();
+
+    int GetNext(Record &fetchme);
+
+    int GetNext(Record &fetchme, CNF &cnf, Record &literal);
+
+    int Close();
 };
+
 #endif
