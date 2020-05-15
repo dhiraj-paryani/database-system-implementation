@@ -25,10 +25,11 @@ It is an assignment of course Database System Implementation (COP6726) taught in
 In this records are stored in an unordered fashion, where new records simply go at the end of the file. We can load records from a file, insert single record and fetch records simply and on filter basis.
 #### Instructions to run tests:
 * `make clean; make a1test.out; ./a1test.out`
-* This would give a menu-based interface the performs the following three options that can test the code: 
+* This would give a menu-based interface as following: 
   1. load (loads a heap DBFile from tpch-dbgen .tbl file)
   2. scan (read records from an existing heap DBFile)
   3. scan & filter (read records from an existing heap DBFile and filter using a CNF predicate)
+* Follow the instructions to test the heap file implementation.
 
 ### Milestone - 2.1: BigQ Implementation
 ### Milestone - 2.2: Sorted File Implementation
